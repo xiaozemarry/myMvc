@@ -1,0 +1,355 @@
+﻿[
+   {
+      "_contextMenu" : [],
+      "css" : {
+         "left" : "59px",
+         "top" : "52px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "事故发生"
+   },
+   {
+      "_contextMenu" : [],
+      "css" : {
+         "left" : "59px",
+         "top" : "322px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "应急响应"
+   },
+   {
+      "_contextMenu" : [],
+      "css" : {
+         "left" : "59px",
+         "top" : "124px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "应急启动"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "应急通讯录"
+         },
+        {
+            "text" : "测试菜单",
+           "flag" : "opennew"
+         },
+         {
+            "text" : "短信通知平台",
+	   "flag" : "messagePlatform"
+         }
+      ],
+      "css" : {
+         "left" : "178px",
+         "top" : "190px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "应急人员"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "应急通讯录"
+         },
+         {
+            "text" : "短信通知平台",
+	"flag" : "messagePlatform"
+         },
+         {
+            "text" : "海事卫星电话联系方式"
+         },
+         {
+            "text" : "SCADA",
+	"flag" : "SCADA"
+         },
+         {
+            "text" : "工业视频",
+	"flag" : "industryVideo"
+         }
+      ],
+      "css" : {
+         "left" : "300px",
+         "top" : "190px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "信息保障"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "应急资源页面",
+	"flag" : "yingjiSource"
+         },
+         {
+            "text" : "应急队伍通讯录"
+         },
+         {
+            "text" : "消防器材"
+         },
+         {
+            "text" : "短信通知平台",
+	    "flag" : "messagePlatform"
+         }
+      ],
+      "css" : {
+         "left" : "408px",
+         "top" : "190px",
+         "width" : "128px"
+      },
+      "id" : 1,
+      "text" : "应急资源调配"
+   },
+   {
+      "contextMenu" : [
+         {
+            "flag" : "yingjitongxunlu",
+            "text" : "应急通讯录"
+         },
+         {
+            "flag" : "messagePlatform",
+            "text" : "短信通知平台"
+         }
+      ],
+      "css" : {
+         "left" : "596px",
+         "top" : "190px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "现场指挥"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "气象查询与设置",
+	"flag" : "weatherSearch_setting"
+         },
+         {
+            "text" : "应急辅助决策",
+	    "flag" : "yingjiHelperDecision"
+         }
+      ],
+      "css" : {
+         "left" : "222px",
+         "top" : "368px",
+         "width" : "185px"
+      },
+      "id" : 1,
+      "text" : "应急推演"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "综合查询",
+	"flag" : "multipleSearch"
+         },
+         {
+            "text" : "道路图层",
+	"flag" : "roadLayer"
+         },
+         {
+            "text" : "周边敏感目标图层、周边救援力量图层",
+	"flag" : "roadLayer"
+         }
+      ],
+      "css" : {
+         "left" : "222px",
+         "top" : "436px",
+         "width" : "185px"
+      },
+      "id" : 1,
+      "text" : "综合查询"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "解除警戒"
+         },
+         {
+            "text" : "短信通知平台",
+	"flag" : "messagePlatform"
+         }
+      ],
+      "css" : {
+         "left" : "32px",
+         "top" : "610px",
+         "width" : "130px"
+      },
+      "id" : 1,
+      "text" : "应急状态解除"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "医护应急通讯录"
+         },
+         {
+            "text" : "医疗机构通讯录"
+         },
+         {
+            "text" : "路由查询",
+	"flag" : "outeSearch"
+         }
+      ],
+      "css" : {
+         "left" : "205px",
+         "top" : "498px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "救助与医疗救援"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "警戒范围"
+         },
+         {
+            "text" : "实施警戒与路口管制"
+         }
+      ],
+      "css" : {
+         "left" : "265px",
+         "top" : "498px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "警戒与交管"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "政府机构通讯录"
+         },
+         {
+            "text" : "单户居民通讯录"
+         },
+         {
+            "text" : "短信通知平台",
+	"flag" : "messagePlatform"
+         }
+      ],
+      "css" : {
+         "left" : "382px",
+         "top" : "498px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "应急联防与协同"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "影响范围内单户居民通讯录"
+         },
+         {
+            "text" : "群发短信确定集合位置"
+         }
+      ],
+      "css" : {
+         "left" : "324px",
+         "top" : "498px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "人员疏散与安置"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "环境保护应急队伍"
+         },
+         {
+            "text" : "环境保护应急物资查询"
+         },
+         {
+            "text" : "路由查询",
+	"flag" : "outeSearch"
+         }
+      ],
+      "css" : {
+         "left" : "440px",
+         "top" : "390px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "环境保护"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "遂宁市环境监测站联系方式"
+         },
+         {
+            "text" : "川庆钻探川中监测站"
+         }
+      ],
+      "css" : {
+         "left" : "500px",
+         "top" : "390px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "现场监测"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "应急专家通讯录"
+         },
+         {
+            "text" : "应急推演",
+	    "flag" : "yingjituiyan"
+         },
+         {
+            "text" : "事故案例库"
+         },
+         {
+            "text" : "MSDS知识库"
+         },
+         {
+            "text" : "设备上下游查询"
+         },
+         {
+            "text" : "设备完整性查询（属性查询、设备结构图纸查询、设备知识库查询"
+         },
+         {
+            "text" : "设备剖切、拆装查询"
+         },
+         {
+            "text" : "纸质应急预案查询"
+         }
+      ],
+      "css" : {
+         "left" : "564px",
+         "top" : "390px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "专家支持"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "工程抢险通讯录"
+         },
+         {
+            "text" : "短信通知平台",
+	"flag" : "messagePlatform"
+         }
+      ],
+      "css" : {
+         "left" : "620px",
+         "top" : "390px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "工程抢险"
+   }
+]

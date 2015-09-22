@@ -1,0 +1,374 @@
+﻿[
+   {
+      "contextMenu" : [
+         {
+            "text" : "添加灾害",
+            "flag" : "ZHTJ"
+          }
+         ],
+      "css" : {
+         "left" : "59px",
+         "top" : "52px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "事故发生"
+   },
+   {
+      "_contextMenu" : [],
+      "css" : {
+         "left" : "59px",
+         "top" : "322px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "应急响应"
+   },
+   {
+      "_contextMenu" : [],
+      "css" : {
+         "left" : "59px",
+         "top" : "124px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "应急启动"
+   },
+   {
+      "contextMenu" : [
+         {
+            "flag" : "YJLDXZ",
+            "text" : "应急通讯录"
+         },
+         {
+            "flag" : "messagePlatform",
+            "text" : "短信通知平台"
+         }
+      ],
+      "css" : {
+         "left" : "178px",
+         "top" : "190px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "应急人员"
+   },
+   {
+      "contextMenu" : [
+         {
+            "flag" : "ZYHQBZCY",
+            "text" : "应急通讯录"
+         },
+         {
+            "flag" : "messagePlatform",
+            "text" : "短信通知平台"
+         },
+         {
+            "flag" : "SCADA",
+            "text" : "SCADA"
+         },
+         {
+            "flag" : "industryVideo",
+            "text" : "工业视频"
+         }
+      ],
+      "css" : {
+         "left" : "300px",
+         "top" : "190px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "信息保障"
+   },
+   {
+      "contextMenu" : [
+         {
+            "flag" : "YJWZ",
+            "text" : "应急物资"
+         },
+         {
+            "flag" : "ZYYJDW",
+            "text" : "应急队伍通讯录"
+         },
+         {
+            "flag" : "YJXFSB",
+            "text" : "消防器材"
+         },
+         {
+            "flag" : "messagePlatform",
+            "text" : "短信通知平台"
+         }
+      ],
+      "css" : {
+         "left" : "408px",
+         "top" : "190px",
+         "width" : "128px"
+      },
+      "id" : 1,
+      "text" : "应急资源调配"
+   },
+   {
+      "contextMenu" : [
+         {
+            "flag" : "SGXTZRY",
+            "text" : "应急通讯录"
+         },
+         {
+            "flag" : "messagePlatform",
+            "text" : "短信通知平台"
+         }
+      ],
+      "css" : {
+         "left" : "596px",
+         "top" : "190px",
+         "width" : "82px"
+      },
+      "id" : 1,
+      "text" : "现场指挥"
+   },
+   {
+      "contextMenu" : [
+         {
+            "flag" : "weatherSearch_setting",
+            "text" : "气象查询与设置"
+         },
+         {
+            "flag" : "yingjiHelperDecision",
+            "text" : "应急辅助决策"
+         },
+         {
+            "flag" : "JHDCX",
+            "text" : "集合点查询"
+         }
+      ],
+      "css" : {
+         "left" : "222px",
+         "top" : "368px",
+         "width" : "185px"
+      },
+      "id" : 1,
+      "text" : "应急推演"
+   },
+   {
+      "contextMenu" : [
+         {
+            "flag" : "multipleSearch",
+            "text" : "综合查询"
+         },
+         {
+            "flag" : "roadLayer",
+            "text" : "道路图层"
+         },
+         {
+            "flag" : "roadLayer",
+            "text" : "周边敏感目标图层、周边救援力量图层"
+         }
+      ],
+      "css" : {
+         "left" : "222px",
+         "top" : "436px",
+         "width" : "185px"
+      },
+      "id" : 1,
+      "text" : "综合查询"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "解除警戒"
+         },
+         {
+            "flag" : "messagePlatform",
+            "text" : "短信通知平台"
+         }
+      ],
+      "css" : {
+         "left" : "32px",
+         "top" : "610px",
+         "width" : "130px"
+      },
+      "id" : 1,
+      "text" : "应急状态解除"
+   },
+   {
+      "contextMenu" : [
+ 
+         {
+ 
+            "text" : "应急医疗队伍通讯录"
+         },
+         {
+            "flag" : "DFYLJG",
+            "text" : "医疗机构通讯录"
+         },
+         {
+            "flag" : "outeSearch",
+            "text" : "路由查询"
+         }
+      ],
+      "css" : {
+         "left" : "205px",
+         "top" : "498px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "救助与医疗救援"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "危险区域范围",
+            "flag" : "WXQYBH"
+         },
+         {
+            "text" : "实施警戒与路口管制",
+            "flag" : "JJXBH"
+         }
+      ],
+      "css" : {
+         "left" : "265px",
+         "top" : "498px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "警戒与交管"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "政府机构通讯录",
+            "flag" : "SJYJJGJDFZFBM"
+         },
+         {
+            "text" : "单户居民通讯录"
+         },
+         {
+            "flag" : "messagePlatform",
+            "text" : "短信通知平台"
+         }
+      ],
+      "css" : {
+         "left" : "382px",
+         "top" : "498px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "应急联防与协同"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "影响范围内单户居民通讯录"
+         },
+         {
+            "flag" : "messagePlatform",
+            "text" : "群发短信确定集合位置"
+         }
+      ],
+      "css" : {
+         "left" : "324px",
+         "top" : "498px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "人员疏散与安置"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "环境保护应急队伍",
+            "flag" : "SGXTZRY"
+         },
+         {
+            "flag" : "ZYHQBZCY",
+            "text" : "环境保护应急物资查询"
+         },
+         {
+            "flag" : "outeSearch",
+            "text" : "路由查询"
+         }
+      ],
+      "css" : {
+         "left" : "440px",
+         "top" : "390px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "环境保护"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "现场检测",
+            "flag" : "ZYHQBZCY"
+         }
+      ],
+      "css" : {
+         "left" : "500px",
+         "top" : "390px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "现场监测"
+   },
+   {
+      "contextMenu" : [
+         {
+            "flag" : "YJZJ",
+            "text" : "应急专家通讯录"
+         },
+         {
+            "flag" : "yingjituiyan",
+            "text" : "应急推演"
+         },
+         {
+            "text" : "事故案例库",
+            "flag" : "ALKGL"
+         },
+         {
+            "text" : "MSDS知识库",
+            "flag" : "MSDSZSK"
+         },
+         {
+            "text" : "纸质应急预案查询",
+            "flag" : "YJYACX"
+
+         },
+         {
+            "text" : "设备上下游查询"
+         },
+         {
+            "text" : "设备完整性查询"
+         },
+         {
+            "text" : "设备剖切、拆装查询"
+         }
+      ],
+      "css" : {
+         "left" : "564px",
+         "top" : "390px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "专家支持"
+   },
+   {
+      "contextMenu" : [
+         {
+            "text" : "工程抢险通讯录",
+            "flag" : "YJQXRY"
+         },
+         {
+            "flag" : "messagePlatform",
+            "text" : "短信通知平台"
+         }
+      ],
+      "css" : {
+         "left" : "620px",
+         "top" : "390px",
+         "width" : "36px"
+      },
+      "id" : 1,
+      "text" : "工程抢险"
+   }
+]
