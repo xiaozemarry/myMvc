@@ -1,5 +1,10 @@
 package bean;
 
+/**
+ * 测试
+ * @author jacky-chueng
+ *
+ */
 public class User {
 	private String name;
 	private int age;
