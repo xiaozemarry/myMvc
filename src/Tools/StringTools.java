@@ -1,8 +1,5 @@
 package Tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 
 
@@ -17,7 +14,7 @@ public class StringTools {
 	   }
 	   /**
 	    * 非法字符串包括(null,undefined,有空格)
-	    * @param str
+	    * @param str 需要判断的字符串
 	    * @return true:非法
 	    */
 	   public boolean isIllegalStr(String str){
