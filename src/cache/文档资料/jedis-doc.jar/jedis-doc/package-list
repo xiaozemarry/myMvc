@@ -1,0 +1,3 @@
+redis.clients.jedis
+redis.clients.jedis.exceptions
+redis.clients.util
