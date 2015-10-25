@@ -32,10 +32,9 @@ public class LoginUserInfoPool {
     */
    public boolean isLoginIn(HttpServletRequest request){
 	   HttpSession session = request.getSession();
-	   System.out.println(request.getRequestURI());
-	   System.out.println(request.getRequestURI());
+	   //System.out.println(request.getRequestURI());
 	   
-	   System.out.println(session.getId());
+	  // System.out.println(session.getId());
 	   return this.getLoginSessionMap().containsKey(session.getId());
    }
 }
