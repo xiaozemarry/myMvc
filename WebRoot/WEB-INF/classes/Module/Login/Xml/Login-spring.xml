@@ -10,9 +10,10 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
         
     <bean id="helloWord" class="c.HelloWord" scope="request">
+       <!-- 
        <property name="myUser" ref="userBiz"></property>
+        -->
     </bean>
-    <bean id="userBiz" class="bean.User">
-       <property name="name" value="张三"></property>
+      <bean id="userLogin" class="Module.Login.Action.Login" scope="request">
     </bean>
 </beans>
