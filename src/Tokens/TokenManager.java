@@ -1,14 +1,24 @@
 package Tokens;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+
+import org.apache.commons.io.IOUtils;
+
+import com.google.common.io.Files;
 
 public class TokenManager<T> {
 	     private Map<String,Map<Date,T>> tokenMap = new HashMap<String,Map<Date,T>>();
@@ -56,10 +66,16 @@ public class TokenManager<T> {
           * 装载已经有过的缓存(请勿随意调用)
           */
          public static void loadingFile(){
-        	 InputStream input = TokenManager.class.getResourceAsStream("file/tokens.bin");
+        	 URL url = TokenManager.class.getResource("file/tokens.bin");
         	 try 
         	 {
-        		 ObjectInputStream inputStream  = new ObjectInputStream(input);
+				 URI uri = url.toURI();
+				 File file = new File(uri);
+				 ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+				 HashMap aa = new HashMap();
+				 aa.put("a","bb");
+				 outputStream.writeObject(aa);
+        		 ObjectInputStream inputStream  = new ObjectInputStream(new FileInputStream(file));
         		 Object obj = inputStream.readObject();
         		 System.out.println(obj);
         		 
@@ -69,7 +85,10 @@ public class TokenManager<T> {
 			} catch (ClassNotFoundException e) 
 			{
 				e.printStackTrace();
-			}
+            } catch (URISyntaxException e1) 
+    	    {
+			    e1.printStackTrace();
+		    }
          }
          
          /**
@@ -80,10 +99,20 @@ public class TokenManager<T> {
          }
          
          /**
-          * 通过cookie刷新单独的一个用户
+          * 通过cookie刷新单独的一个用户状态
           * @return 是否刷新成功,即是否非法
           */
          public boolean refreshByCookie(){
 			return false;
          }
+         public static void main(String[] args) {
+        	 TokenManager.loadingFile();
+			File file = new File("c:\\a.txt");
+			try {
+				Files.write("".getBytes(), file);
+				Files.touch(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 }
