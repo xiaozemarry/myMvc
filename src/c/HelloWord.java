@@ -28,7 +28,7 @@ public class HelloWord extends Base{
 	public HelloWord(){
 		//System.out.println("走一次实例化一下哦!");
 	}
-	private User myUser;
+	private User myUser;  
 	
 	 public User getMyUser() {
 		return myUser;
