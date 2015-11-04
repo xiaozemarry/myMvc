@@ -1,5 +1,7 @@
 package bean;
 
+import java.io.Serializable;
+
 /**
  * 测试1
  * 测试家里提交的新代码
@@ -9,7 +11,7 @@ package bean;
  * @author jacky-chueng
  *
  */
-public class User {
+public class User implements Serializable{
 	private String name;
 	private int age;
 

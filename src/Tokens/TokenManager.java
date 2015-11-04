@@ -1,18 +1,25 @@
 package Tokens;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
 public class TokenManager<T> {
-	     private Map<String,T> tokenMap = new HashMap<String,T>();
+	     private Map<String,Map<Date,T>> tokenMap = new HashMap<String,Map<Date,T>>();
          private TokenManager(){}
          private static TokenManager<?> tm = new TokenManager();
          public static TokenManager instance(){
         	 return tm;
          }
-         
+         public Map<String,Map<Date,T>> getTokenMap() {
+			return tokenMap;
+		}
          public Character randomUppercaseChar(){
         	 final int min = 'A';//65
         	 final int max = 'Z';//90
@@ -29,18 +36,54 @@ public class TokenManager<T> {
          }
          
          /**
-          * 从新
+          * 添加用户
           * @param t
           * @return 当前token
           */
          public String add(T t){
-        	 String k = this.createTokenByT(t);
-        	 tokenMap.put(k, t);
-        	 return k;
+        	 String token = this.createTokenByT(t);
+        	 Map<Date,T> map = new HashMap<Date,T>(1);//登录时间和登录对象
+        	 map.put(new Date(), t);
+        	 tokenMap.put(token, map);
+        	 return token;
          }
-         public static void main(String[] arg) {
-        	 System.out.println(TokenManager.instance().createTokenByT(null));
-        	 System.out.println(TokenManager.instance().createTokenByT(null));
-        	 System.out.println(TokenManager.instance().createTokenByT(null));
-		}
+         
+         public Map<String,Map<Date,T>> readObject(){
+        	 return null;
+         }
+         
+         /**
+          * 装载已经有过的缓存(请勿随意调用)
+          */
+         public static void loadingFile(){
+        	 InputStream input = TokenManager.class.getResourceAsStream("file/tokens.bin");
+        	 try 
+        	 {
+        		 ObjectInputStream inputStream  = new ObjectInputStream(input);
+        		 Object obj = inputStream.readObject();
+        		 System.out.println(obj);
+        		 
+			} catch (IOException e) 
+			{
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) 
+			{
+				e.printStackTrace();
+			}
+         }
+         
+         /**
+          * 刷新所有的缓存,清除非法的缓存(所谓非法:即Cookie的时间已经超出)
+          */
+         public void refresh(){
+        	 
+         }
+         
+         /**
+          * 通过cookie刷新单独的一个用户
+          * @return 是否刷新成功,即是否非法
+          */
+         public boolean refreshByCookie(){
+			return false;
+         }
 }

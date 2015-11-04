@@ -144,8 +144,8 @@ public class LoadSqlConfig{
 		  @Override
 		public void visit(Document document1) {
 			  System.out.println("到目前还不可能走到这个方法哦");
-			  if(1==1)return;
-			  document1.accept(this);
+		/*	  if(1==1)return;
+			  document1.accept(this);*/
 		}
 		  @Override
 		public void visit(Attribute attribute) {
