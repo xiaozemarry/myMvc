@@ -19,8 +19,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+
+
+
 
 
 import Base.Constant;
@@ -38,17 +44,19 @@ public class TokenManager<T> {
          public Map<String,Map<Date,T>> getTokenMap() {
 			return tokenMap;
 		}
-         public Character randomUppercaseChar(){
+         public String randomUppercaseChar(){
         	 final int min = 'A';//65
         	 final int max = 'Z';//90
              Random random = new Random();
              int s = random.nextInt(max)%(max-min+1) + min;
              char c = (char)s;
-        	 return c;
+        	 return Character.toString(c);
          }
          
          public String createTokenByT(T t){
-        	 String uuid = UUID.randomUUID().toString().replace('-',this.randomUppercaseChar());
+        	 String uuid = UUID.randomUUID().toString();
+        	 final int count = StringUtils.countMatches(uuid,"-");
+        	 for(int k=0;k<count;k++)uuid = uuid.replaceFirst("-",this.randomUppercaseChar());
         	 if(this.tokenMap.containsKey(uuid))uuid = createTokenByT(t);
         	 return uuid;
          }
@@ -191,13 +199,8 @@ public class TokenManager<T> {
 			 return true;
          }
          public static void main(String[] args) {
-        	Map map = new HashMap();
-        	map.put("1", "111");
-        	map.put("2", "111");
-        	map.put("3", "111");
-        	map.put("4", "111");
-        	Set<String> set = map.keySet();
-        	for(String key :set)map.remove(key);
-        	System.out.println(map.size());
+        	 System.out.println(StringUtils.replaceEach("w-ww.baid-u.co-m",new String[]{"-","-","-"},new String[]{"8","8s","9"}));;//结果是：www.taobao.net
+        	 System.out.println(StringUtils.replaceEach("www.baidu,baidu.com",new String[]{"baidu","com"},new String[]{"taobao","net"}));;//结果是：www.taobao,taobao.net
+        	 System.out.println(StringUtils.replaceEachRepeatedly("www.baidu.com",new String[]{"baidu","com"},new String[]{"taobao","net"}));;//结果是：www.taobao.net
 		}
 }

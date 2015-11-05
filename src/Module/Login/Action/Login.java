@@ -46,7 +46,7 @@ public class Login extends HttpBase{
 		 
 		 
 		 try {
-			response.getWriter().print("aaaaaa");
+			response.getWriter().print("登录成功!");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

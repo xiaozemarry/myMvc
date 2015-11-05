@@ -39,10 +39,17 @@ public class LoginFilter implements Filter {
 			return;
 		 }
 		 
+		 
 		//用户已经失效,需重新登录
 		 HttpServletRequest request = (HttpServletRequest) req;
+		 if(UrlFilter.instance().containsUrl(request.getServletPath()))//登录请求
+		 {
+				chain.doFilter(req, rep);
+				return;
+		 }
+			 
 		 HttpServletResponse response = (HttpServletResponse) rep;
-		
+		 System.out.println(request.getServletPath());
 		 String referer =  request.getHeader("referer");
          if(referer!=null)//记录当前连接信息,用户跳转到登录页面,如果登录成功,直接跳到当前请求的页面
          {
