@@ -1,6 +1,8 @@
 package Module.Login.Action;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
@@ -26,7 +28,10 @@ public class Login extends Base{
 		 
 		 //多次登录,需要删除之前的
 		 
-		 String id = TokenManager.instance().add(user);
+		 Map<String,String> userMap = new HashMap<String, String>(2);
+		 userMap.put("userName","admin");
+		 userMap.put("passWord","admin");
+		 String id = TokenManager.instance().add(userMap);
 		 Cookie cookie = new Cookie("userinfo",id);
 		 cookie.setMaxAge(Constant.MAXCOOKIEAGE);
 		 cookie.setHttpOnly(true);//只有在网络的情况下可以读取,js无法读取
