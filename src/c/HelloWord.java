@@ -12,10 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import Tools.LoadSqlConfig;
-import bean.User;
-import Base.Base;
 import Base.DBConn;
 import Base.DBCustorm;
+import Base.HttpBase;
 
 /**
  * 
@@ -24,17 +23,9 @@ import Base.DBCustorm;
  *
  */
 @Controller
-public class HelloWord extends Base{
+public class HelloWord extends HttpBase{
 	public HelloWord(){
 		//System.out.println("走一次实例化一下哦!");
-	}
-	private User myUser;  
-	
-	 public User getMyUser() {
-		return myUser;
-	}
-	public void setMyUser(User myUser) {
-		this.myUser = myUser;
 	}
 		@RequestMapping("/helloWorld/a.do")
 	    public String helloWorld(Model model) throws Exception {

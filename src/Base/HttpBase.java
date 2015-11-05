@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  * 控制器继承的基础类
  *
  */
-public class Base{
+public class HttpBase{
 	  protected HttpServletRequest request;
 	  protected HttpServletResponse response;
 	  protected DBConn db = DBConn.instance();

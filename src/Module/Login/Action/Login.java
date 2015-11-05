@@ -7,19 +7,15 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import bean.User;
-
+import Base.Constant;
+import Base.HttpBase;
 import Tokens.TokenManager;
 import Tools.HttpServletRequestTool;
-
-import Base.Base;
-import Base.Constant;
 @Controller
-public class Login extends Base{
+public class Login extends HttpBase{
 	
 	 @RequestMapping("/login.do")
 	 public void login(){

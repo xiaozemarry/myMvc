@@ -11,14 +11,15 @@ public class ContextStart implements ServletContextListener{
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-      System.out.println("shut down!!!!!!");	
-		System.out.println("关闭时刷新缓存文件............");
+        System.out.println("shut down!!!!!!");	
+	    System.out.println("关闭时刷新缓存文件............");
 		TokenManager.instance().refresh();
-      TokenManager.instance().writeingFile();
+        TokenManager.instance().writeingFile();
 	}
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		System.out.println("CATALINE_BASE:"+Path.CATALINE_BASE);
+		UrlFilter.instance().start();
 		System.out.println("开始装载用户登录信息的缓存文件......");
 	    TokenManager token = TokenManager.instance();
 	    token.loadingFile();
