@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%String referer = (String)request.getAttribute("prenLink");%>
+<%String referer = (String)request.getAttribute("prevLink");%>
 <%@include file="/lib/base.jsp"%>  
 <html>
 <head>
@@ -23,19 +23,24 @@
 <!--header start here-->
 	<div class="login">
 		 <div class="login-main">
-		 		<div class="login-top">
+		 		<form type="post" action="<%=referer%>logdin.do">
+				   <div class="login-top">
 		 			<img src="<%=basePath%>login/blueBack/images/head-img.png" alt=""/>
 		 			<h1>用户登录</h1>
-		 			<input type="text" placeholder="用户名" required="">
-		 			<input type="password" placeholder="密码" required="">
+		 			<input type="text" placeholder="用户名" required="" name="userName">
+		 			<input type="password" placeholder="密码" required="" name="passWord">
 		 			<div class="login-bottom">
 		 			  <div class="login-check">
 			 			<label class="checkbox"><input type="checkbox" name="checkbox"  checked="checked" /><i></i>记 住 我</label>
 			 		  </div>
-			 			<div class="clear">用户名或密码错误!</div>
+			 			<div class="clear">链接目标:<%=referer%></div>
 		 			</div>
 		 			<input type="submit" value="登录" />
-		 		</div>
+					<!--
+					  <input type="text" type="hidden" name="referer" value="<%=referer%>">
+					-->
+		 		 </div>
+				</form>
 		 	</div>
   </div>
 <!--header end here-->

@@ -47,7 +47,7 @@ public class LoginFilter implements Filter {
          if(referer!=null)//记录当前连接信息,用户跳转到登录页面,如果登录成功,直接跳到当前请求的页面
          {
         	 String qs = request.getQueryString();
-        	 request.setAttribute("prenLink",referer+"?"+qs);
+        	 request.setAttribute("prevLink",referer+"?"+qs);
          }
          //地址栏不会改变
          request.getRequestDispatcher("/login/blueBack/page/index.jsp").forward(request, response);
