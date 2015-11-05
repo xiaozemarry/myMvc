@@ -1,6 +1,7 @@
 package Context;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Set;
 
@@ -14,7 +15,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Base.Constant;
 import Tokens.TokenManager;
+import Tools.HttpServletRequestTool;
 
 public class LoginFilter implements Filter {
 
@@ -24,38 +27,32 @@ public class LoginFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) req;
-		HttpServletResponse rep = (HttpServletResponse) response;
-        Cookie cookies[] =  request.getCookies();
-        String referer =  request.getHeader("referer");
-        if(referer==null)
-        {
-        	//chain.doFilter(request, response);
-        	//return;
-        }
-        System.out.println(referer);
-        boolean hasUserInfo = false;
-        for (int i = 0; i < cookies.length; i++) 
-        {
-			 Cookie eachCookie = cookies[i];
-			 String name = eachCookie.getName();
-			 if(!"userinfo".equals(name))continue;//判断是否登录
-			 hasUserInfo = true;
-			 String value = eachCookie.getValue();
-			 if(!TokenManager.instance().getTokenMap().containsKey(value))//未登录,直接蹦到登录页面
-			 {
-				request = this.chainToLogin(request,response);
-			 }
-			 else
-			 {
-				
-			 }
-		}
-        if(!hasUserInfo)request = this.chainToLogin(request,response);
-        //rep.sendRedirect("/login/blueBack/page/index.html");
-		chain.doFilter(request, response);
+	public void doFilter(ServletRequest req, ServletResponse rep, FilterChain chain) throws IOException, ServletException {
+		
+		 TokenManager token = TokenManager.instance();
+		 String hasCookie = new HttpServletRequestTool((HttpServletRequest)req).hasLoginCookie();
+		 boolean hasUser = token.hasUser(hasCookie);
+		 boolean userDead = !token.userDead(hasCookie);
+		 if(hasCookie!=null && hasUser && userDead)//存在cookie并且合法,继续操作
+		 {
+			chain.doFilter(req, rep);
+			return;
+		 }
+		 
+		//用户已经失效,需重新登录
+		 HttpServletRequest request = (HttpServletRequest) req;
+		 HttpServletResponse response = (HttpServletResponse) rep;
+		
+		 String referer =  request.getHeader("referer");
+         if(referer!=null)//记录当前连接信息,用户跳转到登录页面,如果登录成功,直接跳到当前请求的页面
+         {
+        	 String qs = request.getQueryString();
+        	 request.setAttribute("prenLink",referer+"?"+qs);
+         }
+         //地址栏不会改变
+         request.getRequestDispatcher("/login/blueBack/page/index.jsp").forward(request, response);
+        //response.sendError(SC_UNAUTHORIZED);401
+		//chain.doFilter(request, response);
 	}
 	
 	private HttpServletRequest chainToLogin(HttpServletRequest request, ServletResponse response){

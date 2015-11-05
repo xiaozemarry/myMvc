@@ -53,6 +53,19 @@ public class TokenManager<T> {
         	 return uuid;
          }
          
+         public boolean hasUser(final String key){
+        	 if(key==null)return false;
+        	 return this.tokenMap.containsKey(key);
+         }
+         
+         /**
+          * 移除指定用户
+          * @param key
+          */
+         public void remove(final String key){
+        	 if(key!=null)this.tokenMap.remove(key);
+         }
+         
          /**
           * 添加用户
           * @param t 用户对象,可以使任何对象,一般登录用户信息用map来表示,保存用户名和密码
@@ -132,6 +145,24 @@ public class TokenManager<T> {
          }
          
          /**
+          * 当前用户是否合法(即是否过期,暂时不判断用户名和密码在中途被修改的情况)
+          * @param key 当前用户
+          * @return true:不合法
+          */
+         public boolean userDead(final String key){
+        	 Map<Date,T> map = this.tokenMap.get(key);
+    		 if(map==null)return true;
+    		 Date now = new Date();
+    		 long cookieTimes = new ArrayList<Date>(map.keySet()).get(0).getTime();
+    		 DateTime dt = new DateTime(cookieTimes);
+    		 /**
+    		  * 注册即登录系统的时间+记住密码的时间>当前时间 满足情况
+    		  */
+    		 if(dt.plusMillis(Constant.MAXCOOKIEAGE).getMillis()>now.getTime())return false;
+    		 return true;
+         }
+         
+         /**
           * 刷新所有的缓存,清除非法的缓存(所谓非法:即Cookie的时间已经超出)
           */
          public void refresh(){
@@ -141,19 +172,23 @@ public class TokenManager<T> {
         	 {
         		 Map<Date,?> next = this.tokenMap.get(key);
         		 Date now = new Date();
-        		 DateTime dt = new DateTime(now.getTime());
         		 Date target = (Date)new ArrayList(next.keySet()).get(0);
-        		 if(dt.plusMillis(Constant.MAXCOOKIEAGE).getMillis()>target.getTime())keyList.add(key);
+        		 DateTime dt = new DateTime(target);
+        		 if(dt.plusMillis(Constant.MAXCOOKIEAGE).getMillis()>now.getTime())keyList.add(key);
         	 }
         	 for(String key:keyList)this.tokenMap.remove(key);
          }
          
          /**
-          * 通过cookie刷新单独的一个用户状态
-          * @return 是否刷新成功,即是否非法
+          * 通过cookie刷新单独的一个用户信息(通常用于用户在中途修改了用户名和密码)
+          * @return 是否刷新成功 true:刷新成功
           */
-         public boolean refreshByCookie(){
-			return false;
+         public synchronized boolean refreshByCookie(final String key,T t){
+        	 if(key!=null)this.tokenMap.remove(key);
+        	 Map<Date,T> map = new HashMap<Date,T>(1);
+    		 map.put(new Date(),t);
+    		 this.tokenMap.put(key,map);//不管是否存在该用户,直接覆盖该用户
+			 return true;
          }
          public static void main(String[] args) {
         	Map map = new HashMap();
