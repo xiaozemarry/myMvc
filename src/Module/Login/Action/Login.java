@@ -14,6 +14,7 @@ import Base.Constant;
 import Base.HttpBase;
 import Tokens.TokenManager;
 import Tools.HttpServletRequestTool;
+import Tools.StringTools;
 @Controller
 public class Login extends HttpBase{
 	
@@ -31,24 +32,31 @@ public class Login extends HttpBase{
 		 {
 			 
 		 }
-		 //多次登录,需要删除之前的
 		 
+		 if(1==1)//登录失败
+		 {
+			 
+		 }
+		 //多次登录,需要删除之前的
 		 Map<String,String> userMap = new HashMap<String, String>(2);
 		 userMap.put("userName","admin");
 		 userMap.put("passWord","admin");
 		 String id = TokenManager.instance().add(userMap);
 		 Cookie cookie = new Cookie(Constant.COOKIENAME,id);
-		 cookie.setMaxAge(Constant.TESTMAXCOOKIEAGE);
+		 cookie.setMaxAge(Constant.MAXCOOKIEAGE);
 		 cookie.setHttpOnly(true);//只有在网络的情况下可以读取,js无法读取
 		 
 		 System.out.println(Constant.SDFYMDHMS.format(new Date())+":设置登录用户池中的信息--->"+id+"\n");
 		 response.addCookie(cookie);
-		 
-		 
 		 try {
-			response.getWriter().print("登录成功!");
+			 String referer = request.getParameter("referer");
+			 boolean isIlle = StringTools.instance().isIllegalStr(referer);
+			 response.setContentType("text/html");
+			 if(isIlle)
+				 response.getWriter().print("登录成功!<a href='template/index.html'>点我</a>");
+			 else
+				 response.sendRedirect(referer);//之前的连接页面
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	 }

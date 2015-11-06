@@ -29,6 +29,9 @@ public class LoginFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse rep, FilterChain chain) throws IOException, ServletException {
 		
+		 HttpServletRequest request = (HttpServletRequest) req;
+		 HttpServletResponse response = (HttpServletResponse) rep;
+		 
 		 TokenManager token = TokenManager.instance();
 		 String hasCookie = new HttpServletRequestTool((HttpServletRequest)req).hasLoginCookie();
 		 boolean hasUser = token.hasUser(hasCookie);
@@ -39,22 +42,20 @@ public class LoginFilter implements Filter {
 			return;
 		 }
 		 
-		 
-		//用户已经失效,需重新登录
-		 HttpServletRequest request = (HttpServletRequest) req;
-		 if(UrlFilter.instance().containsUrl(request.getServletPath()))//登录请求
+		 if(UrlFilter.instance().containsUrl(request.getServletPath()))//不需要判断cookie的请求路径
 		 {
 				chain.doFilter(req, rep);
 				return;
 		 }
 			 
-		 HttpServletResponse response = (HttpServletResponse) rep;
-		 System.out.println(request.getServletPath());
+		//用户已经失效,需重新登录
+		 
 		 String referer =  request.getHeader("referer");
          if(referer!=null)//记录当前连接信息,用户跳转到登录页面,如果登录成功,直接跳到当前请求的页面
          {
         	 String qs = request.getQueryString();
-        	 request.setAttribute("prevLink",referer+"?"+qs);
+        	 if(qs!=null)referer+="?"+qs;
+        	 request.setAttribute("prevLink",referer);
          }
          //地址栏不会改变
          request.getRequestDispatcher("/login/blueBack/page/index.jsp").forward(request, response);

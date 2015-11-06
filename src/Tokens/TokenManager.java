@@ -113,6 +113,7 @@ public class TokenManager<T> {
 			 File file = new File(uri);
 			 try 
 			 {
+				if(!file.exists())file.createNewFile();
 				FileOutputStream out = new FileOutputStream(file);
 				ObjectOutputStream outputStream = new ObjectOutputStream(out);
 				outputStream.writeObject(this.tokenMap);
@@ -166,7 +167,9 @@ public class TokenManager<T> {
     		 /**
     		  * 注册即登录系统的时间+记住密码的时间>当前时间 满足情况
     		  */
-    		 if(dt.plusMillis(Constant.MAXCOOKIEAGE).getMillis()>now.getTime())return false;
+    		 if(dt.plusMillis(Constant.MAXCOOKIEAGE*1000).getMillis()>now.getTime())return false;
+    		 System.out.println(Constant.SDFYMDHMS.format(new Date(dt.plusMillis(Constant.MAXCOOKIEAGE*1000).getMillis())));
+    		 System.out.println(Constant.SDFYMDHMS.format(new Date(now.getTime())));
     		 return true;
          }
          
