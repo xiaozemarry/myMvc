@@ -1,5 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%String referer = (String)request.getAttribute("prevLink");%>
+<%String referer = (String)request.getAttribute("prevLink");
+  String notice = (String)request.getAttribute("notice");
+  if(notice==null)notice = "";
+%>
 <%@include file="/lib/base.jsp"%>  
 <html>
 <head>
@@ -38,7 +41,7 @@
 		 			  <div class="login-check">
 			 			<label class="checkbox"><input type="checkbox" name="checkbox"  checked="checked" /><i></i>记 住 我</label>
 			 		  </div>
-			 			<div class="clear">登录提示信息</div>
+			 			<div class="clear"><%=notice%></div>
 		 			</div>
 		 			<input type="submit" value="登录" />
 					<!--
