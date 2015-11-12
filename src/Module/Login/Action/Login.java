@@ -70,8 +70,11 @@ public class Login extends HttpBase{
 			 String referer = request.getParameter("referer");
 			 boolean isIlle = StringTools.instance().isIllegalStr(referer);
 			 response.setContentType("text/html");
-			 if(isIlle)
-				 response.getWriter().print("登录成功!<a href='template/index.html'>点我</a>");
+			 if(isIlle)//response.getWriter().print("登录成功!<a href='template/index.html'>点我</a>");
+			 {
+				 final String homePage = UrlFilter.instance().getPageRel().getString("homePage");
+				 response.sendRedirect(homePage);
+			 }
 			 else
 				 response.sendRedirect(referer);//之前的连接页面
 		} catch (IOException e) 
@@ -83,6 +86,7 @@ public class Login extends HttpBase{
 	 /**
 	  * 注销登录
 	  */
+	 @RequestMapping("/loginOut.do")
 	 public void loginOut(){
 		 String hasCookie = new HttpServletRequestTool(request).hasLoginCookie();
 		 if(hasCookie!=null)
@@ -93,7 +97,7 @@ public class Login extends HttpBase{
 		 
 		try 
 		{
-			response.sendRedirect(UrlFilter.instance().getLoginPage());
+			response.sendRedirect(UrlFilter.instance().getPageRel().getString("loginPage"));
 		} catch (IOException e) 
 		{
 			e.printStackTrace();

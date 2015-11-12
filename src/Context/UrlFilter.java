@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.io.LineReader;
 
 /**
@@ -19,7 +20,7 @@ import com.google.common.io.LineReader;
  */
 public class UrlFilter {
 	private List<String> urlList;
-	private String loginPage;
+	private JSONObject pageRel;
 	private UrlFilter() {
 		urlList = new ArrayList<String>();
         URL url = this.getClass().getResource("/Config/filterUrl.fileter");
@@ -44,28 +45,38 @@ public class UrlFilter {
 		}
         
         //设置登录页
-        final String defaultPagePath = "/login/blueBack/page/index.jsp";
-        InputStream pageInput = this.getClass().getResourceAsStream("/Config/loginPage.page");
+        final JSONObject jsonObject = new JSONObject(2);
+        jsonObject.put("homePage","/module/menu/page/menu.jsp");//登陆成功后的主页
+        jsonObject.put("loginPage","/login/blueBack/page/index.jsp");//登陆页
+        InputStream pageInput = this.getClass().getResourceAsStream("/Config/pageRel.page");
         if(pageInput!=null)
         {
         	try 
         	{
-				this.loginPage = StringUtils.trimToNull(IOUtils.toString(pageInput));
-				if(this.loginPage==null)
+				final String str  = StringUtils.trimToNull(IOUtils.toString(pageInput));
+				if(str==null)
 				{
-					System.out.println("在本程序中找到配置的登陆页文件,但是文件内容为空,将使用默认的路径:"+defaultPagePath);
-					this.loginPage = defaultPagePath;
+					System.out.println("在本程序中找到配置的文件,但是文件内容为空,将使用默认的路径:"+jsonObject.values().toString());
+					this.pageRel = jsonObject;
 				}
-				System.out.println("成功配置程序中的登陆页面,但并未检查路径的有效性,该路径:"+this.loginPage);
+				try 
+				{
+					this.pageRel = JSONObject.parseObject(str);	
+				} catch (Exception e) 
+				{
+					System.out.println("配置文件内容格式错误!使用默认配置!");
+					this.pageRel = jsonObject;
+				}
+				System.out.println("成功配置程序中面,但并未检查路径的有效性,该路径:"+this.pageRel.toString());
 			} catch (IOException e) 
 			{
 				e.printStackTrace();
 			}	
-        }else System.out.println("在本程序中并未找到配置的登陆页文件,将使用默认的路径:"+defaultPagePath);
+        }else System.out.println("在本程序中并未找到配置的文件,将使用默认的路径:"+jsonObject.values().toString());
 	}
 	
-	public String getLoginPage() {
-		return loginPage;
+    public JSONObject getPageRel() {
+		return pageRel;
 	}
 	public List<String> getUrlList() {
 		return urlList;
