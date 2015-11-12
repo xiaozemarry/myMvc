@@ -13,12 +13,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-<meta name="keywords" content="" />
+<meta name="keywords" content=""/>
 <!--Google Fonts-->
 <link rel='stylesheet' href="<%=basePath%>login/blueBack/css/rel.css" type='text/css'>
+<script type="text/javascript" src="<%=basePath%>lib/jquery-2.0.0.min.js"></script>
 <script type="text/javascript">
   var referer = "<%=referer%>";
-  //alert(referer);
 
   $(function(){
      $("#prevLink").hide();
@@ -30,7 +30,7 @@
 <!--header start here-->
 	<div class="login">
 		 <div class="login-main">
-		 		<form type="post" action="<%=basePath%>login.do">
+		 		<form type="post" action="<%=basePath%>login.do" method="post">
 				   <div class="login-top">
 		 			<img src="<%=basePath%>login/blueBack/images/head-img.png" alt=""/>
 		 			<h1>用户登录</h1>

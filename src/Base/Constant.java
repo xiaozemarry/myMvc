@@ -15,7 +15,7 @@ public class Constant {
 	 * cookie能保存的最长时间(一个月)
 	 */
   // public static final int MAXCOOKIEAGE = 60*60*24*30;
-    public static final int MAXCOOKIEAGE = 60;
+    public static final int MAXCOOKIEAGE = 60*60;//一个小时
    /**
     * cookieName
     */

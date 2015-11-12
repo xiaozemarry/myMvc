@@ -62,50 +62,9 @@ public class LoginFilter implements Filter {
         //response.sendError(SC_UNAUTHORIZED);401
 		//chain.doFilter(request, response);
 	}
-	
-	private HttpServletRequest chainToLogin(HttpServletRequest request, ServletResponse response){
-		//获取当前的路径,登录成功之后直接跳到该路径
-		String referer =  request.getHeader("referer");
-		request.setAttribute("loginReferer",referer);
-		//以后根据不同的公司跳转到不同的登录页面,打算基于配置做!目前写死
-			//request.getRequestDispatcher("/login/blueBack/page/index.html").forward(request, response);
-		//System.out.println(referer);
-		return request;
-	}
-	
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 
 	}
-
-	public static void main(String[] args) {
-		// aa ab ac ad
-		// ba bb bc bd
-		// ca cb cc cd
-		// da dc db da
-		// aaa aab aac aad x4
-		// aaa aaab aaac aaad x4
-		System.out.println(Math.round(11.5));
-		System.out.println(Math.round(-11.5));
-
-		final String str[] = new String[] { "a", "b", "c", "d" };
-
-	}
-
-	public static Set<String> org(String str[], Set<String> set, int index) {
-		if (index > str.length - 1)
-			return set;
-		for (int i = 0; i < str.length; i++) {
-
-		}
-		return set;
-	}
-
-	public class a extends Thread implements Runnable {
-		public void run() {
-
-		}
-	}
-
 }
