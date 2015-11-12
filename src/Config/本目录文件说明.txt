@@ -1,0 +1,4 @@
+loginPage.page文件用于配置登录页面
+filterUrl.fileter文件用于不被过滤操作的路径
+dbConfig.properties文件用于配置数据库连接
+sqlConfig.xml用于配置程序中需要sql语句的地方

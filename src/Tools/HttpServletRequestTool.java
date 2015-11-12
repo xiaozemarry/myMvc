@@ -39,5 +39,15 @@ public class HttpServletRequestTool {
         }
 		return null;
 	}
+	
+	/**
+	 * 获取base路径 http://xxx.xxx.xx.xx:x/projectName/
+	 * @return
+	 */
+	public String getBasePath(){
+		String path = request.getContextPath();
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		return basePath;
+	}
 
 }

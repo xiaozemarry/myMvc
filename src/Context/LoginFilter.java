@@ -58,7 +58,7 @@ public class LoginFilter implements Filter {
         	 request.setAttribute("prevLink",referer);
          }
          //地址栏不会改变
-         request.getRequestDispatcher("/login/blueBack/page/index.jsp").forward(request, response);
+         request.getRequestDispatcher(UrlFilter.instance().getLoginPage()).forward(request, response);
         //response.sendError(SC_UNAUTHORIZED);401
 		//chain.doFilter(request, response);
 	}

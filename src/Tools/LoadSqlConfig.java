@@ -55,6 +55,7 @@ public class LoadSqlConfig{
 			{
 				String base = Path.CATALINE_BASE;
 				File file = new File(base+Path.FS+"console.txt");
+				//System.out.println("请注意,所有输出信息将被该文件接收:"+file.getPath());
 				if(!file.exists())file.createNewFile();
 				OutputStream out = new PrintStream(new FileOutputStream(file,true));
 				System.setOut((PrintStream) out);

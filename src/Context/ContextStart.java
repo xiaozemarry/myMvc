@@ -19,14 +19,15 @@ public class ContextStart implements ServletContextListener{
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		System.out.println("CATALINE_BASE:"+Path.CATALINE_BASE);
-		UrlFilter.instance().start();
-		System.out.println("开始装载用户登录信息的缓存文件......");
-	    TokenManager token = TokenManager.instance();
-	    token.loadingFile();
-		System.out.println("开始刷新缓存文件............");
-		token.refresh();
 		LoadSqlConfig.init(null);
 		LoadSqlConfig.instance().getAllNodes();
 		
+		UrlFilter.instance().start();
+		
+		System.out.println("开始装载用户登录信息的缓存文件......");
+	    TokenManager token = TokenManager.instance();
+	    token.loadingFile();
+		System.out.println("开始刷新缓存文件(即刷新无效的登陆信息)....");
+		token.refresh();
 	}
 }

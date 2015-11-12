@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import Base.Constant;
 import Base.HttpBase;
+import Context.UrlFilter;
 import Tokens.TokenManager;
 import Tools.HttpServletRequestTool;
 import Tools.StringTools;
@@ -78,17 +79,25 @@ public class Login extends HttpBase{
 			e.printStackTrace();
 		}
 	 }
+	 
+	 /**
+	  * 注销登录
+	  */
+	 public void loginOut(){
+		 String hasCookie = new HttpServletRequestTool(request).hasLoginCookie();
+		 if(hasCookie!=null)
+		 {
+			 System.out.println(Constant.SDFYMDHMS.format(new Date())+":移除登录用户池中的信息--->"+hasCookie);
+			 TokenManager.instance().remove(hasCookie);
+		 }
+		 
+		try 
+		{
+			response.sendRedirect(UrlFilter.instance().getLoginPage());
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	 }
 
-	private Object instance() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
-/*	*//**
-	 * 供系统启动的时候调用 默认加载 再访问的时候不用从新加载
-	 *//*
-	@RenderMapping(value="contextStart.do")
-	public void ContextStartRequst(){
-   		
-	}*/
 }
