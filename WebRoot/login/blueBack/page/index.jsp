@@ -8,11 +8,9 @@
 <head>
 <title>用户登陆</title>
 <!-- Custom Theme files -->
-<link href="<%=basePath%>login/blueBack/css/style.css" rel="stylesheet" type="text/css" media="all"/>
-<!-- Custom Theme files -->
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
 <meta name="keywords" content=""/>
 <!--Google Fonts-->
 <link rel='stylesheet' href="<%=basePath%>login/blueBack/css/rel.css" type='text/css'>
@@ -30,7 +28,7 @@
 <!--header start here-->
 	<div class="login">
 		 <div class="login-main">
-		 		<form type="post" action="<%=basePath%>login.do" method="post">
+		 		<form type="post" action="<%=basePath%>login.do" method="post" autocomplete='off'>
 				   <div class="login-top">
 		 			<img src="<%=basePath%>login/blueBack/images/head-img.png" alt=""/>
 		 			<h1>用户登录</h1>

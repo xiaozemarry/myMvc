@@ -6,8 +6,8 @@
 		<meta charset="utf-8" />
 		<title>库存管理系统</title>
 
-		<meta name="description" content="overview &amp; stats" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="overview&amp;stats" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<!-- basic styles -->
 		<link href="<%=basePath%>lib/assets/css/bootstrap.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="<%=basePath%>lib/assets/css/font-awesome.min.css" />
@@ -36,6 +36,7 @@
 		<!-- ace settings handler -->
 
 		<script src="<%=basePath%>lib/assets/js/ace-extra.min.js"></script>
+		
 
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
@@ -45,7 +46,7 @@
 		<![endif]-->
 	</head>
 	<body>
-		<div class="navbar navbar-default" id="navbar">
+		<div class="navbar navbar-default" id="navbar" _style="display:none">
 			<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
 			</script>
@@ -307,11 +308,12 @@
 				</a>
 
 				<div class="sidebar" id="sidebar">
+<!--
 					<script type="text/javascript">
 						try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 					</script>
 
-					<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+ 					<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 						<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 							<button class="btn btn-success">
 								<i class="icon-signal"></i>
@@ -338,8 +340,11 @@
 
 							<span class="btn btn-danger"></span>
 						</div>
-					</div><!-- #sidebar-shortcuts -->
-
+					</div><!-- #sidebar-shortcuts
+-->
+              <div class="treeContent">
+			    1 123
+			  </div>
 					<div class="sidebar-collapse" id="sidebar-collapse">
 						<i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
 					</div>
@@ -444,9 +449,13 @@
 		<script src="<%=basePath%>lib/assets/js/ace-elements.min.js"></script>
 		<script src="<%=basePath%>lib/assets/js/ace.min.js"></script>
 		<!-- inline scripts related to this page -->
+		<!--<link rel="stylesheet" href="../css/menu.css" />-->
 		<script type="text/javascript">
 			jQuery(function($){
-			  console.log("finish");
+				var winHeight = $(window).height();
+				$(".treeContent").css({height:winHeight-74,_position:"fixed",_background:"gray",_width:"190px"});
+			    //$(".breadcrumbs").height(winHeight-74);
+
 			})
 		</script>
 	</body>

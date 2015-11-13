@@ -8,8 +8,6 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-    <context:component-scan base-package="org.springframework.samples.petclinic.web"/>
-    <import resource="classes/Module/Login/Xml/Login-spring.xml"/>
-    <import resource="classes/Module/Upload/Xml/File-upload.xml"/>
-    <import resource="classes/Module/Tree/Xml/tree-update.xml"/>
+    <bean id="treeOperating" class="Module.Tree.Action.TreeOperating" scope="request">
+    </bean>
 </beans>

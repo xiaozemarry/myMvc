@@ -631,48 +631,52 @@ public class DBConn {
 	 * @param request 请求对象
 	 * @param primaryKeyName 主键名称
 	 * @param _db 数据库对象
-	 * @param exceptArr 参数中某些值并不是都能和数据库字段匹配
+	 * @param exceptArr 参数中某些值并不是都能和数据库字段匹配(当前这些在数据库的字段中根本不存在)
 	 * @return
 	 * @throws Exception 
 	 */
 	public int autoInsertByHttpParams(HttpServletRequest request,DBConn _db,String tableName,String primaryKeyName,String...exceptArr) throws Exception{
-		if(tableName==null||primaryKeyName==null)throw new Exception("Agreements [conditionName,tableName] Can Not Be NULL!Thank You!!!");
-		if(exceptArr==null)exceptArr = new String[0]; 
-		List except = Arrays.asList(exceptArr);
-		Map pMap = request.getParameterMap();
-		List params = new ArrayList(8);
-		StringBuilder insert = new StringBuilder("insert into "+tableName);
-		insert.append("(");
-		StringBuilder parameters = new StringBuilder("(");
-		Set<String> keySets = pMap.keySet();
-		Iterator<String> it = keySets.iterator();
-		while(it.hasNext())
-		{
-			String key = StringUtils.trim(it.next());
-			if(except.contains(key))continue;
-			String[] val = (String[])pMap.get(key);
-		    String indexVal = val[0];
-		    String value = StringUtils.trimToNull(indexVal);
-		    if(value==null)continue;
-		    Object paramsVal = value;
-		    boolean isNum = NumberUtils.isNumber(value);
-		    if(isNum)
-		    {
-		    	if(value.indexOf(".")!=-1)paramsVal = NumberUtils.toDouble(value);
-		    	else if(NumberUtils.toLong(value)>Integer.MAX_VALUE)paramsVal = NumberUtils.toLong(value);
-		    	else paramsVal = NumberUtils.toInt(value);
-		    }
-		    insert.append(key+",");
-		    parameters.append("?,");
-		    params.add(paramsVal);
+		try{
+			if(tableName==null||primaryKeyName==null)throw new Exception("Agreements [conditionName,tableName] Can Not Be NULL!Thank You!!!");
+			if(exceptArr==null)exceptArr = new String[0]; 
+			List except = Arrays.asList(exceptArr);
+			Map pMap = request.getParameterMap();
+			List params = new ArrayList(8);
+			StringBuilder insert = new StringBuilder("insert into "+tableName);
+			insert.append("(");
+			StringBuilder parameters = new StringBuilder("(");
+			Set<String> keySets = pMap.keySet();
+			Iterator<String> it = keySets.iterator();
+			while(it.hasNext())
+			{
+				String key = StringUtils.trim(it.next());
+				if(except.contains(key))continue;
+				String[] val = (String[])pMap.get(key);
+			    String indexVal = val[0];
+			    String value = StringUtils.trimToNull(indexVal);
+			    if(value==null)continue;
+			    Object paramsVal = value;
+			    boolean isNum = NumberUtils.isNumber(value);
+			    if(isNum)
+			    {
+			    	if(value.indexOf(".")!=-1)paramsVal = NumberUtils.toDouble(value);
+			    	else if(NumberUtils.toLong(value)>Integer.MAX_VALUE)paramsVal = NumberUtils.toLong(value);
+			    	else paramsVal = NumberUtils.toInt(value);
+			    }
+			    insert.append(key+",");
+			    parameters.append("?,");
+			    params.add(paramsVal);
+			}
+			insert.append(primaryKeyName+")");
+			parameters.append("?)");
+			insert.append(" values "+parameters);
+			params.add(Sequence.nextId());
+			return _db.update(insert.toString(),params.toArray());
+		}catch (Exception e) {
+		   throw e;
+		}finally{
+			DBConnectionManager.getInstance().freeConnection(_db.getCustorm(),_db.getConnection());
 		}
-		insert.append(primaryKeyName+")");
-		parameters.append("?)");
-		insert.append(" values "+parameters);
-		params.add(Sequence.nextId());
-		
-		Connection conn =_db.getConnection();
-		return _db.update(insert.toString(),params.toArray());
 	}
 	
 	/**
@@ -686,54 +690,60 @@ public class DBConn {
 	 * @throws Exception 如果conditionName为null,或则更新失败,或则条件值为null
 	 */
 	public int autoUpdateByHttpParams(HttpServletRequest request,DBConn _db,String tableName,String conditionName,String...exceptArr) throws Exception{
-		if(conditionName==null || tableName==null)throw new Exception("Agreements [conditionName,tableName] Can Not Be NULL!Thank You!!!");
-		if(exceptArr==null)exceptArr = new String[0]; 
-		List except = Arrays.asList(exceptArr);
-		
-		Object conditionVal = null;
-		Map pMap = request.getParameterMap();
-		List params = new ArrayList(8);
-		
-		StringBuilder update = new StringBuilder("update ");
-		update.append(tableName+" set ");
-		Set<String> keySets = pMap.keySet();
-		if(!keySets.contains(conditionName))if(conditionVal==null)throw new Exception("conditionVal Can Not Be NULL,But Given Key Is NULL!!!---->conditionName="+conditionName);
-		Iterator<String> it = keySets.iterator();
-		while(it.hasNext())
-		{
-			String key = StringUtils.trim(it.next());
-			if(except.contains(key))continue;
-			String[] val = (String[])pMap.get(key);
-		    String indexVal = val[0];
-		    String value = StringUtils.trimToNull(indexVal);
-		    if(key.equals(conditionName))
-		    {
-		    	conditionVal = value;
-		    	if(conditionVal==null)throw new Exception("conditionVal Can Not Be NULL,But Given Value Is NULL!!!conditionName="+conditionName);
-		    	continue;
-		    }
-		    if(value==null)continue;
-		    Object paramsVal = value;
-		    boolean isNum = NumberUtils.isNumber(value);
-		    if(isNum)
-		    {
-		    	if(value.indexOf(".")!=-1)paramsVal = NumberUtils.toDouble(value);
-		    	else if(NumberUtils.toLong(value)>Integer.MAX_VALUE)paramsVal = NumberUtils.toLong(value);
-		    	else paramsVal = NumberUtils.toInt(value);
-		    }
-		    update.append(key+"=?,");
-		    params.add(paramsVal);
+	    try{ 
+	    	if(conditionName==null || tableName==null)throw new Exception("Agreements [conditionName,tableName] Can Not Be NULL!Thank You!!!");
+			if(exceptArr==null)exceptArr = new String[0]; 
+			List except = Arrays.asList(exceptArr);
+			
+			Object conditionVal = null;
+			Map pMap = request.getParameterMap();
+			List params = new ArrayList(8);
+			
+			StringBuilder update = new StringBuilder("update ");
+			update.append(tableName+" set ");
+			Set<String> keySets = pMap.keySet();
+			if(!keySets.contains(conditionName))if(conditionVal==null)throw new Exception("conditionVal Can Not Be NULL,But Given Key Is NULL!!!---->conditionName="+conditionName);
+			Iterator<String> it = keySets.iterator();
+			while(it.hasNext())
+			{
+				String key = StringUtils.trim(it.next());
+				if(except.contains(key))continue;
+				String[] val = (String[])pMap.get(key);
+			    String indexVal = val[0];
+			    String value = StringUtils.trimToNull(indexVal);
+			    if(key.equals(conditionName))
+			    {
+			    	conditionVal = value;
+			    	if(conditionVal==null)throw new Exception("conditionVal Can Not Be NULL,But Given Value Is NULL!!!conditionName="+conditionName);
+			    	continue;
+			    }
+			    if(value==null)continue;
+			    Object paramsVal = value;
+			    boolean isNum = NumberUtils.isNumber(value);
+			    if(isNum)
+			    {
+			    	if(value.indexOf(".")!=-1)paramsVal = NumberUtils.toDouble(value);
+			    	else if(NumberUtils.toLong(value)>Integer.MAX_VALUE)paramsVal = NumberUtils.toLong(value);
+			    	else paramsVal = NumberUtils.toInt(value);
+			    }
+			    update.append(key+"=?,");
+			    params.add(paramsVal);
+			}
+			if(params.size()==0)throw new Exception("No Fields Can Be Updated!!!");
+	//		update.append(tableName+"."+conditionName);
+	//		update.append("=");
+	//		update.append(tableName+"."+conditionName);
+			String subStr = update.substring(0,update.length()-1);
+			subStr+=(" where "+conditionName+"=?");
+			params.add(conditionVal);
+			
+			Connection conn =_db.getConnection();
+			return _db.update(subStr,params.toArray());
+	    }catch (Exception e) {
+				throw e;
+		}finally{
+			DBConnectionManager.getInstance().freeConnection(_db.getCustorm(),_db.getConnection());
 		}
-		if(params.size()==0)throw new Exception("No Fields Can Be Updated!!!");
-//		update.append(tableName+"."+conditionName);
-//		update.append("=");
-//		update.append(tableName+"."+conditionName);
-		String subStr = update.substring(0,update.length()-1);
-		subStr+=(" where "+conditionName+"=?");
-		params.add(conditionVal);
-		
-		Connection conn =_db.getConnection();
-		return _db.update(subStr,params.toArray());
 	}
 	public DBCustorm getCustorm() {
 		return custorm;
