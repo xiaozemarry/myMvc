@@ -15,6 +15,7 @@ public class TreeOperating extends HttpBase {
 			//int result =   db.autoInsertByHttpParams(request, db, "tree", "id","a");
 			//db.autoUpdateByHttpParams(request, db, "tree","id");
 			//System.out.println(result);
+			this.printStr("操作成功");
 		} catch (Exception e) 
 		{
 			e.printStackTrace();

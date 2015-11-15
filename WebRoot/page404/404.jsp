@@ -57,71 +57,71 @@
 	</head>
 	<body>
 	<div class="page-content">
-						<div class="row">
-							<div class="col-xs-12">
-								<div class="error-container">
-									<div class="well">
-										<h1 class="grey lighter smaller">
-											<span class="blue bigger-125">
-												<i class="icon-sitemap"></i>
-												404
-											</span>
-											Page Not Found！
-										</h1>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="error-container">
+					<div class="well">
+						<h1 class="grey lighter smaller">
+							<span class="blue bigger-125">
+								<i class="icon-sitemap"></i>
+								404
+							</span>
+							Page Not Found！
+						</h1>
 
-										<hr>
-										<h3 class="lighter smaller">我们找了整个网站但是找不到它!</h3>
+						<hr>
+						<h3 class="lighter smaller">我们找了整个网站但是找不到它!</h3>
 
-										<div>
-											<form class="form-search">
-												<span class="input-icon align-middle">
-													<i class="icon-search"></i>
+						<div>
+							<form class="form-search">
+								<span class="input-icon align-middle">
+									<i class="icon-search"></i>
 
-													<input type="text" class="search-query" placeholder="请输入关键字...">
-												</span>
-												<button class="btn btn-sm" onclick="return false;">Go!</button>
-											</form>
+									<input type="text" class="search-query" placeholder="请输入关键字...">
+								</span>
+								<button class="btn btn-sm" onclick="return false;">Go!</button>
+							</form>
 
-											<div class="space"></div>
-											<h4 class="smaller">试着做做下面的操作:</h4>
+							<div class="space"></div>
+							<h4 class="smaller">试着做做下面的操作:</h4>
 
-											<ul class="list-unstyled spaced inline bigger-110 margin-15">
-												<li>
-													<i class="icon-hand-right blue"></i>
-													从新检查当前url
-												</li>
+							<ul class="list-unstyled spaced inline bigger-110 margin-15">
+								<li>
+									<i class="icon-hand-right blue"></i>
+									从新检查当前url
+								</li>
 
-												<li>
-													<i class="icon-hand-right blue"></i>
-													仔细阅读常见问题
-												</li>
+								<li>
+									<i class="icon-hand-right blue"></i>
+									仔细阅读常见问题
+								</li>
 
-												<li>
-													<i class="icon-hand-right blue"></i>
-													告诉站长
-												</li>
-											</ul>
-										</div>
+								<li>
+									<i class="icon-hand-right blue"></i>
+									告诉站长
+								</li>
+							</ul>
+						</div>
 
-										<hr>
-										<div class="space"></div>
+						<hr>
+						<div class="space"></div>
 
-										<div class="center">
-											<a href="javascript:history.go(-1)" class="btn btn-grey">
-												<i class="icon-arrow-left"></i>
-												返回
-											</a>
+						<div class="center">
+							<a href="javascript:history.go(-1)" class="btn btn-grey">
+								<i class="icon-arrow-left"></i>
+								返回
+							</a>
 
-											<a href="javascript:location.href='<%=basePath%>template/index.html'" class="btn btn-primary">
-												<i class="icon-dashboard"></i>
-												首页
-											</a>
-											<!--Dashboard-->
-										</div>
-									</div>
-								</div>
-							</div>
+							<a href="javascript:location.href='<%=basePath%>/module/menu/page/menu.jsp'" class="btn btn-primary">
+								<i class="icon-dashboard"></i>
+								首页
+							</a>
+							<!--Dashboard-->
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

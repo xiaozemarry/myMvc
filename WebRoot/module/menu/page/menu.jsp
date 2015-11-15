@@ -4,7 +4,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>库存管理系统</title>
+		<title>OA</title>
 
 		<meta name="description" content="overview&amp;stats" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -290,6 +290,9 @@
 								<li>
 									<a href="<%=basePath%>loginOut.do"><i class="icon-off"></i>注销</a>
 								</li>
+								 <li>
+									<a href="<%=basePath%>template/index.html"><i class="icon-off"></i>模板页</a>
+								</li>
 							</ul>
 						</li>
 					</ul><!-- /.ace-nav -->
@@ -343,7 +346,32 @@
 					</div><!-- #sidebar-shortcuts
 -->
               <div class="treeContent">
-			    1 123
+			   <ul class="nav nav-list">
+						 <li>
+							<a href="#">
+								<i class="icon-list-alt"></i>
+								<span class="menu-text">客户管理</span>
+							</a>
+						</li>
+						 <li>
+							<a href="widgets.html">
+								<i class="icon-list-alt"></i>
+								<span class="menu-text"> Widgets </span>
+							</a>
+						</li>
+						 <li>
+							<a href="widgets.html">
+								<i class="icon-list-alt"></i>
+								<span class="menu-text"> Widgets </span>
+							</a>
+						</li>
+						 <li>
+							<a href="widgets.html">
+								<i class="icon-list-alt"></i>
+								<span class="menu-text"> Widgets </span>
+							</a>
+						</li>
+					 </ul>
 			  </div>
 					<div class="sidebar-collapse" id="sidebar-collapse">
 						<i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
@@ -355,22 +383,7 @@
 				</div>
 
 				<div class="main-content">
-					<div class="breadcrumbs" id="breadcrumbs">
-						<script type="text/javascript">
-							try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-						</script>
-
-						<ul class="breadcrumb">
-							<li>
-								<i class="icon-home home-icon"></i>
-								<a href="#">主页</a>
-							</li>
-							<li class="active">库存</li>
-						</ul><!-- .breadcrumb -->
-						<div class="page-content">
-						   页面内容
-						</div>
-
+                          <iframe id="moduleIframe" name="moduleIframe" _src="<%=basePath%>/loading.jsp" src="<%=basePath%>module\menu\userinfo\page\jqgrid.jsp" frameborder="0" scrolling="auto" width="100%" height="100%" ></iframe>
 						<div class="nav-search" id="nav-search">
 							<form class="form-search">
 								<span class="input-icon">
@@ -378,9 +391,9 @@
 									<i class="icon-search nav-search-icon"></i>
 								</span>
 							</form>
-						</div><!-- #nav-search -->
-					</div>
-				</div><!-- /.main-content -->
+						</div>
+				</div>
+
 				<div class="ace-settings-container" id="ace-settings-container">
 					<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
 						<i class="icon-cog bigger-150"></i>
@@ -395,9 +408,14 @@
 									<option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
 								</select>
 							</div>
-							<span>&nbsp;Choose Skin</span>
+							<span>&nbsp;皮肤选择</span>
 						</div>
 						<div>
+							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+							<label class="lbl" for="ace-settings-rtl">视角切换</label>
+						</div>
+<!--
+  						<div>
 							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
 							<label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
 						</div>
@@ -410,16 +428,13 @@
 							<label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
 						</div>
 						<div>
-							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
-							<label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
-						</div>
-						<div>
 							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
 							<label class="lbl" for="ace-settings-add-container">
 								Inside
 								<b>.container</b>
 							</label>
 						</div>
+-->
 					</div>
 				</div><!-- /#ace-settings-container -->
 			</div><!-- /.main-container-inner -->
@@ -452,11 +467,24 @@
 		<!--<link rel="stylesheet" href="../css/menu.css" />-->
 		<script type="text/javascript">
 			jQuery(function($){
-				var winHeight = $(window).height();
-				$(".treeContent").css({height:winHeight-74,_position:"fixed",_background:"gray",_width:"190px"});
+				 resetTree();
+				// $("#sidebar").css({width:"130px"});
 			    //$(".breadcrumbs").height(winHeight-74);
+			}) 
 
+            var RESIZE = null;
+			$(function(){
+				$(window).resize(function(){
+					if(RESIZE!=null)clearTimeout(RESIZE);
+					RESIZE = setTimeout(resetTree,200);
+				});
 			})
+
+			function resetTree(){
+			    var winHeight = $(window).height();
+				$(".treeContent").css({height:winHeight-74,_position:"fixed",_background:"gray",_width:"190px"});
+				$(".main-content").css({height:winHeight-49});
+			}
 		</script>
 	</body>
 </html>
