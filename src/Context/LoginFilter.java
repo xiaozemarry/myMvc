@@ -32,7 +32,7 @@ public class LoginFilter implements Filter {
 		 HttpServletRequest request = (HttpServletRequest) req;
 		 HttpServletResponse response = (HttpServletResponse) rep;
 		 
-		 TokenManager token = TokenManager.instance();
+		 TokenManager<?> token = TokenManager.instance();
 		 String hasCookie = new HttpServletRequestTool((HttpServletRequest)req).hasLoginCookie();
 		 boolean hasUser = token.hasUser(hasCookie);
 		 boolean userDead = !token.userDead(hasCookie);

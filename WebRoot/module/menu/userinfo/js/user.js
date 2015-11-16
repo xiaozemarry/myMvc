@@ -158,7 +158,9 @@ var grid_data =
 		cursor ：当鼠标滑过按钮时的光标样式，默认为pointer；
 		id ：为按钮设置id。
 	*/
-jQuery(grid_selector).navGrid(pager_selector).navButtonAdd(pager_selector,{caption:"自定义"},{caption:"自定义1"});
+				jQuery(grid_selector).navGrid(pager_selector).navButtonAdd(pager_selector,{caption:"自定义",title:"mybtn"});
+				jQuery(grid_selector).navGrid(pager_selector).navButtonAdd(pager_selector,{caption:"自定义1",title:"mybtn"});
+				jQuery(grid_selector).navGrid(pager_selector).navButtonAdd(pager_selector,{caption:"自定义3",title:"mybtn"});
 				function style_edit_form(form) {
 					//enable datepicker on "sdate" field and switches for "stock" field
 					form.find('input[name=birthday]').datepicker({format:'yyyy-mm-dd' , autoclose:true})

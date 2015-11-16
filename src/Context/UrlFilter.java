@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -104,10 +105,24 @@ public class UrlFilter {
 	 * @param url
 	 * @return
 	 */
-	
 	public boolean containsUrl(final String url){
 		if(url==null)return false;
-		if(this.urlList!=null)return this.urlList.contains(url);
+		if(this.urlList.contains("*"))return true;
+		else if(this.urlList!=null)return this.urlList.contains(url);
+		return false;
+	}
+	/**
+	 * 通过正则表达式判断当前路径是否被过滤
+	 * @param url
+	 * @return
+	 */
+	public boolean containsUrlByRegEx(final String url){
+		if(url==null)return false;
+		for(String urls:this.urlList)
+		{
+			Pattern pattern = Pattern.compile(urls);
+			
+		}
 		return false;
 	}
 	public static void main(String[] args) {
