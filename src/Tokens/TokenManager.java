@@ -38,7 +38,7 @@ public class TokenManager<T> {
          private TokenManager(){
          }
          private static TokenManager<?> tm = new TokenManager();
-         public static TokenManager instance(){
+         public static TokenManager<?> instance(){
         	 return tm;
          }
          public Map<String,Map<Date,T>> getTokenMap() {

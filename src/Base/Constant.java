@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
  *
  */
 public class Constant {
+	private Constant(){}
 	/**
 	 * testcookie能保存的最长时间(5分钟)
 	 */
@@ -14,7 +15,6 @@ public class Constant {
 	/**
 	 * cookie能保存的最长时间(一个月)
 	 */
-  // public static final int MAXCOOKIEAGE = 60*60*24*30;
     public static final int MAXCOOKIEAGE = 60*60;//一个小时
    /**
     * cookieName
@@ -30,4 +30,14 @@ public class Constant {
     * eg:2015-05-05
     */
    public static final SimpleDateFormat SDFYMD = new SimpleDateFormat("yyyy-MM-dd");
+   /**
+    * 格式化时间
+    * eg:2015/05/05 12:12:12
+    */
+   public static final SimpleDateFormat SDFYMDHMS1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+   /**
+    * 格式化时间
+    * eg:2015/05/05
+    */
+   public static final SimpleDateFormat SDFYMD1 = new SimpleDateFormat("yyyy/MM/dd");
 }

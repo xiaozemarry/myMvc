@@ -46,8 +46,17 @@ public class HttpServletRequestTool {
 	 */
 	public String getBasePath(){
 		String path = request.getContextPath();
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-		return basePath;
+		StringBuilder sb = new StringBuilder();
+		sb.append(request.getScheme());
+		sb.append("://");
+		sb.append(request.getServerName());
+		sb.append(":");
+		sb.append(request.getServerPort());
+		sb.append(path);
+		sb.append("/");
+		return sb.toString();
+		//String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		//return basePath;
 	}
 
 }
