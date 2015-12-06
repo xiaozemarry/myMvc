@@ -14,6 +14,7 @@ import com.mongodb.DBObject;
 import com.mongodb.DBRef;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoOptions;
 import com.mongodb.WriteResult;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -23,14 +24,15 @@ import com.mongodb.client.MongoDatabase;
 public class SimpleMongoDB {
     public static void main(String[] args) {
     	MongoClient mongoClient = new MongoClient("localhost",27017);
-    	MongoDatabase mongoDatabase = mongoClient.getDatabase("local");
-    	MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("user");
-    	
+    	MongoDatabase mongoDatabase = mongoClient.getDatabase("adair");
+    	MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("_test");
+    	Document document = new Document("id",1);
+    	//mongoCollection.insertOne(document);
     	BasicDBObject bson = new BasicDBObject();
-    	DBRef dbRef = new DBRef("local.userInfo","5");
+    	DBRef dbRef = new DBRef("adair._test","1");
     	bson.append("id", dbRef);
     	
-    	FindIterable<Document> findIterable = mongoCollection.find(bson);
+    	FindIterable<Document> findIterable = mongoCollection.find();
     	findIterable.skip(0);//跳过多少条
     	findIterable.limit(900);//限制返回多少条
     	
