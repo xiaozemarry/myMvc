@@ -1,0 +1,12 @@
+##安装服务
+E:\mongodb\bin>mongod --config E:\mongodb\mongo.cfg --install
+
+##开始创建数据库
+E:\mongodb\bin> use yourdabasename;
+##创建测试表(必须创建)
+db.createCollection("_test")
+##必须连续使用
+##检查是否创建成功
+show dbs;
+##检查测试表是否创建成功
+show collections
