@@ -108,16 +108,16 @@ public class DBCustorm implements Serializable{
 		@Override
 		public String toString() {
 			
-			return  CompanyID+"<-CompanyID ||"+
-					UserName +"<-UserName  ||"+
-					SeatID   +"<-SeatID ||"+
-					DBUrl    +"<-DBUrl  ||"+
-					DBName   +"<-DBName ||"+
-					DBPort   +"<-DBPort ||"+
-					DBType   +"<-DBType ||"+
-					dbuser   +"<-dbuser ||"+
-					dbpwd    +"<-dbpwd  ||"+
-					userIp   +"<-userIp ||"+
+			return  CompanyID+"<-CompanyID\n"+
+					UserName +"<-UserName\n"+
+					SeatID   +"<-SeatID\n"+
+					DBUrl    +"<-DBUrl\n"+
+					DBName   +"<-DBName\n"+
+					DBPort   +"<-DBPort\n"+
+					DBType   +"<-DBType\n"+
+					dbuser   +"<-dbuser\n"+
+					dbpwd    +"<-dbpwd\n"+
+					userIp   +"<-userIp\n"+
 					poolName +"<-poolName";
 		}
 		public String getPoolName() {
