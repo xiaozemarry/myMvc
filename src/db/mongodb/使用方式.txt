@@ -10,3 +10,4 @@ db.createCollection("_test")
 show dbs;
 ##检查测试表是否创建成功
 show collections
+#C:\Program Files\MongoDB

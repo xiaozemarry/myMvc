@@ -5,11 +5,23 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import Tools.LoadSqlConfig;
 import Base.DBConn;
@@ -24,19 +36,53 @@ import Base.HttpBase;
  */
 @Controller
 public class HelloWord extends HttpBase{
+	public static  List listData = null;
+	public static Map<String,Integer> sMap=new HashMap<String,Integer>();
+	public static Map<String,Integer> eMap=new HashMap<String,Integer>();
 	public HelloWord(){
 		//System.out.println("走一次实例化一下哦!");
 	}
 		@RequestMapping("/helloWorld/a.do")
 	    public String helloWorld(Model model) throws Exception {
+			String myCacheSql= LoadSqlConfig.instance().getSql("ora", "queryPipe");
+			if(listData==null || 1==2)
+			{
+				if(listData==null)listData = db.searchToMapList(myCacheSql);
+				int index = 0;
+				for(Map map:(List<Map>)listData)
+				{
+					index++;
+					Blob blob = (Blob)map.get("f_points");
+					byte[] pointVal = IOUtils.toByteArray(blob.getBinaryStream());
+					if(pointVal.length>64)continue;
+					byte[] s = Arrays.copyOfRange(pointVal,0,31);
+					byte[] e = Arrays.copyOfRange(pointVal,32,63);
+					sMap.put(Arrays.toString(s),index);
+					eMap.put(Arrays.toString(e),index);
+				}
+				System.out.println("end:"+index);
+			}
+			System.out.println("listData:"+listData.size());
+			
+		    Set<String> sSet = sMap.keySet();
+		    Set<String> eSet = eMap.keySet();
+			
+		    for(String str:sSet)
+		    {
+		    	//if(!eSet.contains(str))System.out.println(sMap.get(str));
+		    }
+		    List<String> subtractList = (List<String>) CollectionUtils.subtract(sSet, eSet);
+		    System.out.println(subtractList.size());
+		    
+			if(1==1)return null;
 		   //System.out.println(myUser.getAge());
 		   //System.out.println(myUser.getName());
 		   String cacheSql= LoadSqlConfig.instance().getSql("mysql", "queryJUserInfo");
 		   System.out.println(cacheSql);
-		   List list = db.searchToMapList(cacheSql);
+		  // List list = db.searchToMapList(cacheSql);
 		   String sql ="insert into j_user values (2,'王小利',21)";
 	      // System.out.println(db.update(sql));
-		   System.out.println(list);
+		  // System.out.println(list);
 		   DBCustorm custorm = new DBCustorm();
 		   custorm.setDBName("tsk");
 		   custorm.setDBPort("1040");
@@ -55,6 +101,7 @@ public class HelloWord extends HttpBase{
 	    }
 	   @RequestMapping("/second.do")
 	    public String second(Model model) {
+
 	        model.addAttribute("message", "Hello World!");
 	        System.out.println(123);
 	        return "index.jsp";
@@ -75,4 +122,9 @@ public class HelloWord extends HttpBase{
 		   int len = 0;
 		   while((len = isRef.read(b))!=-1)osRef.write(b, 0, len);
 	    }
+	   
+	   @RequestMapping(value="/resources/userInfo/{id}",method=RequestMethod.GET)
+	   public void restFull(){
+		   System.out.println(1212132);
+	   }
 }

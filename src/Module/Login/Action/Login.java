@@ -1,15 +1,22 @@
 package Module.Login.Action;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import Base.Constant;
 import Base.HttpBase;
@@ -20,16 +27,52 @@ import Tools.StringTools;
 @Controller
 public class Login extends HttpBase{
 	
-	 @RequestMapping("/login.do")
+	//@RequestParam String userName,@RequestParam String passWord
+	 @RequestMapping(value="login",method={RequestMethod.POST,RequestMethod.GET})
 	 public void login(){
+//		 final String sqla = "SELECT * FROM (SELECT ROWNUM rn,EVENTID,PICTUREID FROM MARKER_S )a WHERE 1=1 AND PICTUREID IS NOT NULL AND  a.RN<10000 ORDER BY PICTUREID";
+//		 List list = null;
+//		try {
+//			list = db.searchToMapList(sqla);
+//			System.out.println(db.getCustorm().toString());
+//		} catch (Exception e1) {
+//			e1.printStackTrace();
+//		}
+//		 System.out.println(list.size());
+//		 if(1==1)return;
+//		 long beingTime = System.currentTimeMillis();
+//		 int index = 0;
+//		 for (int i = 0; i < 3; i++) 
+//		 {
+//			 //final int size = 10000;
+//			 final int size = 10;
+//			 Object[][] params = new Object[size][0];
+//			 for(int k=0;k<size;k++)
+//			 {
+//				 params[k] = new Object[]{index,"f_ip"+index,"F_PROJECT"+index,k,k,k};
+//				 index++;
+//			 }
+//			 final String sql = "insert into CAMERA1(f_id,F_IP,F_PROJECT,F_UOID,F_ENTERID,F_CARMERID) values (?,?,?,?,?,?)";	
+//			 try {
+//				db.batch(sql, params);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		 }
+//		 System.out.println(db.getCustorm().toString());
+//		 long beingEnd = System.currentTimeMillis();
+//		 System.out.println("耗时(ms):"+(beingEnd-beingTime));
 		//这里模拟数据库操作
-		 
 		 String userName = request.getParameter("userName");
 		 String passWord = request.getParameter("passWord");
-		 
 		 if(userName!=null && passWord!=null && "admin".equals(userName) && "admin".equals(passWord))
 		 {
-			 
+			 final String homePage = UrlFilter.instance().getPageRel().getString("homePage");
+			 try {
+				response.sendRedirect(homePage);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		 }
 		 else
 		 {

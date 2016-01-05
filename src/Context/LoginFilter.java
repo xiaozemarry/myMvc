@@ -28,9 +28,8 @@ public class LoginFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse rep, FilterChain chain) throws IOException, ServletException {
-		
-		 HttpServletRequest request = (HttpServletRequest) req;
-		 HttpServletResponse response = (HttpServletResponse) rep;
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response=(HttpServletResponse)rep;
 		 
 		 TokenManager<?> token = TokenManager.instance();
 		 String hasCookie = new HttpServletRequestTool((HttpServletRequest)req).hasLoginCookie();
@@ -42,7 +41,11 @@ public class LoginFilter implements Filter {
 			return;
 		 }
 		 
-		 if(UrlFilter.instance().containsUrl(request.getServletPath()))//不需要判断cookie的请求路径
+		 //if(UrlFilter.instance().containsUrl(request.getServletPath()))//不需要判断cookie的请求路径
+		 final String basePath = new HttpServletRequestTool(request).getBasePath();
+		 final String currentFullPath = request.getRequestURL().toString();
+		 final String currentReqeustPath = currentFullPath.substring(basePath.length()-1,currentFullPath.length());
+		 if(UrlFilter.instance().containsUrl(currentReqeustPath))//不需要判断cookie的请求路径
 		 {
 				chain.doFilter(req, rep);
 				return;

@@ -1,6 +1,11 @@
 package bean;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * 测试1
@@ -30,5 +35,7 @@ public class User implements Serializable{
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+   public static void main(String[] args) throws MalformedURLException, IOException {
+	 System.out.println(IOUtils.toString(new URL("http://10.246.146.31/IPMSAPI/PDS/UAS/GetEnterpriseOrgByUserId?userid=ASM_00014e76cf11cd2a").openStream()));
+}
 }

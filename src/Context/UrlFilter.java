@@ -109,7 +109,7 @@ public class UrlFilter {
 		if(url==null)return false;
 		if(this.urlList.contains("*"))return true;
 		else if(this.urlList!=null)return this.urlList.contains(url);
-		return false;
+		return false;	
 	}
 	/**
 	 * 通过正则表达式判断当前路径是否被过滤

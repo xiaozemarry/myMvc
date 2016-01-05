@@ -1,8 +1,15 @@
 var grid_data = 
 [ 
-	{id:"1",userName:"张三1",birthday:"2007-12-03",phone:"18600445147",sex:"男",address:"北京市中南海1号",email:"562113226@qq.com",mark:"备注"},
-	{id:"2",userName:"张三2",birthday:"2007-12-03",phone:"18600445147",sex:"男",address:"北京市中南海1号",email:"562113226@qq.com",mark:"备注"}
+	{id:1,userName:"张三1",birthday:"2007-12-03",phone:"18600445147",sex:"男",address:"北京市中南海1号",email:"562113226@qq.com",mark:"备注"},
+	{id:2,userName:"张三2",birthday:"2007-12-03",phone:"18600445147",sex:"男",address:"北京市中南海1号",email:"562113226@qq.com",mark:"备注"}
 ];
+
+for(var k=3;k<500;k++){
+	var each = {};
+    each.userName = "jack"+k;
+    each.id=k;
+    grid_data.push(each);
+}
 			
 	jQuery(function($) {
 		var grid_selector = "#grid-table";
@@ -145,20 +152,20 @@ var grid_data =
 						}
 					}
 				)
-	/*
-		$("#grid_id").navGrid("#pager",...).navButtonAdd("#pager",{parameters});
-		或者
-		$("#grid_id").jqGrid('navGrid',"#pager",...).jqGrid('navButtonAdd',"#pager",{parameters});
-		关于navButtonAdd的属性：
-		caption ：按钮上的文本，可以是空值；
-		buttonicon ：按钮上的图标，如果设为“none”，则只显示按钮上的文本；
-		onClickButton ：当点击按钮时所调用的方法函数，默认为null；
-		position ：添加新按钮的位置，first或last；默认为last；
-		title ：新按钮的tooltip
-		cursor ：当鼠标滑过按钮时的光标样式，默认为pointer；
-		id ：为按钮设置id。
-	*/
-				jQuery(grid_selector).navGrid(pager_selector).navButtonAdd(pager_selector,{caption:"自定义",title:"mybtn"});
+				/*
+				$("#grid_id").navGrid("#pager",...).navButtonAdd("#pager",{parameters});
+				或者
+				$("#grid_id").jqGrid('navGrid',"#pager",...).jqGrid('navButtonAdd',"#pager",{parameters});
+				关于navButtonAdd的属性：
+				caption ：按钮上的文本，可以是空值；
+				buttonicon ：按钮上的图标，如果设为“none”，则只显示按钮上的文本；
+				onClickButton ：当点击按钮时所调用的方法函数，默认为null；
+				position ：添加新按钮的位置，first或last；默认为last；
+				title ：新按钮的tooltip
+				cursor ：当鼠标滑过按钮时的光标样式，默认为pointer；
+				id ：为按钮设置id。
+				*/
+				jQuery(grid_selector).navGrid(pager_selector).navButtonAdd(pager_selector,{buttonicon:"../a.jpg",caption:"导出excel",title:"导出excel-title"});
 				jQuery(grid_selector).navGrid(pager_selector).navButtonAdd(pager_selector,{caption:"自定义1",title:"mybtn"});
 				jQuery(grid_selector).navGrid(pager_selector).navButtonAdd(pager_selector,{caption:"自定义3",title:"mybtn"});
 				function style_edit_form(form) {
