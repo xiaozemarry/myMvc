@@ -48,7 +48,6 @@ public class HttpBase{
 		 if(map==null)return null;
 		 return new Document(map);
 	 }
-	  
 	/**
 	 * 把参数转换为Map格式
 	 * @param request

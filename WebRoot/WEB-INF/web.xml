@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+<web-app 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 	<display-name>myMvc</display-name>
 	<welcome-file-list>
 		<welcome-file>login\blueBack\page\index.jsp</welcome-file>
 	</welcome-file-list>
 	<session-config>
-		<session-timeout>5</session-timeout>
+		<session-timeout>-1</session-timeout>
 	</session-config>
-
 	<!--编码 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -29,7 +31,6 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<!--编码 -->
-
 	<!--配置错误页面 -->
 	<error-page>
 		<error-code>404</error-code>
@@ -40,16 +41,6 @@
 		<location>/error.jsp</location>
 	</error-page>
 	<!--配置错误页面 -->
-	<!-- 过滤器开始 -->
-	<filter>
-		<filter-name>loginFilter</filter-name>
-		<filter-class>Context.LoginFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>loginFilter</filter-name>
-		<url-pattern>/</url-pattern>
-	</filter-mapping>
-	<!-- 过滤器结束 -->
 	<!--程序初始化 -->
 	<listener>
 		<listener-class>Context.ContextStart</listener-class>

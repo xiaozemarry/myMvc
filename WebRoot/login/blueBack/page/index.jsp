@@ -28,7 +28,7 @@
 <!--header start here-->
 	<div class="login">
 		 <div class="login-main">
-		 		<form action="<%=basePath%>login" method="post" autocomplete='off'>
+		 		<form action="<%=basePath%>loginUser" method="post" autocomplete='off'>
 				   <div class="login-top">
 		 			<img src="<%=basePath%>login/blueBack/images/head-img.png" alt=""/>
 		 			<h1>用户登录</h1>

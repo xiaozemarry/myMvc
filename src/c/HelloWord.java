@@ -20,8 +20,11 @@ import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.alibaba.fastjson.JSONObject;
 
 import Tools.LoadSqlConfig;
 import Base.DBConn;
@@ -42,7 +45,7 @@ public class HelloWord extends HttpBase{
 	public HelloWord(){
 		//System.out.println("走一次实例化一下哦!");
 	}
-		@RequestMapping("/helloWorld/a.do")
+		@RequestMapping("/helloWorld/a")
 	    public String helloWorld(Model model) throws Exception {
 			String myCacheSql= LoadSqlConfig.instance().getSql("ora", "queryPipe");
 			if(listData==null || 1==2)
@@ -99,21 +102,21 @@ public class HelloWord extends HttpBase{
 		}
 	       return "/index.jsp";
 	    }
-	   @RequestMapping("/second.do")
+	   @RequestMapping("/second")
 	    public String second(Model model) {
 
 	        model.addAttribute("message", "Hello World!");
 	        System.out.println(123);
 	        return "index.jsp";
 	    }
-	   @RequestMapping("/third.do")
+	   @RequestMapping("/third")
 	    public String third(Model model) {
 		   System.out.println(this.request.getParameter("a"));;
 	        model.addAttribute("message", "Hello World!");
 	        System.out.println(123);
 	        return "redirect:/login/a/index.html";
 	    }
-	   @RequestMapping("/four.do")
+	   @RequestMapping("/four")
 	    public void four(Model model) throws IOException {
 		   File file = new File("C:\\ali213\\up.exe");
 		   InputStream isRef =  new FileInputStream(file);
@@ -123,8 +126,35 @@ public class HelloWord extends HttpBase{
 		   while((len = isRef.read(b))!=-1)osRef.write(b, 0, len);
 	    }
 	   
-	   @RequestMapping(value="/resources/userInfo/{id}",method=RequestMethod.GET)
-	   public void restFull(){
-		   System.out.println(1212132);
+	   @RequestMapping(value="/resources/userInfo/{id}/{name}",method=RequestMethod.GET)
+	   public void restFull(@PathVariable String id,@PathVariable String name){
+		   System.out.println("id:"+id);
+		   System.out.println("name:"+name);
+	   }
+	   @RequestMapping(value="/resources/userInfo/{id}/{name}/getInfo/{age}",method=RequestMethod.GET)
+	   public void restFullA(@PathVariable String id,@PathVariable String name,@PathVariable String age){
+		   System.out.println("id:"+id);
+		   System.out.println("name:"+name);
+		   System.out.println("age:"+age);
+		   JSONObject object = new JSONObject();
+		   object.put("a", "aaaa");
+		   object.put("a1", "aaaa");
+		   object.put("a2", "aaaa");
+		   object.put("a3", "aaaa");
+		   object.put("a", "aaaa");
+		   this.printStr(object.toString());
+	   }
+	   @RequestMapping(value="/login",method=RequestMethod.POST)
+	   public void login(@PathVariable String id,@PathVariable String name,@PathVariable String age){
+		   System.out.println("id:"+id);
+		   System.out.println("name:"+name);
+		   System.out.println("age:"+age);
+		   JSONObject object = new JSONObject();
+		   object.put("a", "aaaa");
+		   object.put("a1", "aaaa");
+		   object.put("a2", "aaaa");
+		   object.put("a3", "aaaa");
+		   object.put("a", "aaaa");
+		   this.printStr(object.toString());
 	   }
 }

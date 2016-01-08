@@ -28,7 +28,7 @@ import Tools.StringTools;
 public class Login extends HttpBase{
 	
 	//@RequestParam String userName,@RequestParam String passWord
-	 @RequestMapping(value="login",method={RequestMethod.POST,RequestMethod.GET})
+	 @RequestMapping(value="/loginUser",method={RequestMethod.POST})
 	 public void login(){
 //		 final String sqla = "SELECT * FROM (SELECT ROWNUM rn,EVENTID,PICTUREID FROM MARKER_S )a WHERE 1=1 AND PICTUREID IS NOT NULL AND  a.RN<10000 ORDER BY PICTUREID";
 //		 List list = null;
@@ -64,18 +64,12 @@ public class Login extends HttpBase{
 //		 System.out.println("耗时(ms):"+(beingEnd-beingTime));
 		//这里模拟数据库操作
 		 String userName = request.getParameter("userName");
+		 System.out.println("userName:"+userName);
 		 String passWord = request.getParameter("passWord");
-		 if(userName!=null && passWord!=null && "admin".equals(userName) && "admin".equals(passWord))
-		 {
-			 final String homePage = UrlFilter.instance().getPageRel().getString("homePage");
-			 try {
-				response.sendRedirect(homePage);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		 }
-		 else
-		 {
+		 System.out.println("passWord:"+passWord);
+		 boolean condition = userName!=null && passWord!=null && "admin".equals(userName) && "admin".equals(passWord);
+		 if(!condition)
+		 {			
 			 try 
 			 {
 				 request.setAttribute("notice","非法用户!");
@@ -129,7 +123,7 @@ public class Login extends HttpBase{
 	 /**
 	  * 注销登录
 	  */
-	 @RequestMapping("/loginOut.do")
+	 @RequestMapping("/loginOut")
 	 public void loginOut(){
 		 String hasCookie = new HttpServletRequestTool(request).hasLoginCookie();
 		 if(hasCookie!=null)
