@@ -1,9 +1,6 @@
 package Context;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Set;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -11,27 +8,28 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.support.GenericXmlApplicationContext;
+import org.apache.log4j.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import Base.Constant;
 import Tokens.TokenManager;
 import Tools.HttpServletRequestTool;
 
 //extends HandlerInterceptorAdapter
-public class LoginFilter implements HandlerInterceptor{
+public class LoginFilter implements Filter,HandlerInterceptor{
+	
+	//private static Logger logger =  Logger.getLogger(LoginFilter.class);
 
 	public void destroy() {
 
 	}
 
 	public void doFilter(ServletRequest req, ServletResponse rep, FilterChain chain) throws IOException, ServletException {
+		System.out.println("Fileter!!!");
+		//logger.debug("Log4j!!!");
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response=(HttpServletResponse)rep;
 		 

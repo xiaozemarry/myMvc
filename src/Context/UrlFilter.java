@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.io.LineReader;
@@ -20,6 +21,7 @@ import com.google.common.io.LineReader;
  *
  */
 public class UrlFilter {
+	private final static Logger logger = Logger.getLogger(UrlFilter.class);
 	private List<String> urlList;
 	private JSONObject pageRel;
 	private UrlFilter() {
@@ -57,7 +59,7 @@ public class UrlFilter {
 				final String str  = StringUtils.trimToNull(IOUtils.toString(pageInput));
 				if(str==null)
 				{
-					System.out.println("在本程序中找到配置的文件,但是文件内容为空,将使用默认的路径:"+jsonObject.values().toString());
+					logger.info("在本程序中找到配置的文件,但是文件内容为空,将使用默认的路径:"+jsonObject.values().toString());
 					this.pageRel = jsonObject;
 				}
 				try 
@@ -68,12 +70,12 @@ public class UrlFilter {
 					System.out.println("配置文件内容格式错误!使用默认配置!");
 					this.pageRel = jsonObject;
 				}
-				System.out.println("成功配置程序中面,但并未检查路径的有效性,该路径:"+this.pageRel.toString());
+				logger.info("成功配置程序中面,但并未检查路径的有效性,该路径:"+this.pageRel.toString());
 			} catch (IOException e) 
 			{
 				e.printStackTrace();
 			}	
-        }else System.out.println("在本程序中并未找到配置的文件,将使用默认的路径:"+jsonObject.values().toString());
+        }else logger.info("在本程序中并未找到配置的文件,将使用默认的路径:"+jsonObject.values().toString());
 	}
 	
     public JSONObject getPageRel() {
@@ -91,7 +93,8 @@ public class UrlFilter {
 
 
 	public void start(){
-		System.out.println("正在读取在自定义过滤器中直接略过的路径...........共有"+this.urlList.size()+"条记录");
+		final String info = "正在读取在自定义过滤器中直接略过的路径...........共有"+this.urlList.size()+"条记录"; 
+		logger.info(info);
 	}
 
 	private static UrlFilter instance = new UrlFilter();

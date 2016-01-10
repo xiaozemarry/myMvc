@@ -43,7 +43,7 @@ public class HelloWord extends HttpBase{
 	public static Map<String,Integer> sMap=new HashMap<String,Integer>();
 	public static Map<String,Integer> eMap=new HashMap<String,Integer>();
 	public HelloWord(){
-		//System.out.println("走一次实例化一下哦!");
+		 System.out.println("走一次实例化一下哦!");
 	}
 		@RequestMapping("/helloWorld/a")
 	    public String helloWorld(Model model) throws Exception {
@@ -104,7 +104,6 @@ public class HelloWord extends HttpBase{
 	    }
 	   @RequestMapping("/second")
 	    public String second(Model model) {
-
 	        model.addAttribute("message", "Hello World!");
 	        System.out.println(123);
 	        return "index.jsp";
@@ -137,24 +136,24 @@ public class HelloWord extends HttpBase{
 		   System.out.println("name:"+name);
 		   System.out.println("age:"+age);
 		   JSONObject object = new JSONObject();
-		   object.put("a", "aaaa");
-		   object.put("a1", "aaaa");
-		   object.put("a2", "aaaa");
+		   object.put("id",id);
+		   object.put("name", name);
+		   object.put("age", age);
 		   object.put("a3", "aaaa");
 		   object.put("a", "aaaa");
 		   this.printStr(object.toString());
 	   }
-	   @RequestMapping(value="/login",method=RequestMethod.POST)
-	   public void login(@PathVariable String id,@PathVariable String name,@PathVariable String age){
-		   System.out.println("id:"+id);
-		   System.out.println("name:"+name);
-		   System.out.println("age:"+age);
-		   JSONObject object = new JSONObject();
-		   object.put("a", "aaaa");
-		   object.put("a1", "aaaa");
-		   object.put("a2", "aaaa");
-		   object.put("a3", "aaaa");
-		   object.put("a", "aaaa");
-		   this.printStr(object.toString());
-	   }
+//	   @RequestMapping(value="/login",method=RequestMethod.POST)
+//	   public void login(@PathVariable String id,@PathVariable String name,@PathVariable String age){
+//		   System.out.println("id:"+id);
+//		   System.out.println("name:"+name);
+//		   System.out.println("age:"+age);
+//		   JSONObject object = new JSONObject();
+//		   object.put("a", "aaaa");
+//		   object.put("a1", "aaaa");
+//		   object.put("a2", "aaaa");
+//		   object.put("a3", "aaaa");
+//		   object.put("a", "aaaa");
+//		   this.printStr(object.toString());
+//	   }
 }

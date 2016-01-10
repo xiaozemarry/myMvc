@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.dom4j.Attribute;
 import org.dom4j.CDATA;
 import org.dom4j.Document;
@@ -27,6 +28,7 @@ import Base.Path;
  * 读取sqlconfig
  */
 public class LoadSqlConfig{
+	  private static final Logger logger = Logger.getLogger(LoadSqlConfig.class);
 	  private static LoadSqlConfig instance = new LoadSqlConfig();
 	  private  Map<String,Map<String,String>> allNodes;
 	  private List<String> pathList;
@@ -62,7 +64,7 @@ public class LoadSqlConfig{
 			} catch (Exception e) 
 			{
 				e.printStackTrace();
-				System.out.println("create console.txt filed!! useing the default console!!!");
+				logger.warn("create console.txt filed!! useing the default console!!!");
 			}
 		}
 		return allNodes;
@@ -123,7 +125,7 @@ public class LoadSqlConfig{
 		    else url = filePath;
 		    if(url==null)
 		    {
-		    	System.out.println("can not found the xml file named sqlConfig!!!path---->classes/Config/sqlConfig.xml");
+		    	logger.warn("can not found the xml file named sqlConfig!!!path---->classes/Config/sqlConfig.xml");
 		    	return;
 		    }
 		  	SAXReader saxReader = new SAXReader();
@@ -144,7 +146,7 @@ public class LoadSqlConfig{
 	  private class DomVisitor extends VisitorSupport{
 		  @Override
 		public void visit(Document document1) {
-			  System.out.println("到目前还不可能走到这个方法哦");
+			  logger.info("到目前还不可能走到这个方法哦");
 		/*	  if(1==1)return;
 			  document1.accept(this);*/
 		}
@@ -157,17 +159,17 @@ public class LoadSqlConfig{
 			  {
 				  if(pathList.contains(attrVal))
 				  {
-					  System.out.println("Attention:the path of["+attrVal+"] has exists,we will ignore it!!!");
+					  logger.warn("Attention:the path of["+attrVal+"] has exists,we will ignore it!!!");
 					  return;
 				  }
 				  URL url = this.getClass().getClassLoader().getResource(attrVal);
 				  if(url==null)
 				  {
-					  System.err.println("Attention:the path of[classes/"+attrVal+"] does not exists!!!");
+					  logger.warn("Attention:the path of[classes/"+attrVal+"] does not exists!!!");
 					  return;
 				  }
 				  else 
-					  System.out.println("Loading:the path of[classes/"+attrVal+"] base is classes floder。");
+					  logger.warn("Loading:the path of[classes/"+attrVal+"] base is classes floder。");
 				  pathList.add(attrVal);
 				  LoadSqlConfig.init(url);//开始读取每一个指定位置的xml
 			  }
@@ -190,7 +192,7 @@ public class LoadSqlConfig{
 		    if(hasId==null)dbTypeVal.put(id,trimCdata);
 		    else
 		    {
-		    	System.out.println("id of ["+id+"] under the ["+dbType+"] exists,we will ignore it!!!");
+		    	logger.info("id of ["+id+"] under the ["+dbType+"] exists,we will ignore it!!!");
 		    	return;
 		    }
 	    	allNodes.put(dbType,dbTypeVal);

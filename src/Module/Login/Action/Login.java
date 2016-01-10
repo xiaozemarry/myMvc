@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +28,15 @@ import Tools.HttpServletRequestTool;
 import Tools.StringTools;
 @Controller
 public class Login extends HttpBase{
-	
-	//@RequestParam String userName,@RequestParam String passWord
-	 @RequestMapping(value="/loginUser",method={RequestMethod.POST})
-	 public void login(){
+	private static final Logger logger = Logger.getLogger(Login.class);
+	 @RequestMapping(value="/loginUser",method=RequestMethod.POST)
+	 public void loginIn(){
+	        logger.error("Did it again!");   //error级别的信息，参数就是你输出的信息
+	        logger.info("我是info信息");    //info级别的信息
+	        logger.debug("我是debug信息");
+	        logger.warn("我是warn信息");
+	        logger.fatal("我是fatal信息");
+	        logger.log(Level.DEBUG, "我是debug信息");   //这个就是制定Level类型的调用：谁闲着没事调用这个，也不一定哦！
 //		 final String sqla = "SELECT * FROM (SELECT ROWNUM rn,EVENTID,PICTUREID FROM MARKER_S )a WHERE 1=1 AND PICTUREID IS NOT NULL AND  a.RN<10000 ORDER BY PICTUREID";
 //		 List list = null;
 //		try {
@@ -88,7 +95,7 @@ public class Login extends HttpBase{
 		 String hasCookie = new HttpServletRequestTool(request).hasLoginCookie();
 		 if(hasCookie!=null)
 		 {
-			 System.out.println(Constant.SDFYMDHMS.format(new Date())+":移除登录用户池中的信息--->"+hasCookie);
+			 logger.info(Constant.SDFYMDHMS.format(new Date())+":移除登录用户池中的信息--->"+hasCookie);
 			 TokenManager.instance().remove(hasCookie);
 		 }
 		 //多次登录,需要删除之前的
@@ -100,13 +107,13 @@ public class Login extends HttpBase{
 		 cookie.setMaxAge(Constant.MAXCOOKIEAGE);
 		 cookie.setHttpOnly(true);//只有在网络的情况下可以读取,js无法读取
 		 
-		 System.out.println(Constant.SDFYMDHMS.format(new Date())+":设置登录用户池中的信息--->"+id+"\n");
+		 logger.info(Constant.SDFYMDHMS.format(new Date())+":设置登录用户池中的信息--->"+id);//+"\n"
 		 response.addCookie(cookie);
 		 try 
 		 {
 			 String referer = request.getParameter("referer");
 			 boolean isIlle = StringTools.instance().isIllegalStr(referer);
-			 response.setContentType("text/html");
+			//response.setContentType("text/html");
 			 if(isIlle)//response.getWriter().print("登录成功!<a href='template/index.html'>点我</a>");
 			 {
 				 final String homePage = UrlFilter.instance().getPageRel().getString("homePage");
@@ -128,17 +135,16 @@ public class Login extends HttpBase{
 		 String hasCookie = new HttpServletRequestTool(request).hasLoginCookie();
 		 if(hasCookie!=null)
 		 {
-			 System.out.println(Constant.SDFYMDHMS.format(new Date())+":移除登录用户池中的信息--->"+hasCookie);
+			 logger.info(Constant.SDFYMDHMS.format(new Date())+":移除登录用户池中的信息--->"+hasCookie);
 			 TokenManager.instance().remove(hasCookie);
 		 }
 		 
-		try 
-		{
+		 try 
+		 {
 			response.sendRedirect(UrlFilter.instance().getPageRel().getString("loginPage"));
-		} catch (IOException e) 
-		{
+		 } catch (IOException e) 
+		 {
 			e.printStackTrace();
-		}
+		 }
 	 }
-
 }

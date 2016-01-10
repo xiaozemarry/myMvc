@@ -31,19 +31,18 @@
 	<mvc:annotation-driven></mvc:annotation-driven>
 	<!-- 可以直接相应转发的页面, 而无需再经过 Handler 的方法 <mvc:view-controller path="/success" 
 		view-name="success"/> -->
-
-	<!--拦截器 -->
-	<mvc:interceptors>
-		<mvc:interceptor>
-		    <!--<exclude-mapping path="/admin/**" />-->
-			<mvc:mapping path="/*" />
-			<mvc:mapping path="*.jsp" />
-			<bean class="Context.LoginFilter" />
-		</mvc:interceptor>
-	</mvc:interceptors>
-
+	   
 	<import resource="classes/Module/Login/Xml/Login-spring.xml" />
 	<import resource="classes/Module/Upload/Xml/File-upload.xml" />
 	<import resource="classes/Module/Tree/Xml/tree-update.xml" />
+    <!--拦截器
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/*" />
+			<mvc:mapping path="/resources/*" />
+			<bean class="Context.LoginFilter" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	 -->
 
 </beans>
