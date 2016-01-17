@@ -19,21 +19,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-
-
-
-
 
 import Base.Constant;
 
-import com.google.common.io.Files;
-
 public class TokenManager<T> {
+	     private static final Logger logger = Logger.getLogger(TokenManager.class);
 	     private Map<String,Map<Date,T>> tokenMap = new HashMap<String,Map<Date,T>>(500);
          private TokenManager(){
          }
@@ -93,7 +86,7 @@ public class TokenManager<T> {
          
          public URI getTargetUri(){
         	 URL url = this.getClass().getResource("File/tokens.bin");
-        	 System.out.println(url);
+        	 logger.info("binPath:"+url);
         	 URI uri=null;
 			 try 
 			 {

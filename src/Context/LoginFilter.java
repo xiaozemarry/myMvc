@@ -28,8 +28,6 @@ public class LoginFilter implements Filter,HandlerInterceptor{
 	}
 
 	public void doFilter(ServletRequest req, ServletResponse rep, FilterChain chain) throws IOException, ServletException {
-		System.out.println("Fileter!!!");
-		//logger.debug("Log4j!!!");
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response=(HttpServletResponse)rep;
 		 
@@ -49,7 +47,7 @@ public class LoginFilter implements Filter,HandlerInterceptor{
 		 final String currentReqeustPath = currentFullPath.substring(basePath.length()-1,currentFullPath.length());
 		 if(UrlFilter.instance().containsUrl(currentReqeustPath))//不需要判断cookie的请求路径
 		 {
-				chain.doFilter(req, rep);
+				chain.doFilter(req, rep);	
 				return;
 		 }
 			 
@@ -107,9 +105,9 @@ public class LoginFilter implements Filter,HandlerInterceptor{
 		 String referer =  request.getHeader("referer");
          if(referer!=null)//记录当前连接信息,用户跳转到登录页面,如果登录成功,直接跳到当前请求的页面
          {
-        	 String qs = request.getQueryString();
-        	 if(qs!=null)referer+="?"+qs;
-        	 request.setAttribute("prevLink",referer);
+	    	 String qs = request.getQueryString();
+	    	 if(qs!=null)referer+="?"+qs;
+	    	 request.setAttribute("prevLink",referer);
          }
          //地址栏不会改变
         request.getRequestDispatcher("/"+UrlFilter.instance().getPageRel().getString("loginPage")).forward(request, response);

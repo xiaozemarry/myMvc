@@ -64,13 +64,22 @@
 		<listener-class>Context.ContextStart</listener-class>
 	</listener>
 	<filter>
-	  <filter-name>contextFilter</filter-name>
-	  <filter-class>Context.LoginFilter</filter-class>
+		  <filter-name>contextFilter</filter-name>
+		  <filter-class>Context.ContextFilter</filter-class>
 	</filter>
 	 <filter-mapping>
-	   <filter-name>contextFilter</filter-name>
-	   <url-pattern>/*</url-pattern>
+		   <filter-name>contextFilter</filter-name>
+		   <url-pattern>*.jsp</url-pattern>
 	 </filter-mapping>
+	 	 <filter-mapping>
+		   <filter-name>contextFilter</filter-name>
+		   <url-pattern>*.html</url-pattern>
+	 </filter-mapping>
+	 	 <filter-mapping>
+		   <filter-name>contextFilter</filter-name>
+		   <url-pattern>*.htm</url-pattern>
+	 </filter-mapping>
+	 
 	<!--连接池管理界面 -->
 	<servlet>
 		<servlet-name>proxool</servlet-name>

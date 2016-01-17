@@ -4,7 +4,7 @@ var grid_data =
 	{id:2,userName:"张三2",birthday:"2007-12-03",phone:"18600445147",sex:"男",address:"北京市中南海1号",email:"562113226@qq.com",mark:"备注"}
 ];
 
-for(var k=3;k<500;k++){
+for(var k=3;k<50;k++){
 	var each = {};
     each.userName = "jack"+k;
     each.id=k;

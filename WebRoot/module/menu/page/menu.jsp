@@ -288,7 +288,7 @@
 								</li>
 								<!--<li class="divider"></li>-->
 								<li>
-									<a href="<%=basePath%>loginOut.do"><i class="icon-off"></i>注销</a>
+									<a href="<%=basePath%>loginOut"><i class="icon-off"></i>注销</a>
 								</li>
 								 <li>
 									<a href="<%=basePath%>template/index.html"><i class="icon-off"></i>模板页</a>

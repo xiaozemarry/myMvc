@@ -35,14 +35,21 @@
 	<import resource="classes/Module/Login/Xml/Login-spring.xml" />
 	<import resource="classes/Module/Upload/Xml/File-upload.xml" />
 	<import resource="classes/Module/Tree/Xml/tree-update.xml" />
-    <!--拦截器
+    <!-- 配置视图解析器  return "add",去找  /WEB-INF/views/add.jsp-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--指定所在位置-->
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+    <!--拦截器 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/*" />
-			<mvc:mapping path="/resources/*" />
-			<bean class="Context.LoginFilter" />
+			<mvc:mapping path="/*"/>
+			<mvc:mapping path="/*.jsp"/>
+			<mvc:mapping path="/*.html"/>
+			<mvc:mapping path="/*.htm"/>
+			<bean class="Context.ContextFilter" />
 		</mvc:interceptor>
 	</mvc:interceptors>
-	 -->
 
 </beans>
