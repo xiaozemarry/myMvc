@@ -17,16 +17,19 @@ public class Sequence {
             if (lastCount == ONE_STEP) 
             {
                 boolean done = false;
-                while (!done) {
+                while (!done)
+                {
                     long now = System.currentTimeMillis();
-                    if (now == lastTime) {
+                    if (now == lastTime) 
+                    {
                         try 
                         {
                             Thread.currentThread();
                             Thread.sleep(1);
                         } catch (java.lang.InterruptedException e){}
                         continue;
-                    } else 
+                    } 
+                    else 
                     {
                         lastTime = now;
                         lastCount = 0;

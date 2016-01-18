@@ -50,13 +50,12 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
   	     final String basePath = new HttpServletRequestTool(request).getBasePath();
 		 final String currentFullPath = request.getRequestURL().toString();
 		 final String currentReqeustPath = currentFullPath.substring(basePath.length()-1,currentFullPath.length());
-		 logger.info("doFilter:"+currentReqeustPath);
 		 
 		 TokenManager<?> token = TokenManager.instance();
 		 String hasCookie = new HttpServletRequestTool((HttpServletRequest)req).hasLoginCookie();
 		 boolean hasUser = token.hasUser(hasCookie);
 		 boolean userDead = !token.userDead(hasCookie);
-		 boolean result = (hasCookie!=null && hasUser && userDead)  || (UrlFilter.instance().containsUrl(currentReqeustPath));
+		 boolean result = (hasCookie!=null && hasUser && userDead) || (UrlFilter.instance().containsUrl(currentReqeustPath));
 		 if(result)//存在cookie并且合法,继续操作
 		 {
 			if(chain instanceof FilterChain)
@@ -67,10 +66,10 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
 					return;
 				} catch (IOException e) 
 				{
-					e.printStackTrace();
+				   logger.error("IOException",e);
 				} catch (ServletException e) 
 				{
-					e.printStackTrace();
+				   logger.error("ServletException",e);
 				}
 			}
 			else 
@@ -90,13 +89,13 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
          //地址栏不会改变
         try 
         {
-			request.getRequestDispatcher("/"+UrlFilter.instance().getPageRel().getString("loginPage")).forward(request, response);
+			request.getRequestDispatcher("/"+UrlFilter.instance().getPageRel().getString("loginPage")).forward(request,response);
 		} catch (ServletException e) 
         {
-			e.printStackTrace();
+			logger.error("forward-ServletException",e);
 		} catch (IOException e) 
         {
-			e.printStackTrace();
+			logger.error("forward-IOException",e);
 		}
 	}
 }

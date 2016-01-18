@@ -1,9 +1,5 @@
 package Tools;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +18,6 @@ import org.dom4j.io.SAXReader;
 
 import Base.DBConn;
 import Base.DBCustorm;
-import Base.Path;
 
 /**
  * 读取sqlconfig
@@ -51,22 +46,20 @@ public class LoadSqlConfig{
 			instance = instance();
 			LoadSqlConfig.init(null);
 		}
-		else//非调试模式下，所有System.out.println()的内容全部输出到文件
-		{
-			try 
-			{
-				String base = Path.CATALINE_BASE;
-				File file = new File(base+Path.FS+"console.txt");
-				//System.out.println("请注意,所有输出信息将被该文件接收:"+file.getPath());
-				if(!file.exists())file.createNewFile();
-				OutputStream out = new PrintStream(new FileOutputStream(file,true));
-				System.setOut((PrintStream) out);
-			} catch (Exception e) 
-			{
-				e.printStackTrace();
-				logger.warn("create console.txt filed!! useing the default console!!!");
-			}
-		}
+//		else//非调试模式下，所有System.out.println()的内容全部输出到文件
+//		{
+//			try 
+//			{
+//				String base = Path.CATALINE_BASE;
+//				File file = new File(base+Path.FS+"console.txt");
+//				if(!file.exists())file.createNewFile();
+//				OutputStream out = new PrintStream(new FileOutputStream(file,true));
+//				System.setOut((PrintStream) out);
+//			} catch (Exception e) 
+//			{
+//				logger.warn("create console.txt filed!! useing the default console!!!");
+//			}
+//		 }
 		return allNodes;
 	}
 	/**
@@ -136,7 +129,7 @@ public class LoadSqlConfig{
 				element.accept(instance.new DomVisitor());
 			} catch (DocumentException e)
 			{
-				e.printStackTrace();
+				logger.warn("read file failed",e);
 			}
 	  }
 	  public static synchronized LoadSqlConfig instance(){
@@ -147,14 +140,11 @@ public class LoadSqlConfig{
 		  @Override
 		public void visit(Document document1) {
 			  logger.info("到目前还不可能走到这个方法哦");
-		/*	  if(1==1)return;
-			  document1.accept(this);*/
 		}
 		  @Override
 		public void visit(Attribute attribute) {
 			  String attrName  = attribute.getName();
 			  String attrVal = attribute.getValue();
-			 // System.out.println(attrName+"-->"+attrVal);
 			  if("path".equals(attrName))
 			  {
 				  if(pathList.contains(attrVal))

@@ -39,12 +39,15 @@ public class UrlFilter {
             	urlList.add(next);
             	next = lr.readLine();
             }
-		} catch (Exception e) 
+            logger.info("read file success:"+url.getPath());
+		} 
+        catch (Exception e) 
         {
-		 	e.printStackTrace();
-		}finally
+		 	logger.error("failed to read file",e);
+		}
+        finally
 		{
-			try{if(fileReader!=null)fileReader.close();} catch (Exception e2){e2.printStackTrace();}
+			try{if(fileReader!=null)fileReader.close();}catch (Exception e2){logger.error("failed to close fileReader",e2);}
 		}
         
         //设置登录页
@@ -67,13 +70,13 @@ public class UrlFilter {
 					this.pageRel = JSONObject.parseObject(str);	
 				} catch (Exception e) 
 				{
-					System.out.println("配置文件内容格式错误!使用默认配置!");
+					logger.warn("配置文件内容格式错误!使用默认配置!");
 					this.pageRel = jsonObject;
 				}
 				logger.info("成功配置程序中面,但并未检查路径的有效性,该路径:"+this.pageRel.toString());
 			} catch (IOException e) 
 			{
-				e.printStackTrace();
+				logger.error("config-page-error", e);
 			}	
         }else logger.info("在本程序中并未找到配置的文件,将使用默认的路径:"+jsonObject.values().toString());
 	}
@@ -85,12 +88,9 @@ public class UrlFilter {
 		return urlList;
 	}
 
-
 	public void setUrlList(List<String> urlList) {
 		this.urlList = urlList;
 	}
-
-
 
 	public void start(){
 		final String info = "正在读取在自定义过滤器中直接略过的路径...........共有"+this.urlList.size()+"条记录"; 

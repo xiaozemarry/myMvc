@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  *
  */
 public class HttpBase{
+	  private static final Logger logger = Logger.getLogger(HttpBase.class);
 	  protected HttpServletRequest request;
 	  protected HttpServletResponse response;
 	  protected DBConn db = DBConn.instance();
@@ -120,9 +122,7 @@ public class HttpBase{
 		    writer.close();
 		  } catch (IOException e) 
 		  {
-				System.out.println("********************************************Attention:"+Constant.SDFYMDHMS.format(new Date())+"********************************************");
-				e.printStackTrace();
-				System.out.println("********************************************Attention********************************************");
-		 }
-	  }
+			  logger.error("{Attention--Should Not Like This}", e);
+		  }
+	   }
 }
