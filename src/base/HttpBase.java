@@ -3,6 +3,7 @@ package base;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
@@ -108,7 +109,23 @@ public class HttpBase{
 	  public void printStream(final byte bytes[]){
 		  
 	  }
-	  
+	  public void printJson(final String source,final boolean isIE6){
+		  try 
+		  {
+			if(isIE6)
+			    this.response.setHeader("Content-type","text/json;charset=UTF-8");
+			else
+				this.response.setHeader("Content-type","application/json;charset=UTF-8");
+			
+			this.response.setCharacterEncoding("UTF-8");
+			PrintWriter writer = this.response.getWriter();
+			writer.print(source);
+			writer.close();
+		  } catch (IOException e) 
+		  {
+			  logger.error("{Attention--Should Not Like This}", e);
+		  }
+	  }
 	  /**
 	   * 先前台输出内容
 	   * @param source 需要输出的内容
@@ -117,9 +134,9 @@ public class HttpBase{
 	  public void printStr(String source,String...strings){
 		  try 
 		  {
-			Writer writer = this.response.getWriter();
-		    writer.write(source);
-		    writer.close();
+			PrintWriter writer = this.response.getWriter();
+			writer.print(source);
+			writer.close();
 		  } catch (IOException e) 
 		  {
 			  logger.error("{Attention--Should Not Like This}", e);

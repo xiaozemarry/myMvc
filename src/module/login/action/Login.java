@@ -31,12 +31,12 @@ public class Login extends HttpBase{
 	private static final Logger logger = Logger.getLogger(Login.class);
 	 @RequestMapping(value="/loginUser",method=RequestMethod.POST)
 	 public void loginIn(){
-	        logger.error("Did it again!");   //error级别的信息，参数就是你输出的信息
-	        logger.info("我是info信息");    //info级别的信息
-	        logger.debug("我是debug信息");
-	        logger.warn("我是warn信息");
-	        logger.fatal("我是fatal信息");
-	        logger.log(Level.DEBUG, "我是debug信息");   //这个就是制定Level类型的调用：谁闲着没事调用这个，也不一定哦！
+//	        logger.error("Did it again!");   //error级别的信息，参数就是你输出的信息
+//	        logger.info("我是info信息");    //info级别的信息
+//	        logger.debug("我是debug信息");
+//	        logger.warn("我是warn信息");
+//	        logger.fatal("我是fatal信息");
+//	        logger.log(Level.DEBUG, "我是debug信息");   //这个就是制定Level类型的调用：谁闲着没事调用这个，也不一定哦！
 //		 final String sqla = "SELECT * FROM (SELECT ROWNUM rn,EVENTID,PICTUREID FROM MARKER_S )a WHERE 1=1 AND PICTUREID IS NOT NULL AND  a.RN<10000 ORDER BY PICTUREID";
 //		 List list = null;
 //		try {

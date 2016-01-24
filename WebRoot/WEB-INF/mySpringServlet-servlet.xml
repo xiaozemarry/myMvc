@@ -33,8 +33,10 @@
 		view-name="success"/> -->
 	   
 	<import resource="classes/module/login/xml/Login-spring.xml" />
+	<import resource="classes/module/userinfo/xml/UserInfo-Spring.xml" />
 	<import resource="classes/module/upload/xml/File-upload.xml" />
 	<import resource="classes/module/tree/xml/tree-update.xml" />
+	
     <!-- 配置视图解析器  return "add",去找  /WEB-INF/views/add.jsp-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!--指定所在位置-->

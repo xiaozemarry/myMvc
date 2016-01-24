@@ -4,4 +4,5 @@
 <debug debugValue="1"/>
 <!--执行外部的xml -->
 <import path="module/login/xml/Login-sql.xml"/>
+<import path="module/userinfo/xml/UserInfo-Sql.xml"/>
 </db>

@@ -10,8 +10,8 @@ var grid_data =
 	
 		jQuery(grid_selector).jqGrid({
 			//direction: "rtl",
-			url:basePath+"getUser",
-			data: grid_data,
+			url:basePath+"getUserInfo",
+			//data: grid_data,
 			//datatype: "local",
 			height: 400,
 			colNames:['客户编号',"姓名",'出生日期','电话','性别','邮箱','居住地址','备注'],
@@ -25,9 +25,9 @@ var grid_data =
 					}
 				},*/
 				{name:'id',index:'id',width:60, sorttype:"string"},
-				{name:'userName',index:'userName',width:90, editable:true},
+				{name:'chinesename',index:'chinesename',width:90, editable:true},
 				{name:'birthday',index:'birthday',width:90, editable:true, sorttype:"date",unformat: pickDate},
-				{name:'phone',index:'phone', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
+				{name:'phonenumber',index:'phonenumber', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
 				{name:'sex',index:'sex', width:70, editable: true,edittype:"select",editoptions:{value:"man:男;woman:女"}},
 				{name:'email',index:'email', width:150, sortable:false,editable: true,edittype:"textarea",editoptions:{rows:"2",cols:"10"}},
 				{name:'address',index:'address',width:90, editable:true,edittype:"textarea"},
@@ -45,7 +45,7 @@ var grid_data =
 			loadComplete : function() {
 				var table = this;
 			},
-			editurl: basePath+"treeInsert.do",//nothing is saved
+		//	editurl: basePath+"treeInsert.do",//nothing is saved
 			caption: "客户详细信息列表",
 			autowidth: true
 		});

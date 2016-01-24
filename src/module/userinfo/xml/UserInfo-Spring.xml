@@ -5,11 +5,9 @@
     xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
+        classpath:../spring-xsd/spring-beans-3.2.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        classpath:../spring-xsd/spring-context-3.2.xsd">
         
-    <bean id="userInfo" class="c.HelloWord" scope="request">
-       <property name="myUser" ref="userBiz"></property>
-    </bean>
+    <bean id="userInfo" class="module.userinfo.action.UserInfo" scope="request"></bean>
 </beans>

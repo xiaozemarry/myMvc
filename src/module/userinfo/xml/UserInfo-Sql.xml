@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db>
+	<mysql>
+		<items>
+			<item id="queryUserInfo">
+		          <![CDATA[
+		           select * from user
+		          ]]>
+			</item>
+		</items>
+	</mysql>
+	<mssql>
+	</mssql>
+</db>

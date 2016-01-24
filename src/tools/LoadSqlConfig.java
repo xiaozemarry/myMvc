@@ -118,7 +118,7 @@ public class LoadSqlConfig{
 		    else url = filePath;
 		    if(url==null)
 		    {
-		    	logger.error("can not found the xml file named sqlConfig!!!path---->classes/Config/sqlConfig.xml");
+		    	logger.error("can not found the xml file named sqlConfig!!!path---->classes/config/sqlConfig.xml");
 		    	return;
 		    }
 		  	SAXReader saxReader = new SAXReader();
