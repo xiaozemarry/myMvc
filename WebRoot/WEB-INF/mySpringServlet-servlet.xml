@@ -32,9 +32,9 @@
 	<!-- 可以直接相应转发的页面, 而无需再经过 Handler 的方法 <mvc:view-controller path="/success" 
 		view-name="success"/> -->
 	   
-	<import resource="classes/Module/Login/Xml/Login-spring.xml" />
-	<import resource="classes/Module/Upload/Xml/File-upload.xml" />
-	<import resource="classes/Module/Tree/Xml/tree-update.xml" />
+	<import resource="classes/module/login/xml/Login-spring.xml" />
+	<import resource="classes/module/upload/xml/File-upload.xml" />
+	<import resource="classes/module/tree/xml/tree-update.xml" />
     <!-- 配置视图解析器  return "add",去找  /WEB-INF/views/add.jsp-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!--指定所在位置-->
@@ -48,7 +48,7 @@
 			<mvc:mapping path="/*.jsp"/>
 			<mvc:mapping path="/*.html"/>
 			<mvc:mapping path="/*.htm"/>
-			<bean class="Context.ContextFilter" />
+			<bean class="context.ContextFilter" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 

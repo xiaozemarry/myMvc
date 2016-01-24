@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<db>
-<!--是否使用debug模式,bebug模式每次都会从新读取这里的内容,否则会使用缓存(1为debug模式,其余的全部为非debug模式)-->
-<debug debugValue="1"/>
-<!--执行外部的xml -->
-<import path="Module/Login/Xml/Login-sql.xml"/>
-
-</db>

@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
-import bean.User;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.SortingParams;
@@ -17,9 +16,9 @@ public class SimleCache {
 		 if(1==1)return;
       Jedis jedis = new Jedis("192.168.31.205",6379);
      // jedis.auth("admin");
-      User user = new User();
-      user.setAge(20);
-      user.setName("张三");
+//      User user = new User();
+//      user.setAge(20);
+//      user.setName("张三");
       //JedisPool jedisPool =  new  JedisPool(null);
      
       

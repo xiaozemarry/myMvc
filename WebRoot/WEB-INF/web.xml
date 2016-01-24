@@ -61,11 +61,11 @@
 	 
 	<!--程序初始化 -->
 	<listener>
-		<listener-class>Context.ContextStart</listener-class>
+		<listener-class>context.ContextStart</listener-class>
 	</listener>
 	<filter>
 		  <filter-name>contextFilter</filter-name>
-		  <filter-class>Context.ContextFilter</filter-class>
+		  <filter-class>context.ContextFilter</filter-class>
 	</filter>
 	 <filter-mapping>
 		   <filter-name>contextFilter</filter-name>
