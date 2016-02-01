@@ -8,11 +8,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
 public class Test {
 	public static void main(String[] args) throws Exception {
+		    final Semaphore semaphore = new Semaphore(2,true);//每次只允许2个工人用餐厅
+			final int poolSize = 6;
+			ExecutorService executorService1 = Executors.newFixedThreadPool(poolSize);
+			for (int i = 0; i < poolSize; i++) 
+			{
+				executorService1.execute(new Worker("张三"+i,semaphore));
+			}
+			executorService1.shutdown();
+		if(1==1)return;
 //	    ExecutorService pool = Executors.newFixedThreadPool(5);
 //	    final long waitTime = 8 * 1000;
 //	    final long awaitTime = 5 * 1000;
