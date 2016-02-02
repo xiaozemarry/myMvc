@@ -43,7 +43,7 @@ a:hover{text-decoration:none;}
 .search_btn{background:url(../images/search_btn.png) no-repeat; width:10px; height:13px; border:none; margin-top:3px; margin-left:5px; float:left; cursor:pointer;}
 
 /*footer*/
-#footer{ height:45px; background:#0059a5; width:100%; min-width:1200;position: absolute;bottom:0px;}
+#footer{ height:45px; background:#0059a5; width:100%; min-width:1200;position: fixed;bottom:0px;}
 .menu .people{height:50px; font-size:14px; margin-left:10px;}
 .menu .people span{width:38px; height:38px; background:url(../images/people_bg.jpg) no-repeat; float:left; display:block; margin-right:5px;}
 .menu .people span img{margin:4px 4px 5px 5px;}
