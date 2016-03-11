@@ -3,13 +3,16 @@ package base;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.logicalcobwebs.proxool.ProxoolException;
 import org.logicalcobwebs.proxool.ProxoolFacade;
 
 public class DBConnectionManager {
-
+	static private final Logger logger = Logger.getLogger(DBConnectionManager.class);
 	static private DBConnectionManager instance; // 唯一实例的引用
 
 	/*
@@ -28,7 +31,7 @@ public class DBConnectionManager {
 			ProxoolFacade.removeConnectionPool(pooname);
 		} catch (ProxoolException e) 
 		{
-			e.printStackTrace();
+			logger.error("{移除给定的连接失败}"+custorm, e);
 		}
 	}
 	
@@ -37,46 +40,42 @@ public class DBConnectionManager {
 	 * 
 	 */
 	private Connection getConnectionFromProxool(DBCustorm custorm){
-
 		Connection conn = null;
 		String JDBC_URL = "";
 		String JDBC_DRIVER = "";
 		//连接池
-		String alias =custorm.getPoolalias().toLowerCase();
+		String alias =custorm.getPoolalias();//.toLowerCase();
 		//获取注册过的所有连接池
 		String aliasAll[]=ProxoolFacade.getAliases();
-		
+		List<String> aliasList =  Arrays.asList(aliasAll);
 		//是否注册果
 		boolean Isregister=false;
-		for(int i=0;i<aliasAll.length;i++)
-		{
-           if(aliasAll[i].equalsIgnoreCase(alias)) 
-	    	   {
-		    	   Isregister=true;
-		    	   break;
-	    	   }	  
-		}
-		
+		if(aliasList.contains(alias))Isregister = true;
+//		for(int i=0;i<aliasAll.length;i++)
+//		{
+//           if(aliasAll[i].equalsIgnoreCase(alias)) 
+//	    	   {
+//		    	   Isregister=true;
+//		    	   break;
+//	    	   }	  
+//		}
 		if(!Isregister)
 		{
+			logger.warn("current alias ["+alias+"] does not register,begin to register....");
 			//如果没有注册则注册
 			Properties info = new Properties();
 			
 			info.setProperty("user", custorm.getDbuser());
 			info.setProperty("password", custorm.getDbpwd());
-			//启动后申请连接数
-			info.setProperty("proxool.minimum-connection-count", "1");
-			//追加申请数量
-			info.setProperty("proxool.prototype-count", "5");
-			//最大链接数量
-			info.setProperty("proxool.maximum-connection-count", "50");
-			//调试SQL运行时间
-			info.setProperty("proxool.trace", "true");
-		
+			
+			info.setProperty("proxool.minimum-connection-count", "1");//启动后申请连接数
+			info.setProperty("proxool.prototype-count", "5");//追加申请数量
+			info.setProperty("proxool.maximum-connection-count", "50");//最大链接数量
+			info.setProperty("proxool.trace", "true");//调试SQL运行时间
+			info.setProperty("house-keeping-sleep-time","50000");//自动检测时间
 			info.setProperty("proxool.test-before-use", "true");
 			info.setProperty("proxool.test-after-use", "true");
 			//info.setProperty("proxool.maximum-active-time", "4000000");
-		
 			if ("MSSQL".equals(custorm.getDBType())) 
 			{
 				JDBC_URL = "jdbc:sqlserver://" + custorm.getDBUrl() + ":"+ custorm.getDBPort() + ";databaseName="+ custorm.getDBName();
@@ -96,24 +95,21 @@ public class DBConnectionManager {
 				JDBC_DRIVER = "com.mysql.jdbc.Driver";
 				info.setProperty("proxool.house-keeping-test-sql", "SELECT  CURRENT_USER");
 			}
-			else 
+			try 
 			{
-				
-			}
-			try {
 				Class.forName("org.logicalcobwebs.proxool.ProxoolDriver");
 			} catch (ClassNotFoundException e) 
 			{
-				e.printStackTrace();
+				logger.error("{找不到驱动}"+custorm.toString(),e);
 			}
-
 			String url = "proxool." + alias + ":" + JDBC_DRIVER + ":" + JDBC_URL;
 			try 
 			{
-				ProxoolFacade.registerConnectionPool(url, info);
+				ProxoolFacade.registerConnectionPool(url,info);
+				logger.info("register success:"+url);
 			} catch (ProxoolException e) 
 			{
-				e.printStackTrace();
+				logger.error("{注册连接失败}",e);
 			}
 			
 		}
@@ -121,10 +117,11 @@ public class DBConnectionManager {
 		 try
 		 {
 			conn = DriverManager.getConnection("proxool." + alias );
-		 } catch (SQLException e)
+		 } catch (Exception e)
 		 {
-			e.printStackTrace();
+			 logger.error("{获取连接失败}",e);
 		 }
+		 logger.info("{当前连接}:"+conn);
 		 return conn;
 	}
 
@@ -132,17 +129,16 @@ public class DBConnectionManager {
 	 * 释放使用完的连接
 	 */
 	public void freeConnection(DBCustorm custorm, Connection conn) {
-		  
 		try 
 		{
 			if(conn!=null)conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e) 
+		{
+			logger.error("{释放当前连接失败}"+conn,e);
 		}
 	}
 
 	public static synchronized DBConnectionManager getInstance() {
-
 		if (instance == null) 
 			instance = new DBConnectionManager();
 		return instance;
@@ -151,5 +147,4 @@ public class DBConnectionManager {
 	public void release() {
 		  instance = null;
 	}
-
 }
