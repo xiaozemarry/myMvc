@@ -614,6 +614,7 @@ public class DBConn {
 			DBConnectionManager.getInstance().freeConnection(custorm, userConn);
 		}
 	}
+	
 	public Map searchToMapValThanOne(String sql,Object params,String keyTemp) throws Exception{
 		Connection userConn = getConnection();
 		try {
@@ -627,6 +628,7 @@ public class DBConn {
 			DBConnectionManager.getInstance().freeConnection(custorm, userConn);
 		}
 	}
+	
 	/**
 	 * 通过Map的格式入库
 	 * @param map
@@ -840,4 +842,108 @@ public class DBConn {
 			 return map;
 		}
     }
+	/**
+	 * 自定义结果集封装(判断是否只查询2个字段,如果onlyTwo=true的时候,结果集只封装为map,否则map的key为主键,value为map类型的所有字段)
+	 * @author mojf
+	 */
+	public class MyDBRowProcesser implements ResultSetHandler{
+		private DBConn dbconn;
+		private String primaryKey;
+		private boolean onlyTwo = false;
+		private String nextKey;
+		
+		private MyDBRowProcesser(){}
+		
+		public MyDBRowProcesser(DBConn dbconn,String primaryKey){
+			this.dbconn = dbconn;
+			this.primaryKey = primaryKey;
+		}
+		
+		public MyDBRowProcesser(DBConn dbconn,String primaryKey,boolean onlyTwo,String nextKey){
+			this.dbconn = dbconn;
+			this.nextKey = nextKey;
+			this.onlyTwo = onlyTwo;
+			this.primaryKey = primaryKey;
+		}
+		
+		@Override
+		public Object handle(ResultSet resultset) throws SQLException {
+			final int defaultMapSize = 100000;//默认开辟的空间大小
+			Map myMap = new HashMap(defaultMapSize);
+			final ResultSetMetaData rsmd = resultset.getMetaData();
+			final int rowNumber = rsmd.getColumnCount();
+			while(resultset.next())
+			{
+				String pk = resultset.getString(this.primaryKey);
+				if(onlyTwo)
+				{
+					Object nextVal = resultset.getObject(this.nextKey);
+					myMap.put(pk, nextVal);
+				}
+				else//循环所有
+				{
+					Map rowMap = new HashMap(rowNumber);
+					for (int i = 1; i < rowNumber; i++) 
+					{
+						String columnName = rsmd.getColumnName(i);
+						Object value = resultset.getObject(columnName);
+						rowMap.put(columnName,value);
+					}
+					myMap.put(pk,rowMap);
+				}
+			}
+			return myMap;
+		}
+	
+	/**
+	 * 查询map
+	 * @param sql
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
+	public Map searchToMapForMore(String sql) throws Exception{
+		Map result = null;
+		Connection userConn = this.dbconn.getConnection();
+		try 
+		{
+			QueryRunner run = new QueryRunner();
+			result = ( Map ) run.query( userConn, sql, this );
+		}
+		catch ( Exception _e ) 
+		{
+			throw _e;
+		}
+		finally 
+		{
+			DBConnectionManager.getInstance().freeConnection( dbconn.getCustorm(), userConn );
+		}
+		return result;
+	}
+	/**
+	 * 查询map
+	 * @param sql
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
+	public Map searchToMapForMore(String sql,Object pramas[]) throws Exception{
+		Map result = null;
+		Connection userConn = this.dbconn.getConnection();
+		try 
+		{
+			QueryRunner run = new QueryRunner();
+			result = ( Map ) run.query( userConn, sql,pramas,this );
+		}
+		catch ( Exception _e ) 
+		{
+			throw _e;
+		}
+		finally 
+		{
+			DBConnectionManager.getInstance().freeConnection( dbconn.getCustorm(), userConn );
+		}
+		return result;
+	 }
+  }
 }
