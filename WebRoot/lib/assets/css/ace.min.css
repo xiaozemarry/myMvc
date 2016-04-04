@@ -1803,11 +1803,12 @@ blockquote,blockquote.pull-right {
     top: 2px
 }
 
-@media only screen and (max-width: 991px) {
+/*
+ @media only screen and (max-width: 991px) {
     .breadcrumb {
         margin-left:90px
     }
-
+*/
     .breadcrumbs.fixed,.breadcrumbs.breadcrumbs-fixed {
         position: relative!important;
         left: auto!important;

@@ -22,7 +22,7 @@ public class StringTools {
 		   String trimStr = StringUtils.trimToNull(str);
 		   if(
 			  trimStr==null ||
-			  StringTools.UNDEFINED.equals(trimStr)||
+			  StringTools.UNDEFINED.equalsIgnoreCase(trimStr)||
 			  StringTools.NULL.equalsIgnoreCase(trimStr)
 			 )
 		   return true;
