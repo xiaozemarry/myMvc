@@ -1,15 +1,28 @@
 package tools;
 
+import java.util.concurrent.CountDownLatch;
+
 import org.apache.commons.lang.StringUtils;
 
 
 public class StringTools {
 	   private static final String NULL = "undefined";
 	   private static final String UNDEFINED = "null";
-	   private static StringTools instance = new StringTools();
+	   private static byte[] lock = new byte[0];
+	   private static StringTools instance = null;
 	   private StringTools(){}
-	   public synchronized static StringTools instance(){
-		   if(instance==null)instance = new StringTools();
+	   public  static StringTools instance(){
+		   if(instance==null)
+		   {
+			   synchronized (lock) 
+			   {
+				   if(instance == null )
+				   {
+					   System.out.println(Thread.currentThread().getName());
+					   instance = new StringTools();
+				   }
+			   }
+		   }
 		   return instance;
 	   }
 	   /**
@@ -28,4 +41,24 @@ public class StringTools {
 		   return true;
 		   return false;
 	   }
+	   
+	   public static void main(String[] args) {
+		for (int i = 0; i < 10; i++) {
+			Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					 StringTools stl = StringTools.instance();
+				}
+			});
+			t.start();
+			try
+			{
+				t.wait(200);
+				Thread.sleep(200);
+			} catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
 }

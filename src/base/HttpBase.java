@@ -167,11 +167,12 @@ public class HttpBase{
 		this.response = response;
 	}
 
-
+	
 	public DruidDBConnection getDruidDBConn() {
 		return druidDBConn;
 	}
-
+	
+	@Resource(name="druidDBConnection")
 	public void setDruidDBConn(DruidDBConnection druidDBConn) {
 		this.druidDBConn = druidDBConn;
 	}

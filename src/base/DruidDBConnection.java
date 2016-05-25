@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ArrayHandler;
@@ -32,8 +34,8 @@ import com.alibaba.druid.pool.DruidDataSource;
 public class DruidDBConnection {
 	private static final Logger logger = Logger.getLogger(DBConn.class);
 	private static Object lock = new Object();
-	private static DruidDataSource  druidDataSource;
-	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>(){
+	private  DruidDataSource  druidDataSource;
+	private  ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>(){
 		protected Connection initialValue() {
 			if(druidDataSource!=null)
 				try {
@@ -46,7 +48,7 @@ public class DruidDBConnection {
 	};
 
 
-	public static void closeConnection(Connection connection) {
+	public void closeConnection(Connection connection) {
 		if (connection != null)
 		{
 			try{
@@ -622,11 +624,11 @@ public class DruidDBConnection {
 		}
 	}
 
-
-	public static DruidDataSource getDruidDataSource() {
+	public  DruidDataSource getDruidDataSource() {
 		return druidDataSource;
 	}
-	public static void setDruidDataSource(DruidDataSource druidDataSource) {
-		DruidDBConnection.druidDataSource = druidDataSource;
+	@Resource(name="dataSource")
+	public  void setDruidDataSource(DruidDataSource druidDataSource) {
+		this.druidDataSource = druidDataSource;
 	}
 }
