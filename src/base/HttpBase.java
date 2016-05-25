@@ -12,12 +12,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
@@ -25,10 +28,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  *
  */
 public class HttpBase{
+	public HttpBase() {
+		// TODO Auto-generated constructor stub
+		System.out.println("cccccccccccc");
+	}
 	  private static final Logger logger = Logger.getLogger(HttpBase.class);
 	  protected HttpServletRequest request;
 	  protected HttpServletResponse response;
-	  protected DBConn db = DBConn.instance();
+	  //protected DBConn db = DBConn.instance();//以前proxool方式获取连接
+	  protected DruidDBConnection druidDBConn;
 	  @ModelAttribute
 	  public void set(HttpServletRequest request,HttpServletResponse response){
 		  this.request = request;
@@ -142,4 +150,33 @@ public class HttpBase{
 			  logger.error("{Attention--Should Not Like This}", e);
 		  }
 	   }
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
+	public HttpServletResponse getResponse() {
+		return response;
+	}
+
+	public void setResponse(HttpServletResponse response) {
+		this.response = response;
+	}
+
+
+	public DruidDBConnection getDruidDBConn() {
+		return druidDBConn;
+	}
+
+	public void setDruidDBConn(DruidDBConnection druidDBConn) {
+		this.druidDBConn = druidDBConn;
+	}
+
+	public static Logger getLogger() {
+		return logger;
+	}
 }

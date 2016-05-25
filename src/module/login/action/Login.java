@@ -31,6 +31,8 @@ public class Login extends HttpBase{
 	private static final Logger logger = Logger.getLogger(Login.class);
 	 @RequestMapping(value="/loginUser",method=RequestMethod.POST)
 	 public void loginIn(){
+		 System.out.println(2212112);
+		 System.out.println(this.druidDBConn);
 //	        logger.error("Did it again!");   //error级别的信息，参数就是你输出的信息
 //	        logger.info("我是info信息");    //info级别的信息
 //	        logger.debug("我是debug信息");
@@ -105,7 +107,7 @@ public class Login extends HttpBase{
 		 String id = TokenManager.instance().add(userMap);
 		 Cookie cookie = new Cookie(Constant.COOKIENAME,id);
 		 cookie.setMaxAge(Constant.MAXCOOKIEAGE);
-		 cookie.setHttpOnly(true);//只有在网络的情况下可以读取,js无法读取
+		 //cookie.setHttpOnly(true);//只有在网络的情况下可以读取,js无法读取
 		 
 		 logger.info(Constant.SDFYMDHMS.format(new Date())+":设置登录用户池中的信息--->"+id);//+"\n"
 		 response.addCookie(cookie);
