@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.annotation.Resources;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -27,16 +28,23 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
 
-public class DruidDBConnection {
-	private static final Logger logger = Logger.getLogger(DBConn.class);
-	private static Object lock = new Object();
-	private  DruidDataSource  druidDataSource;
-	private  ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>(){
+public class DruidDBConnection{
+	public DruidDBConnection() {
+		// TODO Auto-generated constructor stub
+		System.out.println("bbbbbbbbbbb");
+	}
+	private static final Logger logger = Logger.getLogger(DruidDBConnection.class);
+	//private static Object lock = new Object();
+	private static DruidDataSource  druidDataSource;
+	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>(){
 		protected Connection initialValue() {
+			System.out.println("get from threadlocal...");
 			if(druidDataSource!=null)
 				try {
 					return druidDataSource.getConnection();
@@ -46,8 +54,9 @@ public class DruidDBConnection {
 			return null;
 		};
 	};
+	
 
-
+    
 	public void closeConnection(Connection connection) {
 		if (connection != null)
 		{
@@ -59,6 +68,20 @@ public class DruidDBConnection {
 			}
 		}
 	}
+	
+	public Connection getDefaultConnection(){
+		return null;
+	}
+	
+	/**
+	 * 根据名字获取连接
+	 * @param name
+	 * @return if(name==null)return 默认的连接</br>if(name!=null)返回对应的连接,maybe null;
+	 */
+	public Connection getConnectionByName(String name){
+		return null;
+	}
+	
 	public Connection getConnection(){
 		return threadLocal.get();
 	}
@@ -69,7 +92,7 @@ public class DruidDBConnection {
 			logger.error("[ { when get connection } ]",e);
 		}
 		try {
-			return this.druidDataSource.tryGetConnection();
+			return druidDataSource.tryGetConnection();
 		} catch (SQLException e) {
 			logger.error("[ { when tryGet connection } ]",e);
 		}
@@ -627,8 +650,9 @@ public class DruidDBConnection {
 	public  DruidDataSource getDruidDataSource() {
 		return druidDataSource;
 	}
+	
 	@Resource(name="dataSource")
 	public  void setDruidDataSource(DruidDataSource druidDataSource) {
-		this.druidDataSource = druidDataSource;
+	    DruidDBConnection.druidDataSource = druidDataSource;
 	}
 }

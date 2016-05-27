@@ -7,7 +7,11 @@ import java.text.SimpleDateFormat;
  *
  */
 public class Constant {
-	private Constant(){}
+   private Constant(){}
+   /**
+    * 多数据源默认使用的名称(一般项目都只会用一个数据库连接)
+    */
+   private static final String DEFAULT_DRUID_DATASOURCE_NAME = "default";
 	/**
 	 * testcookie能保存的最长时间(5分钟)
 	 */

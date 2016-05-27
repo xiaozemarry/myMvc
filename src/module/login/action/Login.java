@@ -31,51 +31,17 @@ public class Login extends HttpBase{
 	private static final Logger logger = Logger.getLogger(Login.class);
 	 @RequestMapping(value="/loginUser",method=RequestMethod.POST)
 	 public void loginIn(){
-		 System.out.println(2212112);
-		 System.out.println(this.druidDBConn);
-//	        logger.error("Did it again!");   //error级别的信息，参数就是你输出的信息
-//	        logger.info("我是info信息");    //info级别的信息
-//	        logger.debug("我是debug信息");
-//	        logger.warn("我是warn信息");
-//	        logger.fatal("我是fatal信息");
-//	        logger.log(Level.DEBUG, "我是debug信息");   //这个就是制定Level类型的调用：谁闲着没事调用这个，也不一定哦！
-//		 final String sqla = "SELECT * FROM (SELECT ROWNUM rn,EVENTID,PICTUREID FROM MARKER_S )a WHERE 1=1 AND PICTUREID IS NOT NULL AND  a.RN<10000 ORDER BY PICTUREID";
-//		 List list = null;
-//		try {
-//			list = db.searchToMapList(sqla);
-//			System.out.println(db.getCustorm().toString());
-//		} catch (Exception e1) {
-//			e1.printStackTrace();
-//		}
-//		 System.out.println(list.size());
-//		 if(1==1)return;
-//		 long beingTime = System.currentTimeMillis();
-//		 int index = 0;
-//		 for (int i = 0; i < 3; i++) 
-//		 {
-//			 //final int size = 10000;
-//			 final int size = 10;
-//			 Object[][] params = new Object[size][0];
-//			 for(int k=0;k<size;k++)
-//			 {
-//				 params[k] = new Object[]{index,"f_ip"+index,"F_PROJECT"+index,k,k,k};
-//				 index++;
-//			 }
-//			 final String sql = "insert into CAMERA1(f_id,F_IP,F_PROJECT,F_UOID,F_ENTERID,F_CARMERID) values (?,?,?,?,?,?)";	
-//			 try {
-//				db.batch(sql, params);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		 }
-//		 System.out.println(db.getCustorm().toString());
-//		 long beingEnd = System.currentTimeMillis();
-//		 System.out.println("耗时(ms):"+(beingEnd-beingTime));
-		//这里模拟数据库操作
+		 try {
+			System.out.println(db.searchToMapList("SELECT * FROM pipeinfo_s WHERE EVENTID = 'c2f2de9c-6c43-4322-b33b-f34b6d15c485'"));;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		 String userName = request.getParameter("userName");
-		 System.out.println("userName:"+userName);
 		 String passWord = request.getParameter("passWord");
-		 System.out.println("passWord:"+passWord);
+		 
+		 logger.info(String.format("logininfo--->userName:%s;passWord:%s", new Object[]{userName,passWord}));
+		 
 		 boolean condition = userName!=null && passWord!=null && "admin".equals(userName) && "admin".equals(passWord);
 		 if(!condition)
 		 {			

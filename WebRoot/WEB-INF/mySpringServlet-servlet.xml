@@ -59,7 +59,17 @@
 	</bean>
 	
 	<bean id="httpBase" class="base.HttpBase">
-		<property name="druidDBConn" ref="druidDBConnection"></property>
+		<property name="db" ref="druidDBConnection"></property>
 	</bean>
 	
+	<bean id='druidConnForMore' class="base.bean.DruidConnForMore" scope="singleton">
+	   <property name = "more">
+	     <map>
+	          <!--项目中默认使用的连接-->
+	          <entry key="default" value="dataSource" />
+	          <!-- 其他可能需要的连接... -->
+	          <entry key="thd" value="dataSource" />
+	     </map>
+	   </property>
+	</bean>
 </beans>

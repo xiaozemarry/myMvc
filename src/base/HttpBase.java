@@ -29,14 +29,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  */
 public class HttpBase{
 	public HttpBase() {
-		// TODO Auto-generated constructor stub
 		System.out.println("cccccccccccc");
 	}
 	  private static final Logger logger = Logger.getLogger(HttpBase.class);
 	  protected HttpServletRequest request;
 	  protected HttpServletResponse response;
 	  //protected DBConn db = DBConn.instance();//以前proxool方式获取连接
-	  protected DruidDBConnection druidDBConn;
+	  protected DruidDBConnection db;
 	  @ModelAttribute
 	  public void set(HttpServletRequest request,HttpServletResponse response){
 		  this.request = request;
@@ -168,13 +167,13 @@ public class HttpBase{
 	}
 
 	
-	public DruidDBConnection getDruidDBConn() {
-		return druidDBConn;
+	public DruidDBConnection getDb() {
+		return db;
 	}
 	
 	@Resource(name="druidDBConnection")
-	public void setDruidDBConn(DruidDBConnection druidDBConn) {
-		this.druidDBConn = druidDBConn;
+	public void setDb(DruidDBConnection druidDBConn) {
+		this.db = druidDBConn;
 	}
 
 	public static Logger getLogger() {
