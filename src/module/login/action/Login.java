@@ -29,10 +29,11 @@ import tools.StringTools;
 @Controller
 public class Login extends HttpBase{
 	private static final Logger logger = Logger.getLogger(Login.class);
+	
 	 @RequestMapping(value="/loginUser",method=RequestMethod.POST)
 	 public void loginIn(){
 		 try {
-			System.out.println(db.searchToMapList("SELECT * FROM pipeinfo_s WHERE EVENTID = 'c2f2de9c-6c43-4322-b33b-f34b6d15c485'"));;
+			System.out.println(db.searchToMapList("SELECT * FROM pipeinfo_s WHERE EVENTID = 'c2f2de9c-6c43-4322-b33b-f34b6d15c485'"));
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
