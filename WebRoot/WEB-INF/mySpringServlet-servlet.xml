@@ -30,12 +30,6 @@
 	<!-- 可以直接相应转发的页面, 而无需再经过 Handler 的方法 <mvc:view-controller path="/success" 
 		view-name="success"/> -->
 
-	<import resource="classes/module/login/xml/Login-spring.xml" />
-	<import resource="classes/module/userinfo/xml/UserInfo-Spring.xml" />
-	<import resource="classes/module/upload/xml/File-upload.xml" />
-	<import resource="classes/module/tree/xml/tree-update.xml" />
-	<import resource="druid-config.xml" />
-
 	<!-- 配置视图解析器 return "add",去找 /WEB-INF/views/add.jsp -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -72,4 +66,11 @@
 	     </map>
 	   </property>
 	</bean>
+	<bean id="testTranscation" class="testtransaction.userinfo.UserInfo"></bean>
+	<import resource="classes/module/login/xml/Login-spring.xml" />
+	<import resource="classes/module/userinfo/xml/UserInfo-Spring.xml" />
+	<import resource="classes/module/upload/xml/File-upload.xml" />
+	<import resource="classes/module/tree/xml/tree-update.xml" />
+	<import resource="druid-config.xml" />
+	<import resource="mySpringServlet-transaction.xml" />
 </beans>

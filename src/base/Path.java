@@ -2,7 +2,6 @@ package base;
 
 /**
  * 系统相关的一些路径
- * @author jacky-chueng
  *
  */
 public final class Path {

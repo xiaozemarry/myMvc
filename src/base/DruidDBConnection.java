@@ -28,6 +28,7 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -36,21 +37,33 @@ import com.alibaba.druid.pool.DruidDataSource;
 
 public class DruidDBConnection{
 	public DruidDBConnection() {
-		// TODO Auto-generated constructor stub
-		System.out.println("bbbbbbbbbbb");
 	}
 	private static final Logger logger = Logger.getLogger(DruidDBConnection.class);
-	//private static Object lock = new Object();
 	private static DruidDataSource  druidDataSource;
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>(){
-		protected Connection initialValue() {
-			System.out.println("get from threadlocal...");
-			if(druidDataSource!=null)
-				try {
-					return druidDataSource.getConnection();
-				} catch (SQLException e) {
-					logger.error("[ {threadLocal getConnection} ]",e);
-				}
+		protected Connection initialValue(){
+			logger.info("get from threadlocal...");
+			if(druidDataSource!=null) {
+				/**
+				 * There is one important difference: dataSource.getConnection()
+				 * always returns a new connection obtained from the dataSource
+				 * or connection pool. DataSourceUtils.getConnection() checks if
+				 * there is an active transaction for the current thread. If
+				 * there is one, it will return connection with this
+				 * transaction. If there is none it will behave exactly the same
+				 * way as dataSource.getConnection().
+				 * 
+				 * You need to be careful when using
+				 * DataSourceUtils.getConnection(). If it returns connection for
+				 * the active transaction it means someone else will be closing
+				 * it since it's the responsibility of whoever opened the
+				 * transaction. On the other hand, if it returns a brand new
+				 * connection from the dataSource it's you who should
+				 * commit/rollback/close it.
+				 */
+				 Connection con = DataSourceUtils.getConnection(druidDataSource);
+				 return con;
+			}
 			return null;
 		};
 	};
@@ -58,17 +71,10 @@ public class DruidDBConnection{
 
     
 	public void closeConnection(Connection connection) {
-		if (connection != null)
-		{
-			try{
-				connection.close();
-				threadLocal.remove();
-			} catch (SQLException e){
-				logger.error("[ { when colse connection } ]",e);
-			}
-		}
-	}
-	
+		DataSourceUtils.releaseConnection(connection,druidDataSource);
+	    threadLocal.remove();
+  }
+
 	public Connection getDefaultConnection(){
 		return null;
 	}

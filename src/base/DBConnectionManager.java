@@ -1,6 +1,7 @@
 package base;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -75,7 +76,7 @@ public class DBConnectionManager {
 			info.setProperty("house-keeping-sleep-time","50000");//自动检测时间
 			info.setProperty("proxool.test-before-use", "true");
 			info.setProperty("proxool.test-after-use", "true");
-			//info.setProperty("proxool.maximum-active-time", "4000000");
+			info.setProperty("proxool.maximum-active-time", String.valueOf(Integer.MAX_VALUE));//连接的最长时间
 			if ("MSSQL".equals(custorm.getDBType())) 
 			{
 				JDBC_URL = "jdbc:sqlserver://" + custorm.getDBUrl() + ":"+ custorm.getDBPort() + ";databaseName="+ custorm.getDBName();

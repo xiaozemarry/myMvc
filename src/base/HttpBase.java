@@ -28,9 +28,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  *
  */
 public class HttpBase{
-	public HttpBase() {
-		System.out.println("cccccccccccc");
-	}
 	  private static final Logger logger = Logger.getLogger(HttpBase.class);
 	  protected HttpServletRequest request;
 	  protected HttpServletResponse response;

@@ -22,9 +22,9 @@
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		init-method="init" destroy-method="close">
 		<!-- 基本属性 url、user、password -->
-		<property name="url" value="jdbc:oracle:thin:@10.246.146.38:1521/ipms" />
-		<property name="username" value="thd2" />
-		<property name="password" value="thd2" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/adair" />
+		<property name="username" value="root" />
+		<property name="password" value="admin" />
 
 		<!-- 配置初始化大小、最小、最大 -->
 		<property name="initialSize" value="1" />
@@ -49,9 +49,9 @@
 		<property name="poolPreparedStatements" value="true" />
 		<property name="maxPoolPreparedStatementPerConnectionSize" value="50" />
  		<!-- 打开removeAbandoned功能 -->
-		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandoned" value="false" />
 		<!-- 1800秒，也就是30分钟 -->
-		<property name="removeAbandonedTimeout" value="1800" /> 
+		<property name="removeAbandonedTimeout" value="100" /> 
 		<!-- 关闭abanded连接时输出错误日志 -->
 		<property name="logAbandoned" value="true" /> 
 		<!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
