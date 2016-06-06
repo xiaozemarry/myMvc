@@ -30,14 +30,17 @@ public class TokenManager<T> {
 	     private Map<String,Map<Date,T>> tokenMap = new HashMap<String,Map<Date,T>>(500);
          private TokenManager(){
          }
+         
          private static TokenManager<?> tm = new TokenManager();
          public static TokenManager instance(){
         	 return tm;
          }
+         
          public Map<String,Map<Date,T>> getTokenMap() {
 			return tokenMap;
-		}
-         public String randomUppercaseChar(){
+		 }
+         
+        public String randomUppercaseChar(){
         	 final int min = 'A';//65
         	 final int max = 'Z';//90
              Random random = new Random();
@@ -88,11 +91,10 @@ public class TokenManager<T> {
         	 URL url = this.getClass().getResource("file/tokens.bin");
         	 logger.info("binPath:"+url);
         	 URI uri=null;
-			 try 
-			 {
+			 try{
 				if(url!=null)uri = url.toURI();
-			 } catch (URISyntaxException e) 
-			 { 
+			 } catch (URISyntaxException e){ 
+				 logger.error("URISyntaxException",e);
 			 }
         	 return uri;
          }
@@ -104,30 +106,25 @@ public class TokenManager<T> {
 			 URI uri = this.getTargetUri();
 			 if(uri==null)return;
 			 File file = new File(uri);
-			 try 
-			 {
+			 try{
 				if(!file.exists())file.createNewFile();
 				FileOutputStream out = new FileOutputStream(file);
 				ObjectOutputStream outputStream = new ObjectOutputStream(out);
 				outputStream.writeObject(this.tokenMap);
 				outputStream.close();
 				out.close();
-			 } catch (FileNotFoundException e) 
-			 {
-				 e.printStackTrace();
-			 } catch (IOException e) 
-			 {
-				e.printStackTrace();
+			 } catch (FileNotFoundException e){
+				 logger.error("fileNotFoundException:"+file.getAbsolutePath(),e);
+			 } catch (IOException e){
+				 logger.error("IOException:",e);
 			 }
-			 
          }
          
          /**
           * 装载已经有过的缓存(请勿随意调用)
           */
          public void loadingFile(){
-    	    try 
-    	    {
+    	    try{
 				 URI uri = this.getTargetUri();
 				 if(uri==null)return;
 				 File file = new File(uri);
@@ -137,12 +134,10 @@ public class TokenManager<T> {
         		 this.tokenMap  = (Map<String,Map<Date,T>>)inputStream.readObject();
         		 fileInputStream.close();
         		 inputStream.close();
-			} catch (IOException e) 
-			{
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) 
-			{
-				e.printStackTrace();
+			} catch (IOException e){
+				logger.error("IOException:",e);
+			} catch (ClassNotFoundException e){
+				logger.error("classNotFoundException",e);
             }
          }
          
