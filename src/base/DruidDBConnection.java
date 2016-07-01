@@ -23,6 +23,8 @@ import javax.annotation.Resources;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ArrayHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
@@ -42,7 +44,7 @@ public class DruidDBConnection{
 	private static DruidDataSource  druidDataSource;
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>(){
 		protected Connection initialValue(){
-			logger.info("get from threadlocal...");
+			logger.debug("get from threadlocal...");
 			if(druidDataSource!=null) {
 				/**
 				 * There is one important difference: dataSource.getConnection()
@@ -72,7 +74,7 @@ public class DruidDBConnection{
     
 	public void closeConnection(Connection connection) {
 		DataSourceUtils.releaseConnection(connection,druidDataSource);
-	    threadLocal.remove();
+	    threadLocal.remove();//必须remove
   }
 
 	public Connection getDefaultConnection(){
@@ -104,7 +106,252 @@ public class DruidDBConnection{
 		}
 		return null;
 	}
+	/**
+	 * Execute an SQL SELECT query without any replacement parameters and
+	 * Convert the first row of the ResultSet into a bean with the Class given
+	 * in the parameter.
+	 * 
+	 * Usage Demo:
+	 * 
+	 * <pre>
+	 * String sql = &quot;SELECT * FROM test&quot;;
+	 * Test test = ( Test ) searchToBean( Test.class, sql );
+	 * if ( test != null ) {
+	 * 
+	 * }
+	 * </pre>
+	 * 
+	 * @param type
+	 *            The Class of beans.
+	 * @param sql
+	 *            The SQL to execute.
+	 * @return An initialized JavaBean or null if there were no rows in the
+	 *         ResultSet.
+	 */
+	public Object searchToBeanOfSingle(String sql,Class type ) throws Exception {
+		Connection userConn = getConnection();
+		Object result = null;
+		try {
+			QueryRunner run = new QueryRunner();
+			ResultSetHandler h = new BeanHandler( type );
+			result = run.query( userConn, sql, h );
+		}
+		catch ( Exception _e ) {
+			throw _e;
+		}
+		finally {
+			closeConnection(userConn);
+		}
+		return result;
+	}
 
+	/**
+	 * Execute an SQL SELECT query without any replacement parameters and
+	 * Convert the first row of the ResultSet into a bean with the Class given
+	 * in the parameter.
+	 * 
+	 * Usage Demo:
+	 * 
+	 * <pre>
+	 * String sql = &quot;SELECT * FROM test&quot;;
+	 * Test test = ( Test ) searchToBean( Test.class, sql );
+	 * if ( test != null ) {
+	 * 
+	 * }
+	 * </pre>
+	 * 
+	 * @param type
+	 *            The Class of beans.
+	 * @param sql
+	 *            The SQL to execute.
+	 * @return An initialized JavaBean or null if there were no rows in the
+	 *         ResultSet.
+	 */
+	public Object searchToBeanOfSingle( Class type, String sql ) throws Exception {
+		Connection userConn = getConnection();
+		Object result = null;
+		try {
+			QueryRunner run = new QueryRunner();
+			ResultSetHandler h = new BeanHandler( type );
+			result = run.query( userConn, sql, h );
+		}
+		catch ( Exception _e ) {
+			throw _e;
+		}
+		finally {
+			closeConnection(userConn);
+		}
+		return result;
+	}
+
+
+	/**
+	 * Executes the given SELECT SQL with a single replacement parameter and
+	 * Convert the first row of the ResultSet into a bean with the Class given
+	 * in the parameter.
+	 * 
+	 * @param type
+	 *            The Class of beans.
+	 * @param sql
+	 *            The SQL to execute.
+	 * @param param
+	 *            The replacement parameter.
+	 * @return An initialized JavaBean or null if there were no rows in the
+	 *         ResultSet.
+	 */
+	public Object searchToBeanOfSingle( Class type, String sql, Object param ) throws Exception {
+		Connection userConn = getConnection();
+		Object result = null;
+		try {
+			QueryRunner run = new QueryRunner();
+			ResultSetHandler h = new BeanHandler( type );
+			result = run.query( userConn, sql, param, h );
+		}
+		catch ( Exception _e ) {
+			throw _e;
+		}
+		finally {
+			closeConnection(userConn);
+		}
+		return result;
+	}
+
+
+	/**
+	 * Executes the given SELECT SQL query and Convert the first row of the
+	 * ResultSet into a bean with the Class given in the parameter.
+	 * 
+	 * @param type
+	 *            The Class of beans.
+	 * @param sql
+	 *            The SQL to execute.
+	 * @param params
+	 *            Initialize the PreparedStatement's IN parameters with this
+	 *            array.
+	 * @return An initialized JavaBean or null if there were no rows in the
+	 *         ResultSet.
+	 */
+	public Object searchToBeanOfSingle( Class type, String sql, Object[] params ) throws Exception {
+		Connection userConn = getConnection();
+		Object result = null;
+		try {
+			QueryRunner run = new QueryRunner();
+			ResultSetHandler h = new BeanHandler( type );
+			result = run.query( userConn, sql, params, h );
+		}
+		catch ( Exception _e ) {
+			throw _e;
+		}
+		finally {
+			closeConnection(userConn);
+		}
+		return result;
+	}
+
+
+	/**
+	 * Execute an SQL SELECT query without any replacement parameters and
+	 * Convert the ResultSet rows into a List of beans with the Class given in
+	 * the parameter.
+	 * 
+	 * Usage Demo:
+	 * 
+	 * <pre>
+	 * ArrayList result = searchToBeanList( Test.class, sql );
+	 * Iterator iterator = result.iterator();
+	 * while ( iterator.hasNext() ) {
+	 * 	Test test = ( Test ) iterator.next();
+	 * 
+	 * }
+	 * </pre>
+	 * 
+	 * @param type
+	 *            The Class that objects returned from handle() are created
+	 *            from.
+	 * @param sql
+	 *            The SQL to execute.
+	 * @return A List of beans (one for each row), never null.
+	 */
+	public ArrayList searchToBeanList( Class type, String sql ) throws Exception {
+		Connection userConn = getConnection();
+		ArrayList result = null;
+		try {
+			QueryRunner run = new QueryRunner();
+			ResultSetHandler h = new BeanListHandler( type );
+			result = ( ArrayList ) run.query( userConn, sql, h );
+		}
+		catch ( Exception _e ) {
+			throw _e;
+		}
+		finally {
+			closeConnection(userConn);
+		}
+		return result;
+	}
+
+
+	/**
+	 * Executes the given SELECT SQL with a single replacement parameter and
+	 * Convert the ResultSet rows into a List of beans with the Class given in
+	 * the parameter.
+	 * 
+	 * @param type
+	 *            The Class that objects returned from handle() are created
+	 *            from.
+	 * @param sql
+	 *            The SQL to execute.
+	 * @param param
+	 *            The replacement parameter.
+	 * @return A List of beans (one for each row), never null.
+	 */
+	public ArrayList searchToBeanList( Class type, String sql, Object param ) throws Exception {
+		Connection userConn = getConnection();
+		ArrayList result = null;
+		try {
+			QueryRunner run = new QueryRunner();
+			ResultSetHandler h = new BeanListHandler( type );
+			result = ( ArrayList ) run.query( userConn, sql, param, h );
+		}
+		catch ( Exception _e ) {
+			throw _e;
+		}
+		finally {
+			closeConnection(userConn);
+		}
+		return result;
+	}
+
+
+	/**
+	 * Executes the given SELECT SQL query and Convert the ResultSet rows into a
+	 * List of beans with the Class given in the parameter.
+	 * 
+	 * @param type
+	 *            The Class that objects returned from handle() are created
+	 *            from.
+	 * @param sql
+	 *            The SQL to execute.
+	 * @param params
+	 *            Initialize the PreparedStatement's IN parameters with this
+	 *            array.
+	 * @return A List of beans (one for each row), never null.
+	 */
+	public ArrayList searchToBeanList( Class type, String sql, Object[] params ) throws Exception {
+		Connection userConn = getConnection();
+		ArrayList result = null;
+		try {
+			QueryRunner run = new QueryRunner();
+			ResultSetHandler h = new BeanListHandler( type );
+			result = ( ArrayList ) run.query( userConn, sql, params, h );
+		}
+		catch ( Exception _e ) {
+			throw _e;
+		}
+		finally {
+			closeConnection(userConn);
+		}
+		return result;
+	}
 	/**
 	 * Execute an SQL SELECT query without any replacement parameters and place
 	 * the column values from the first row in an Object[].
@@ -219,13 +466,11 @@ public class DruidDBConnection{
 	 *         rows in the ResultSet.
 	 */
 	public Map searchToMap(String sql) throws Exception {
-
 		Connection userConn = getConnection();
 		Map result = new HashMap();
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new MapHandler();
-
 			result = (Map) run.query(userConn, sql, h);
 		} catch (Exception _e) {
 			throw _e;
@@ -248,13 +493,11 @@ public class DruidDBConnection{
 	 *         rows in the ResultSet.
 	 */
 	public Map searchToMap(String sql, Object param) throws Exception {
-
 		Connection userConn = getConnection();
 		Map result = null;
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new MapHandler();
-
 			result = (Map) run.query(userConn, sql, param, h);
 		} catch (Exception _e) {
 			throw _e;
@@ -278,17 +521,14 @@ public class DruidDBConnection{
 	 *         rows in the ResultSet.
 	 */
 	public Map searchToMap(String sql, Object... params) throws Exception {
-
 		Connection userConn = getConnection();
 		Map result = null;
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new MapHandler();
-
 			result = (Map) run.query(userConn, sql, params, h);
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -315,17 +555,14 @@ public class DruidDBConnection{
 	 * @return A List of Maps, never null.
 	 */
 	public ArrayList searchToMapList(String sql) throws Exception {
-
 		Connection userConn = getConnection();
 		ArrayList result = new ArrayList();
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new MapListHandler();
-
 			result = (ArrayList) run.query(userConn, sql, h);
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -343,17 +580,14 @@ public class DruidDBConnection{
 	 * @return A List of Maps, never null.
 	 */
 	public ArrayList searchToMapList(String sql, Object param) throws Exception {
-
 		Connection userConn = getConnection();
 		ArrayList result = null;
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new MapListHandler();
-
 			result = (ArrayList) run.query(userConn, sql, param, h);
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -372,17 +606,14 @@ public class DruidDBConnection{
 	 * @return A List of Maps, never null.
 	 */
 	public ArrayList searchToMapList(String sql, Object... params) throws Exception {
-
 		Connection userConn = getConnection();
 		ArrayList result = null;
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new MapListHandler();
-
 			result = (ArrayList) run.query(userConn, sql, params, h);
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -397,18 +628,14 @@ public class DruidDBConnection{
 	 * @throws Exception
 	 */
 	public Object searchToObject(String sql) throws Exception {
-
 		Connection userConn = getConnection();
 		Object result = null;
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new ScalarHandler(1);
-
 			result = run.query(userConn, sql, h);
-
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -416,18 +643,14 @@ public class DruidDBConnection{
 	}
 
 	public Object searchToObject(String sql, Object params) throws Exception {
-
 		Connection userConn = getConnection();
 		Object result = null;
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new ScalarHandler(1);
-
 			result = run.query(userConn, sql, params, h);
-
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -435,18 +658,14 @@ public class DruidDBConnection{
 	}
 
 	public Object searchToObject(String sql, Object... params) throws Exception {
-
 		Connection userConn = getConnection();
 		Object result = null;
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new ScalarHandler(1);
-
 			result = run.query(userConn, sql, params, h);
-
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -464,16 +683,13 @@ public class DruidDBConnection{
 	 * @return The number of rows updated per statement.
 	 */
 	public int[] batch(String sql, Object[][] params) throws Exception {
-
 		Connection userConn = getConnection();
 		int[] rows = null;
 		try {
 			QueryRunner run = new QueryRunner();
-
 			rows = run.batch(userConn, sql, params);
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -489,16 +705,13 @@ public class DruidDBConnection{
 	 * @return The number of rows updated.
 	 */
 	public int update(String sql) throws Exception {
-
 		Connection userConn = getConnection();
 		int rows = 0;
 		try {
 			QueryRunner run = new QueryRunner();
-
 			rows = run.update(userConn, sql);
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -516,16 +729,13 @@ public class DruidDBConnection{
 	 * @return The number of rows updated.
 	 */
 	public int update(String sql, Object param) throws Exception {
-
 		Connection userConn = getConnection();
 		int rows = 0;
 		try {
 			QueryRunner run = new QueryRunner();
-
 			rows = run.update(userConn, sql, param);
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -542,7 +752,6 @@ public class DruidDBConnection{
 	 * @return The number of rows updated.
 	 */
 	public int update(String sql, Object... params) throws Exception {
-
 		Connection userConn = getConnection();
 		int rows = 0;
 		try {
@@ -550,7 +759,6 @@ public class DruidDBConnection{
 			rows = run.update(userConn, sql, params);
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}

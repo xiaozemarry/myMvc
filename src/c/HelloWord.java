@@ -23,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -93,7 +94,7 @@ public class HelloWord extends HttpBase{
 		   custorm.setDbuser("cnooc");
 		   custorm.setDBUrl("192.168.100.66");
 		   custorm.setDBType("MSSQL");
-		   DBConn newConn = db.getNewInstanceDBConnByDBCustorm(custorm);
+		  // DBConn newConn = db.getNewInstanceDBConnByDBCustorm(custorm);
 		   try {
 			   //List alist = newConn.searchToMapList("select * from T_BASEPROCESSSEG where f_id='10000000004401'");
 			   //System.out.println(alist);
@@ -126,9 +127,14 @@ public class HelloWord extends HttpBase{
 	    }
 	   
 	   @RequestMapping(value="/resources/userInfo/{id}/{name}",method=RequestMethod.GET)
-	   public void restFull(@PathVariable String id,@PathVariable String name){
+	   @ResponseBody
+	   public String restFull(@PathVariable String id,@PathVariable String name){
 		   System.out.println("id:"+id);
 		   System.out.println("name:"+name);
+		   JSONObject obj = new JSONObject();
+		   obj.put("id", id);
+		   obj.put("name", name);
+		   return obj.toJSONString();
 	   }
 	   @RequestMapping(value="/resources/userInfo/{id}/{name}/getInfo/{age}",method=RequestMethod.GET)
 	   public void restFullA(@PathVariable String id,@PathVariable String name,@PathVariable String age){

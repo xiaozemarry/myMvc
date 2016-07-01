@@ -11,7 +11,10 @@
 	<bean id="helloWord" class="c.HelloWord" scope="request">
 		<!-- <property name="myUser" ref="userBiz"></property> -->
 	</bean>
+   <bean id="userDao" class="module.login.dao.UserDao" scope="request">
+	</bean>
 	<bean id="userLogin" class="module.login.action.Login" scope="request">
 		<property name="testTranscation" ref="testTranscation" />
+		<property name="userDao" ref="userDao" />
 	</bean>
 </beans>

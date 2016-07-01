@@ -27,10 +27,6 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
     public void postHandle(HttpServletRequest request,HttpServletResponse response, Object handler,ModelAndView modelAndView) throws Exception {
     	this.commonFilter(request, response, handler);
     }
-	@Override
-	public void destroy() {
-		
-	}
 	/**
 	 * servlet的过滤器
 	 */
@@ -40,7 +36,7 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
 	}
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		
+		logger.info("contextFilter init...");
 	}
 	
 	public void commonFilter(ServletRequest req, ServletResponse rep,Object chain){
@@ -97,5 +93,9 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
         {
 			logger.error("forward-IOException",e);
 		}
+	}
+	@Override
+	public void destroy() {
+		logger.info("contextFilter destroy...");
 	}
 }

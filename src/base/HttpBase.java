@@ -45,13 +45,13 @@ public class HttpBase{
 	   * @return
 	   */
 	 public Document reqeustParameterToDocument(HttpServletRequest request){
-		 Map<String, Object> map = this.reqeustParameterToMap(request);
+		 Map<String, Object> map = this.requestParameterToMap(request);
 		 if(map==null)return null;
 		 return new Document(map);
 	 }
 	  
-	 public Document reqeustParameterToDocument(HttpServletRequest request,List<String>  continueKey){
-		 Map<String,Object> map = this.reqeustParameterToMap(request,continueKey);
+	 public Document requestParameterToDocument(HttpServletRequest request,List<String>  continueKey){
+		 Map<String,Object> map = this.requestParameterToMap(request,continueKey);
 		 if(map==null)return null;
 		 return new Document(map);
 	 }
@@ -60,7 +60,7 @@ public class HttpBase{
 	 * @param request
 	 * @return
 	 */
-	public Map<String,Object> reqeustParameterToMap(HttpServletRequest request){
+	public Map<String,Object> requestParameterToMap(HttpServletRequest request){
 	     if(request==null)return null;
 	     Map<String,String[]> map =  request.getParameterMap();
 	     Set<String> set = map.keySet();
@@ -72,7 +72,7 @@ public class HttpBase{
 	    	 String rVal = null;
 	    	 String[] val = map.get(next);
 	    	 if(val!=null && val.length>0)rVal = StringUtils.trimToNull(val[0]);
-	    	 if(rVal==null)continue;
+	    	 //if(rVal==null)continue;
 	    	 rMap.put(next,rVal);
 	     }
 	     return rMap;
@@ -83,7 +83,7 @@ public class HttpBase{
 	 * @param continueKey 直接略过的(比如参数中a这个参数,假如咋们不需要用a,所以这个集合中就包括a)
 	 * @return
 	 */
-	 public Map<String,Object> reqeustParameterToMap(HttpServletRequest request,List<String>  continueKey){
+	 public Map<String,Object> requestParameterToMap(HttpServletRequest request,List<String>  continueKey){
 	     if(request==null)return null;
 	     Map<String,String[]> map =  request.getParameterMap();
 	     Set<String> set = map.keySet();
