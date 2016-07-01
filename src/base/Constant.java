@@ -44,4 +44,9 @@ public class Constant {
     * eg:2015/05/05
     */
    public static final SimpleDateFormat SDFYMD1 = new SimpleDateFormat("yyyy/MM/dd");
+   
+   /**
+    * 数据库默认受影响的条数(无法正常更新返回的结果)
+    */
+   public static final int DBEFFECTROWNUMBER = -10;
 }
