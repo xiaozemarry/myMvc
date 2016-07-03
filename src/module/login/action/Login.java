@@ -1,7 +1,6 @@
 package module.login.action;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,39 +8,31 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import abstractentity.PKOfDBEntity;
-import base.Constant;
-import base.HttpBase;
-import context.UrlFilter;
-import module.login.bean.User;
-import module.login.dao.UserDao;
 import testtransaction.userinfo.UserInfo;
 import tokens.TokenManager;
 import tools.HttpServletRequestTool;
-import tools.SQLTool;
 import tools.StringTools;
+import base.Constant;
+import base.HttpBase;
+import context.UrlFilter;
 
 @Controller
 public class Login extends HttpBase {
 	private static final Logger logger = Logger.getLogger(Login.class);
 	private UserInfo testTranscation;
-	private UserDao userDao;
+	//private UserDao userDao;
 
 	@RequestMapping(value = "/loginUser", method = RequestMethod.POST)
 	public void loginIn() {
 		try {
-			User user = new User();
-			//user.setName("张三");
-			user.setAge(50);
 			//userDao.insertOne(user);
 			//userDao.updateByEntity(user, user);
-			 System.out.println(userDao.searchToMap("select * from T_TAILOR_FIELD"));;
+			// System.out.println(userDao.searchToMap("select * from T_TAILOR_FIELD"));;
 			//userDao.updateOneById(user, new PKOfDBEntity("iddd","aaaaaaaa"));
 			//testTranscation.updateUserSalary(db);
 		} catch (Exception e2) {
@@ -124,21 +115,4 @@ public class Login extends HttpBase {
 	public void setTestTranscation(UserInfo testTranscation) {
 		this.testTranscation = testTranscation;
 	}
-
-	public UserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-	
-	public static void main(String[] args) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		User user = new User();
-		user.setName("张三");
-		user.setAge(50);
-		Map map = BeanUtils.describe(user);
-		System.out.println(map);
-	}
-
 }

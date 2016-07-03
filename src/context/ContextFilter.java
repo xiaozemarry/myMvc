@@ -78,6 +78,8 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
 		 String referer =  request.getHeader("referer");
          if(referer!=null)//记录当前连接信息,用户跳转到登录页面,如果登录成功,直接跳到当前请求的页面
          {
+//        	String relativeReferer =  referer.substring(basePath.length()-1,referer.length());
+//        	if(UrlFilter.instance().containsUrl(relativeReferer))return;
         	String qs = request.getQueryString();
         	if(qs!=null)referer+="?"+qs;
         	request.setAttribute("prevLink",referer);

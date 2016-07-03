@@ -16,7 +16,7 @@ import tools.SQLTool;
 import tools.Sequence;
 
 /**
- * 一般实体DAO类extrends的class
+ * 一般实体DAO类extends的class
  * @author 
  *
  */
@@ -86,14 +86,17 @@ public abstract class AbsEntity<T> extends DruidDBConnection{
     	SQLTool.ThisBean tb;
 		try {
 			String clazz = (String)updateMap.get("class");
-			if(clazz!=null){
-				int index = clazz.lastIndexOf(".")+1;
-				if(index!=-1){
-				   clazz = clazz.substring(index,clazz.length());
-				}else{
-				   clazz = clazz.substring(clazz.indexOf("class"),clazz.length());
-				}
-			   tb = SQLTool.getNativeUpdateEntityByMap(updateMap, conditionMap, clazz);
+			String tablename = (String)updateMap.get("table");
+			if(clazz!=null || tablename !=null){
+			   if(clazz!=null){
+					int index = clazz.lastIndexOf(".")+1;
+					if(index!=-1){
+					   clazz = clazz.substring(index,clazz.length());
+					}else{
+					   clazz = clazz.substring(clazz.indexOf("class"),clazz.length());
+					}
+			   }
+			   tb = SQLTool.getNativeUpdateEntityByMap(updateMap, conditionMap, clazz==null?tablename:clazz);
 			   String sql = tb.getStrSql();
 			   Object param[] = tb.getParams();
 			   return db.update(sql, param);
@@ -114,6 +117,9 @@ public abstract class AbsEntity<T> extends DruidDBConnection{
     	int res = Constant.DBEFFECTROWNUMBER;
     	try {
 			Map<String,Object> map = BeanUtils.describe(t);
+			if(map.get("id")==null){
+				map.put("id",Sequence.nextId());
+			}
 			return this.insertOne(map);
 		} catch (IllegalAccessException e) {
 			logger.error("",e);
@@ -130,18 +136,55 @@ public abstract class AbsEntity<T> extends DruidDBConnection{
      * @return
      */
     public int insertOne(Map<String,Object> map){
+		if(map.get("id")==null){
+			map.put("id",Sequence.nextId());
+		}
     	int res = -10;
     	SQLTool.ThisBean tb;
 		try {
 			String clazz = (String)map.get("class");
-			if(clazz!=null){
-				int index = clazz.lastIndexOf(".")+1;
-				if(index!=-1){
-				   clazz = clazz.substring(index,clazz.length());
-				}else{
-				   clazz = clazz.substring(clazz.indexOf("class"),clazz.length());
-				}
-			   tb = SQLTool.getNativeInsertEntityByMap(map,clazz);
+			String tablename = (String)map.get("table");
+			if(clazz!=null || tablename !=null){
+			   if(clazz!=null){
+					int index = clazz.lastIndexOf(".")+1;
+					if(index!=-1){
+					   clazz = clazz.substring(index,clazz.length());
+					}else{
+					   clazz = clazz.substring(clazz.indexOf("class"),clazz.length());
+					}
+			   }
+			   tb = SQLTool.getNativeInsertEntityByMap(map,clazz==null?tablename:clazz);
+			   String sql = tb.getStrSql();
+			   Object param[] = tb.getParams();
+			   return db.update(sql, param);
+			}
+		} catch (Exception e) {
+			logger.error("insert failed",e);
+			return res;
+		}
+    	return res;
+    }
+    /**
+     * 通过Map插入一条记录,数据库默认的主键名称为id
+     * @param t 实体类
+     * @return
+     */
+    private int insertOneWithPk(Map<String,Object> map){
+    	int res = -10;
+    	SQLTool.ThisBean tb;
+		try {
+			String clazz = (String)map.get("class");
+			String tablename = (String)map.get("table");
+			if(clazz!=null || tablename !=null){
+			   if(clazz!=null){
+					int index = clazz.lastIndexOf(".")+1;
+					if(index!=-1){
+					   clazz = clazz.substring(index,clazz.length());
+					}else{
+					   clazz = clazz.substring(clazz.indexOf("class"),clazz.length());
+					}
+			   }
+			   tb = SQLTool.getNativeInsertEntityByMap(map,clazz==null?tablename:clazz);
 			   String sql = tb.getStrSql();
 			   Object param[] = tb.getParams();
 			   return db.update(sql, param);
@@ -163,7 +206,7 @@ public abstract class AbsEntity<T> extends DruidDBConnection{
     	try {
 			Map<String,Object> map = BeanUtils.describe(t);
 			map.put(idNameOfDb,Sequence.nextId());
-			return this.insertOne(map);
+			return this.insertOneWithPk(map);
 		} catch (IllegalAccessException e) {
 			logger.error("",e);
 		} catch (InvocationTargetException e) {
@@ -181,7 +224,7 @@ public abstract class AbsEntity<T> extends DruidDBConnection{
      */
     public int insertOne(Map<String,Object> map,String idNameOfDb){
 	   	map.put(idNameOfDb, Sequence.nextId());
-    	return this.insertOne(map);
+    	return this.insertOneWithPk(map);
     }
     /**
      * 批量更新(该方法地层调用DruidDBConnection中的batch方法,只是sql语句通过参数t来动态生成 的)

@@ -21,10 +21,16 @@ public class SQLTool {
     		throw new NullPointerException("paramser of map can not be null");
     	}
     	String c = "class";
+    	String table = "table";
     	boolean has = map.containsKey(c);
     	if(has){
     		logger.info("has key named [class],remove it now");
     		map.remove(c);
+    	}
+    	boolean has1 = map.containsKey(table);
+    	if(has1){
+    		logger.info("has key named [table],remove it now");
+    		map.remove(table);
     	}
     	
 		StringBuilder sb = new StringBuilder("INSERT INTO ");
