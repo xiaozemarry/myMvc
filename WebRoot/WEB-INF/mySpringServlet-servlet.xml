@@ -78,8 +78,11 @@
 	<import resource="druid-config.xml" />
     <import resource="mySpringServlet-transaction.xml" />
     
-    <bean id="userDao" class="module.user.dao.UserDao"></bean>
-    <bean id="userAction" class="module.user.action.UserAction" scope="request">
-      <property name="uDao" ref="userDao"></property>
-    </bean>
+    
+	<!-- 
+		<bean id="userDao" class="module.user.dao.UserDao"></bean>
+	    <bean id="userAction" class="module.user.action.UserAction" scope="request">
+	      <property name="uDao" ref="userDao"></property>
+	    </bean>
+	 -->
 </beans>

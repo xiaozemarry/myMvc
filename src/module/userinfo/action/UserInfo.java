@@ -34,7 +34,7 @@ public class UserInfo extends HttpBase{
 		} catch (Exception e1) 
 		{
 		}
-		final String sql = sqlConfig.getSql(db,"queryUserInfo");
+		final String sql = sqlConfig.getSql("ora","queryUserInfo");
 		System.out.println(sql);
 		try 
 		{

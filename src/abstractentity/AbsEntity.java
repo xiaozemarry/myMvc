@@ -18,9 +18,9 @@ import tools.Sequence;
 /**
  * 一般实体DAO类extends的class
  * @author 
- *
+ *public abstract class AbsEntity<T> extends DruidDBConnection{
  */
-public abstract class AbsEntity<T> extends DruidDBConnection{
+public abstract class AbsEntity<T>{
 	private Logger logger = Logger.getLogger(AbsEntity.class);
     protected DruidDBConnection db;
     

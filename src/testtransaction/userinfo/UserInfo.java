@@ -1,23 +1,35 @@
 package testtransaction.userinfo;
 
+import java.sql.Connection;
 import java.util.Map;
 
-import base.DruidDBConnection;
+import abstractentity.AbsEntity;
+import module.login.bean.User;
 
-public class UserInfo{
+public class UserInfo extends AbsEntity<User>{
 	public boolean saveUser() {
 		boolean re = false;
 		
 		return re;
 	}
 	
-	public boolean updateUserSalary(DruidDBConnection db) throws Exception{
+	public boolean updateUserSalary() throws Exception{
 		boolean re = false;
-		String sql1 = "update user set salary = salary+10 where id = 1";
-		String sql2 = "update user set salary = salary-10 where id = 2";
+		String sql1 = "update userinfo set salary = salary+100 where id = 1";
+		String sql2 = "update userinfo set salary = salary-100 where id = 2";
+//		Connection connection =	db.getConnection();
+//		connection.setAutoCommit(false);
+//		connection.commit();
+		db.update(sql1);
+		db.update(sql1);
+		db.update(sql1);
+		db.update(sql1);
+		db.update(sql1);
+		db.update(sql1);
+		db.update(sql1);
 		db.update(sql1);
 		db.update(sql2);
-		db.update(sql1);
+		//db.searchToMap("select * from userinfo");
 //		String flag = null;
 //		flag.equals("");
 		return re;

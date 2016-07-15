@@ -20,16 +20,19 @@ import tools.StringTools;
 import base.Constant;
 import base.HttpBase;
 import context.UrlFilter;
+import module.login.dao.UserDao;
 
 @Controller
 public class Login extends HttpBase {
 	private static final Logger logger = Logger.getLogger(Login.class);
 	private UserInfo testTranscation;
-	//private UserDao userDao;
+    //private UserDao userDao;
 
-	@RequestMapping(value = "/loginUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/loginUser", method = {RequestMethod.POST,RequestMethod.GET})
 	public void loginIn() {
 		try {
+			System.out.println(testTranscation.updateUserSalary());
+			//return;
 			//userDao.insertOne(user);
 			//userDao.updateByEntity(user, user);
 			// System.out.println(userDao.searchToMap("select * from T_TAILOR_FIELD"));;
