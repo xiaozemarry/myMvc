@@ -1,24 +1,39 @@
 package module.login.action;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
 
 import testtransaction.userinfo.UserInfo;
 import tokens.TokenManager;
 import tools.HttpServletRequestTool;
 import tools.StringTools;
+import utils.ActionUtils;
+import utils.DBUtils;
 import base.Constant;
 import base.HttpBase;
+import base.bean.BaseDruidConnConfig;
 import context.UrlFilter;
 import module.login.dao.UserDao;
 
@@ -31,7 +46,25 @@ public class Login extends HttpBase {
 	@RequestMapping(value = "/loginUser", method = {RequestMethod.POST,RequestMethod.GET})
 	public void loginIn() {
 		try {
+			BaseDruidConnConfig config = (BaseDruidConnConfig) ActionUtils.getBean(request, "my205db");
+			
+			System.out.println(config);
+			System.out.println(db.getConnectionFromBean(config));
+//			BaseDruidConnConfig dd = new BaseDruidConnConfig("jdbc:oracle:thin:@10.112.6.205:1521/ipms","thd","thd");
+//			Connection con = db.getConnectionFromBean(dd);
+//			System.out.println(con);
 			System.out.println(testTranscation.updateUserSalary());
+//			ApplicationContext appContext = RequestContextUtils.getWebApplicationContext(request);
+//			DruidDataSource druidDataSource = (DruidDataSource)appContext.getBean("dataSource");
+//			DruidDataSource clone = druidDataSource.cloneDruidDataSource();
+//			clone.setUrl("jdbc:oracle:thin:@10.112.6.205:1521/ipms");
+//			clone.setUsername("thd");
+//			clone.setPassword("thd");
+			//ResultSet resultSet = DBUtils.query(clone.getConnection(), "select * from ",50);
+			//System.out.println(DBUtils.getTableColumnsByConn(clone.getConnection(), "select * from aaaaa"));;
+//			System.out.println(clone.getConnection());
+//			System.out.println(druidDataSource.getConnection());
+			//db.getConnection()
 			//return;
 			//userDao.insertOne(user);
 			//userDao.updateByEntity(user, user);

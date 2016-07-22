@@ -19,6 +19,8 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.annotation.Resources;
+import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -29,6 +31,7 @@ import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.web.context.ContextLoader;
@@ -36,15 +39,19 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.druid.pool.DruidDataSource;
 
+import base.bean.BaseDruidConnConfig;
+
 
 public class DruidDBConnection{
 	public DruidDBConnection() {
 	}
+	private static final Map<String,DataSource> myDataSource = new HashMap<String, DataSource>();
 	private static final Logger logger = Logger.getLogger(DruidDBConnection.class);
 	private static DruidDataSource  druidDataSource;
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>(){
 		protected Connection initialValue(){
-			logger.debug("get from threadlocal...");
+			final String threadName = Thread.currentThread().getName();
+			logger.info(threadName+"-->get connection from threadlocal...");
 			if(druidDataSource!=null) {
 				/**
 				 * There is one important difference: dataSource.getConnection()
@@ -64,8 +71,10 @@ public class DruidDBConnection{
 				 * commit/rollback/close it.
 				 */
 				 Connection con = DataSourceUtils.getConnection(druidDataSource);
+				 logger.info(threadName+"-->get connection from threadlocal-->result:"+con);
 				 return con;
 			}
+			logger.error(threadName+"-->plan to get connection from threadlocal,but datasouce is null");
 			return null;
 		};
 	};
@@ -78,7 +87,9 @@ public class DruidDBConnection{
   }
 
 	public Connection getDefaultConnection(){
-		return null;
+		Connection conn = threadLocal.get();
+		Validate.notNull(conn);
+		return conn;
 	}
 	
 	/**
@@ -86,12 +97,39 @@ public class DruidDBConnection{
 	 * @param name
 	 * @return if(name==null)return 默认的连接</br>if(name!=null)返回对应的连接,maybe null;
 	 */
-	public Connection getConnectionByName(String name){
+	public Connection getConnectionByBean(HttpServletRequest request,String beanName){
+		//
 		return null;
 	}
 	
+	public DataSource getDataSourceFromBean(BaseDruidConnConfig config) throws NullPointerException{
+		Validate.notNull(config,"参数实例config不能为空");
+		if(!config.useful()){
+			logger.error("非法对象试图获取数据源:"+config);
+			throw new NullPointerException("非法对象试图获取数据源");
+		}
+		DataSource cache = myDataSource.get(config.toString());
+		if(cache==null){
+			DruidDataSource clone = this.getDruidDataSource().cloneDruidDataSource();
+			clone.setUrl(config.getUrl());
+			clone.setUsername(config.getUserName());
+			clone.setPassword(config.getPassWord());
+			myDataSource.put(config.toString(),clone);
+			return clone;
+		}
+		logger.info("对象试图获取数据源,并且找到该数据源,配置信息:"+config);
+		return cache;
+	}
+	
+	public Connection getConnectionFromBean(BaseDruidConnConfig config) throws SQLException{
+		DataSource ds = this.getDataSourceFromBean(config);
+		return ds.getConnection();
+	}
+	
+	
+	
 	public Connection getConnection(){
-		return threadLocal.get();
+		return getDefaultConnection();
 	}
 	public Connection getConnection1() {
 		try {

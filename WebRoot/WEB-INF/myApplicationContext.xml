@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        classpath:../spring-xsd/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
+        classpath:../spring-xsd/spring-context-3.2.xsd
+        http://www.springframework.org/schema/mvc
+        classpath:../spring-xsd/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/tx 
+		classpath:../spring-xsd/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/aop 
+        classpath:../spring-xsd/spring-aop-3.2.xsd
+        ">
+
+	<context:component-scan base-package="org.springframework.samples.petclinic.web" />
+	<context:component-scan base-package="spring"></context:component-scan>
+	<context:component-scan base-package="controller" />
+	<!-- <context:component-scan base-package="module" /> -->
+	<!-- 配置视图解析器：如何把 handler 方法返回值解析为实际的物理视图 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="prefix" value="/WEB-INF/views/"></property> <property name="suffix" 
+		value=".jsp"></property> </bean> -->
+	<!-- 如果使用了静态资源文件，如 jsp 页面引入jq -->
+	<!-- 使用默认的 Servlet 来处理静态资源文件 -->
+	<mvc:default-servlet-handler />
+	<!-- 让 springmvc 自动的选择要处理的请求 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	<!-- 可以直接相应转发的页面, 而无需再经过 Handler 的方法 <mvc:view-controller path="/success" 
+		view-name="success"/> -->
+
+	<!-- 配置视图解析器 return "add",去找 /WEB-INF/views/add.jsp -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!--指定所在位置 -->
+		<property name="prefix" value="/WEB-INF/views/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	<!--拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			   <!-- 需排除拦截的地址
+   			<mvc:exclude-mapping path="/login.htm"/>    -->  
+			<bean class="context.ContextFilter" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!-- druid connection pool setting -->
+	<bean id="druidDBConnection" class="base.DruidDBConnection">
+		<property name="druidDataSource" ref="dataSource"></property>
+	</bean>
+	
+	<bean id="httpBase" class="base.HttpBase">
+		<property name="db" ref="druidDBConnection"></property>
+	</bean>
+	<bean id="my205db" class = "base.bean.BaseDruidConnConfig">
+		<property name = "url" value="jdbc:oracle:thin:@10.112.6.205:1521/ipms"/>
+		<property name = "userName" value="thd"/>
+		<property name = "passWord" value="thd"/>
+	</bean>
+	<bean id='druidConnForMore' class="base.bean.DruidConnForMore" scope="singleton">
+	   <property name = "more">
+	     <map>
+	          <!--项目中默认使用的连接-->
+	          <entry key="default" value="dataSource" />
+	          <!-- 其他可能需要的连接... -->
+	          <entry key="thd" value="dataSource" />
+	     </map>
+	   </property>
+	</bean>
+	<!--全局异常-->
+	<bean id="exceptionResolver" class="base.exception.GlobleException"/> 
+	<bean id="testTranscation" class="testtransaction.userinfo.UserInfo"></bean>
+	<import resource="classes/module/login/xml/Login-spring.xml" />
+	<import resource="classes/module/userinfo/xml/UserInfo-Spring.xml" />
+	<import resource="classes/module/upload/xml/File-upload.xml" />
+	<import resource="classes/module/tree/xml/tree-update.xml" />
+	<import resource="druid-config.xml" />
+    <import resource="mySpringServlet-transaction.xml" />
+    
+	<!-- 
+		<bean id="userDao" class="module.user.dao.UserDao"></bean>
+	    <bean id="userAction" class="module.user.action.UserAction" scope="request">
+	      <property name="uDao" ref="userDao"></property>
+	    </bean>
+	 -->
+</beans>

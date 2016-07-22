@@ -39,6 +39,9 @@
 	<session-config>
 		<session-timeout>-1</session-timeout>
 	</session-config>
+<!--    <listener>  
+	 <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+   </listener>  -->
 	<!-- druid监控开始 -->
 	<filter>
     <filter-name>DruidWebStatFilter</filter-name>
@@ -89,9 +92,10 @@
 	    <url-pattern>/*</url-pattern>
 	 </filter-mapping>
 	 -->
-  <listener>
+  <!--request监听-->
+   <listener>
 	<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-  </listener>
+  </listener> 
 	<!--编码 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -166,6 +170,11 @@
 	<servlet>
 		<servlet-name>mySpringServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>  
+	        <param-name>contextConfigLocation</param-name>
+	        <param-value>/WEB-INF/myApplicationContext.xml</param-value>
+    	</init-param>
+    	<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>mySpringServlet</servlet-name>

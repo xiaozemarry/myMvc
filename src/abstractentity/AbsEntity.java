@@ -254,11 +254,11 @@ public abstract class AbsEntity<T>{
 				   }
     			}
 		} catch (IllegalAccessException e) {
-			logger.error("",e);
+			logger.error("{}",e);
 		} catch (InvocationTargetException e) {
-			logger.error("",e);
+			logger.error("{}",e);
 		} catch (NoSuchMethodException e) {
-			logger.error("",e);
+			logger.error("{}",e);
 		}
     	return res;
     }
