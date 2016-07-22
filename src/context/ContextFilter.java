@@ -43,7 +43,8 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
 		 HttpServletRequest request = (HttpServletRequest) req;
 		 HttpServletResponse response=(HttpServletResponse)rep;
 		
-  	     final String basePath = new HttpServletRequestTool(request).getBasePath();
+  	     //final String basePath = new HttpServletRequestTool(request).getBasePath();
+		 final String basePath = HttpServletRequestTool.getBasePath(request);
 		 final String currentFullPath = request.getRequestURL().toString();
 		 final String currentReqeustPath = currentFullPath.substring(basePath.length()-1,currentFullPath.length());
 		 
@@ -70,6 +71,7 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
 			}
 			else 
 			{
+				logger.error("not javax.servlet.FilterChain instance,return it now,chain is:"+chain);
 				return;
 			}
 		 }

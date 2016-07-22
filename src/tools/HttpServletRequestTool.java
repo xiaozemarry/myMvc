@@ -55,5 +55,24 @@ public class HttpServletRequestTool {
 		//String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 		//return basePath;
 	}
+	
+	/**
+	 * 获取base路径 http://xxx.xxx.xx.xx:x/projectName/
+	 * @return
+	 */
+	public static String getBasePath(HttpServletRequest request){
+		String path = request.getContextPath();
+		StringBuilder sb = new StringBuilder();
+		sb.append(request.getScheme());
+		sb.append("://");
+		sb.append(request.getServerName());
+		sb.append(":");
+		sb.append(request.getServerPort());
+		sb.append(path);
+		sb.append("/");
+		return sb.toString();
+		//String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+		//return basePath;
+	}
 
 }
