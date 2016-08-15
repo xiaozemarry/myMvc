@@ -1,0 +1,99 @@
+--请注意:执行前请仔细阅读该说明和操作步骤,如不阅读,出现任何未知的错误,与本人无关,多谢合作.
+--使用说明,存储过程有3个参数,pg_name,pg_id,producitids
+--当pg_id为null(就是不传参数)的时候,执行更新
+--其他的情况执行插入,具体请看代码
+
+--步骤
+--1:定义一个自定义类型
+CREATE OR REPLACE TYPE ty_str_split IS TABLE OF VARCHAR2 (4000);
+--2:创建截取字符串的方法
+
+CREATE OR REPLACE FUNCTION fn_split (p_str IN VARCHAR2, p_delimiter IN VARCHAR2)
+      RETURN ty_str_split PIPELINED
+IS
+      j INT := 0;
+    i INT := 1;
+    len INT := 0;
+    len1 INT := 0;
+    str VARCHAR2 (4000);
+BEGIN
+      len := LENGTH (p_str);
+    len1 := LENGTH (p_delimiter);
+      WHILE j < len
+      LOOP
+          j := INSTR (p_str, p_delimiter, i);
+          IF j = 0
+          THEN
+              j := len;
+            str := SUBSTR (p_str, i);
+            PIPE ROW (str);
+              IF i >= len
+              THEN
+                EXIT;
+            END IF;
+          ELSE
+            str := SUBSTR (p_str, i, j - i);
+            i := j + len1;
+            PIPE ROW (str);
+        END IF;
+    END LOOP;
+      RETURN;
+END fn_split;
+
+--3:创建一个包
+CREATE OR REPLACE PACKAGE mytypes 
+AS 
+TYPE cursortype IS REF CURSOR;
+END mytypes;
+--4:创建存储过程,名称自己定义,我这里是简写的
+CREATE OR REPLACE PROCEDURE mypro(pg_name in VARCHAR,pg_id in VARCHAR,producitids IN VARCHAR,cursoroft_productgroup OUT mytypes.cursortype,cursoroft_fm_pg_product OUT mytypes.cursortype)
+ IS 
+ CURSOR producitidtable IS SELECT * FROM TABLE (CAST (FN_SPLIT(producitids,',') AS ty_str_split));
+ p1 varchar(20); --vs_msg VARCHAR2(4000); 
+ p2 varchar(20);
+ pmax number;
+ pg_id_ident number;
+  BEGIN      
+     IF(pg_id IS NULL)THEN
+		--Dbms_output.Put_line('执行插入');
+	    p1 := pg_name;
+	      execute immediate 'select max(pg_id) from t_productgroup' into  pg_id_ident;
+	      pg_id_ident:=pg_id_ident+1;
+	      --数据插入t_productgroup
+	      INSERT INTO t_productgroup(pg_id,pg_name,status,create_date,last_modify_time) VALUES (pg_id_ident,p1,'01',SYSDATE(),SYSDATE());
+	      execute immediate 'select max(conn_id) from t_fm_pg_product' into  pmax;
+	      --Dbms_output.Put_line('打印信息'||pmax);
+	      
+	      FOR item IN producitidtable 
+	      LOOP
+	      	pmax:=pmax+1;--t_fm_pg_product表的id
+	        --Dbms_output.Put_line('打印信息'||item.COLUMN_VALUE||'ddd'||pmax);
+	        --往关联表中插入数据 
+	        INSERT INTO t_fm_pg_product(conn_id,pg_id,product_id,status,create_date,update_date) VALUES (pmax,pg_id_ident,item.COLUMN_VALUE,'01',SYSDATE(),SYSDATE());
+	      END LOOP;
+	      COMMIT;
+	      --返回游标
+	      OPEN cursoroft_productgroup FOR
+	      SELECT * FROM t_productgroup WHERE 1=1 AND PG_ID = pg_id_ident;
+	      
+	      OPEN cursoroft_fm_pg_product FOR 
+	      SELECT * FROM t_fm_pg_product WHERE 1=1 AND PG_ID = pg_id_ident;
+	      
+	     --Dbms_output.Put_line('执行'||pmax);
+	      
+     ELSE
+	     p2 := pg_id;
+         --Dbms_output.Put_line('执行更新');
+         UPDATE t_productgroup SET STATUS ='02',last_modify_time=SYSDATE() WHERE 1=1 AND  pg_id = p2;
+         UPDATE t_fm_pg_product SET STATUS = '02',update_date=SYSDATE() WHERE 1=1 AND  pg_id = p2;
+         COMMIT;
+	      --返回游标
+	      OPEN cursoroft_productgroup FOR
+	      SELECT * FROM t_productgroup WHERE 1=1 AND PG_ID = p2;
+	      
+	      OPEN cursoroft_fm_pg_product FOR 
+	      SELECT * FROM t_fm_pg_product WHERE 1=1 AND PG_ID = p2;
+     END IF;    
+  END; 
+--5:测试程序
+--6:程序并未做容错处理,比如参数的正确性检查,参数时候合理,如有需要,自己酌情添加

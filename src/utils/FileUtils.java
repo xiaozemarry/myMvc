@@ -8,6 +8,8 @@ import java.util.List;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import base.Constant;
+import base.Path;
 import exception.IllegaParams;
 import tools.Sequence;
 
@@ -17,7 +19,19 @@ import tools.Sequence;
  *
  */
 public class FileUtils {
-	
+	/**
+	 * 获取项目的src路径
+	 * @return
+	 */
+	public static String getProjectSrcPath(){
+		String path = System.getProperty("webapp.root");
+		if(path==null){//非运行在web模式
+			path = Path.USER_DIR;
+		}else{
+			path = new File(path).getParent();
+		}
+		return path+File.separator+"src";
+	}
 	public static JSONObject getJSONObject(JSONObject base,File file) throws IllegaParams{
 		String fileName = file.getName();
 		base.put("id",Sequence.nextId());
@@ -50,8 +64,9 @@ public class FileUtils {
 	}
 	
 	public static void main(String[] args) throws IllegaParams {
-		File file = new File("E:\\R_Attachment\\竣工期资料d");
-		System.out.println(FileUtils.getJSONArray(new JSONObject(),new JSONArray(), file, null));
+		//File file = new File("E:\\R_Attachment\\竣工期资料d");
+		//System.out.println(FileUtils.getJSONArray(new JSONObject(),new JSONArray(), file, null));
+		System.out.println(FileUtils.getProjectSrcPath());
 	}
 	
 	public class SimpleFileFilter implements FileFilter{

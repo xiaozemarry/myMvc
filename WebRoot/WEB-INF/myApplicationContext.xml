@@ -52,16 +52,23 @@
 	<!-- druid connection pool setting -->
 	<bean id="druidDBConnection" class="base.DruidDBConnection">
 		<property name="druidDataSource" ref="dataSource"></property>
+		<property name = "jdbcTemplate" ref="springJdbcTemplate"/> 
+	</bean>
+	
+	<bean id="springJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name = "dataSource" ref="dataSource"/> 
 	</bean>
 	
 	<bean id="httpBase" class="base.HttpBase">
 		<property name="db" ref="druidDBConnection"></property>
 	</bean>
+	
 	<bean id="my205db" class = "base.bean.BaseDruidConnConfig">
 		<property name = "url" value="jdbc:oracle:thin:@10.112.6.205:1521/ipms"/>
 		<property name = "userName" value="thd"/>
 		<property name = "passWord" value="thd"/>
 	</bean>
+	
 	<bean id='druidConnForMore' class="base.bean.DruidConnForMore" scope="singleton">
 	   <property name = "more">
 	     <map>
@@ -81,7 +88,7 @@
 	<import resource="classes/module/tree/xml/tree-update.xml" />
 	<import resource="druid-config.xml" />
     <import resource="mySpringServlet-transaction.xml" />
-    
+    <import resource="classes/module/dbdata/xml/DbData-spring.xml" />
 	<!-- 
 		<bean id="userDao" class="module.user.dao.UserDao"></bean>
 	    <bean id="userAction" class="module.user.action.UserAction" scope="request">

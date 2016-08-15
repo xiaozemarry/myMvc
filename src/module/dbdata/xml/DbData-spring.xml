@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        classpath:../spring-xsd/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
+        classpath:../spring-xsd/spring-context-3.2.xsd">
+
+	<bean id="dbData" class="module.dbdata.action.CopyData" scope="request">
+		<property name="tables" value="T_TAILOR_FIELD" />
+	</bean>
+   <bean id="测试库" class = "base.bean.BaseDruidConnConfig">
+		<property name = "url" value="jdbc:oracle:thin:@10.246.145.191:3000/ipms"/>
+		<property name = "userName" value="thd"/>
+		<property name = "passWord" value="thd"/>
+	</bean>
+	
+   <bean id="茂名" class = "base.bean.BaseDruidConnConfig">
+		<property name = "url" value="jdbc:oracle:thin:@10.112.6.205:1521/ipms"/>
+		<property name = "userName" value="thd"/>
+		<property name = "passWord" value="thd"/>
+	</bean>
+	
+</beans>
