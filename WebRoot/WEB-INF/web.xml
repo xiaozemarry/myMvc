@@ -36,6 +36,11 @@
 		<servlet-name>default</servlet-name>
 		<url-pattern>*.jpeg</url-pattern>
 	</servlet-mapping>
+	    <servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.woff</url-pattern>
+	</servlet-mapping>
+	
 	<session-config>
 		<session-timeout>-1</session-timeout>
 	</session-config>
@@ -143,15 +148,15 @@
 	<listener>
 		<listener-class>context.ContextStart</listener-class>
 	</listener>
-<!-- 	<filter>
+	<filter>
 		<filter-name>contextFilter</filter-name>
 		<filter-class>context.ContextFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>contextFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
-	<!-- 
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	 
 	<filter-mapping>
 		<filter-name>contextFilter</filter-name>
 		<url-pattern>*.html</url-pattern>
@@ -159,7 +164,7 @@
 	<filter-mapping>
 		<filter-name>contextFilter</filter-name>
 		<url-pattern>*.htm</url-pattern>
-	</filter-mapping> -->
+	</filter-mapping> 
 
 	<!--连接池管理界面 -->
 	<servlet>
@@ -183,6 +188,14 @@
 		<servlet-name>mySpringServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	   <filter>  
+       <filter-name>etagFilter</filter-name>  
+       <filter-class>org.springframework.web.filter.ShallowEtagHeaderFilter</filter-class>  
+    </filter>  
+    <filter-mapping>  
+       <filter-name>etagFilter</filter-name>  
+       <url-pattern>/*</url-pattern>
+    </filter-mapping>  
 	<!-- druid connection pool start -->
 	<servlet>
 		<servlet-name>DruidStatView</servlet-name>

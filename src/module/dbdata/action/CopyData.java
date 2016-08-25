@@ -1,6 +1,5 @@
 package module.dbdata.action;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -28,7 +27,6 @@ import module.dbdata.service.DbReader;
 import utils.ActionUtils;
 import utils.DBUtils;
 import utils.DateUtils;
-import utils.FileUtils;
 import utils.TemplateUtils;
 
 @Controller
@@ -91,7 +89,7 @@ public class CopyData extends HttpBase {
 		 try {
 			latch.await();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("latch wait ex:Interrupted by other Thread",e);
 		}
 		 long end = System.currentTimeMillis();
 		 try {

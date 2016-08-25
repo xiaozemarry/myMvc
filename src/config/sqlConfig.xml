@@ -5,4 +5,6 @@
 <!--执行外部的xml -->
 <import path="module/login/xml/Login-sql.xml"/>
 <import path="module/userinfo/xml/UserInfo-Sql.xml"/>
+<import path="module/database/xml/DataBase-sql.xml"/>
+
 </db>

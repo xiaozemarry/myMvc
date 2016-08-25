@@ -16,18 +16,18 @@
 	</mysql>
 	<ora>
 		<items>
-		<item id="queryPipe">
-		        <![CDATA[
-				    SELECT * FROM 
-					(
-					SELECT A.*, ROWNUM RN 
-					FROM (SELECT * FROM T_VO_PIPE WHERE F_ENTERID=8001) A 
-					WHERE ROWNUM <= 600000
-					)
-					WHERE RN >= 1
-				   ]]>
-		</item>
-			</items>
+			<item id="queryPipe">
+			        <![CDATA[
+					    SELECT * FROM 
+						(
+						SELECT A.*, ROWNUM RN 
+						FROM (SELECT * FROM T_VO_PIPE WHERE F_ENTERID=8001) A 
+						WHERE ROWNUM <= 600000
+						)
+						WHERE RN >= 1
+					   ]]>
+			</item>
+		</items>
 	</ora>
 	<mssql>
 	</mssql>

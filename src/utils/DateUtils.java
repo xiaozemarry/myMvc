@@ -1,9 +1,10 @@
 package utils;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import base.Constant;
 
 
 public class DateUtils {
@@ -14,8 +15,7 @@ public class DateUtils {
 	 * @throws ParseException
 	 */
 	public static String getMarks(int ms) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date baseDate = sdf.parse("2015-01-01 00:00:00");
+		Date baseDate = Constant.SDFYMDHMS.parse("2015-01-01 00:00:00");
 		Date addSeconds = org.apache.commons.lang.time.DateUtils.addMilliseconds(baseDate, ms);
 		Calendar instance = Calendar.getInstance();
 		instance.setTime(addSeconds);
@@ -33,6 +33,9 @@ public class DateUtils {
 	 * @throws ParseException
 	 */
 	public static String getMarks(long ms) throws ParseException {
+		if(ms>Integer.MAX_VALUE){
+			 return null;
+		}
 		return getMarks((int)ms);
 	}
 }

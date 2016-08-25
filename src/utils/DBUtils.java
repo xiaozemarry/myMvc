@@ -58,7 +58,23 @@ public class DBUtils {
 		return conn.createStatement();
 	}
 	
-	
+	public static Statement createStatement(Connection conn) throws SQLException{
+		return conn.createStatement();
+	}
+	/**
+	 * 查询ResultSet
+	 * @param conn 数据库连接
+	 * @param sql SQL语句
+	 * @return java.Sql.ResultSet
+	 * @throws SQLException
+	 */
+	public static ResultSet query(Connection conn, String sql)
+			throws SQLException {
+		logger.info("sql:"+sql);
+		conn.setAutoCommit(false);
+		Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+		return stmt.executeQuery(sql);
+	}
 	/**
 	 * 查询ResultSet
 	 * @param conn 数据库连接

@@ -40,6 +40,7 @@
 			 <!-- no-rollback-for出现这种异常不回滚,可以有多.','号分割 -->
 		     <tx:method name="update*" propagation="REQUIRED" rollback-for="Throwable" no-rollback-for="java.lang.NullPointerException"/>
 		     <tx:method name="insert*" propagation="REQUIRED" rollback-for="Throwable"/>
+		     <tx:method name="add*" propagation="REQUIRED" rollback-for="Throwable"/>
 		     <!-- other methods use the default transaction(REQUIRED) settings (see below) -->
     		 <tx:method name="*" rollback-for="Throwable"/>
 		</tx:attributes>
@@ -53,4 +54,10 @@
 		<aop:pointcut id="userinfoTreansaction" expression="execution(* testtransaction.userinfo.UserInfo.update*(..))" />
 		<aop:advisor pointcut-ref="userinfoTreansaction" advice-ref="txAdvice" />
 	</aop:config>
+	<!--所有module包下面的dao包中的方法均使用默认的txAdvice-->
+    <aop:config proxy-target-class="true">
+		<aop:pointcut id="commonDao" expression="execution(* module.*.dao.*(..))" />
+		<aop:advisor pointcut-ref="commonDao" advice-ref="txAdvice" />
+	</aop:config>
+	
 </beans>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db>
+	<ora>
+		<items>
+			<item id="queryTable">
+			        <![CDATA[
+						SELECT DISTINCT a. *
+						    , b.comments
+						FROM (SELECT table_name
+						          , column_name
+						          , data_type
+						          , data_length
+						      FROM user_tab_columns a
+						      WHERE a.TABLE_NAME = ?) a INNER
+						    JOIN user_col_comments b ON a.TABLE_NAME = b.TABLE_NAME
+						WHERE b.TABLE_NAME = ?
+					   ]]>
+			</item>
+		</items>
+	</ora>
+	<mssql>
+	</mssql>
+</db>

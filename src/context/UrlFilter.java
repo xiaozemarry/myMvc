@@ -60,6 +60,7 @@ public class UrlFilter {
         	try 
         	{
 				final String str  = StringUtils.trimToNull(IOUtils.toString(pageInput));
+				IOUtils.closeQuietly(pageInput);
 				if(str==null)
 				{
 					logger.info("在本程序中找到配置的文件,但是文件内容为空,将使用默认的路径:"+jsonObject.values().toString());
@@ -70,7 +71,7 @@ public class UrlFilter {
 					this.pageRel = JSONObject.parseObject(str);	
 				} catch (Exception e) 
 				{
-					logger.warn("配置文件内容格式错误!使用默认配置!");
+					logger.warn("配置文件内容格式错误!使用默认配置!",e);
 					this.pageRel = jsonObject;
 				}
 				logger.info("成功配置程序中面,但并未检查路径的有效性,该路径:"+this.pageRel.toString());
@@ -78,7 +79,9 @@ public class UrlFilter {
 			{
 				logger.error("config-page-error", e);
 			}	
-        }else logger.info("在本程序中并未找到配置的文件,将使用默认的路径:"+jsonObject.values().toString());
+        }else{
+        	logger.info("在本程序中并未找到配置的文件,将使用默认的路径:"+jsonObject.values().toString());
+        }
 	}
 	
     public JSONObject getPageRel() {
@@ -93,8 +96,9 @@ public class UrlFilter {
 	}
 
 	public void start(){
-		final String info = "正在读取在自定义过滤器中直接略过的路径...........共有"+this.urlList.size()+"条记录"; 
+		final String info = "正在读取在自定义过滤器中直接略过的路径,共有"+this.urlList.size()+"条记录"; 
 		logger.info(info);
+		logger.info("records can be requested anytime:"+this.getUrlList());
 	}
 
 	private static UrlFilter instance = new UrlFilter();

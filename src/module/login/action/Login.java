@@ -1,6 +1,9 @@
 package module.login.action;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Date;
@@ -12,6 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.sql.DataSource;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.alibaba.druid.pool.DruidDataSource;
@@ -41,19 +47,15 @@ import module.login.dao.UserDao;
 public class Login extends HttpBase {
 	private static final Logger logger = Logger.getLogger(Login.class);
 	private UserInfo testTranscation;
-    //private UserDao userDao;
 
 	@RequestMapping(value = "/loginUser", method = {RequestMethod.POST,RequestMethod.GET})
 	public void loginIn() {
 		try {
-			BaseDruidConnConfig config = (BaseDruidConnConfig) ActionUtils.getBean(request, "my205db");
-			
-			System.out.println(config);
-			System.out.println(db.getConnectionFromBean(config));
+//			BaseDruidConnConfig config = (BaseDruidConnConfig) ActionUtils.getBean(request, "my205db");
 //			BaseDruidConnConfig dd = new BaseDruidConnConfig("jdbc:oracle:thin:@10.112.6.205:1521/ipms","thd","thd");
 //			Connection con = db.getConnectionFromBean(dd);
 //			System.out.println(con);
-			System.out.println(testTranscation.updateUserSalary());
+//			System.out.println(testTranscation.updateUserSalary());
 //			ApplicationContext appContext = RequestContextUtils.getWebApplicationContext(request);
 //			DruidDataSource druidDataSource = (DruidDataSource)appContext.getBean("dataSource");
 //			DruidDataSource clone = druidDataSource.cloneDruidDataSource();
@@ -94,7 +96,7 @@ public class Login extends HttpBase {
 		}
 
 		// 登陆成功,设置token
-		String hasCookie = new HttpServletRequestTool(request).hasLoginCookie();
+		String hasCookie = HttpServletRequestTool.hasLoginCookie(request);
 		if (hasCookie != null) {
 			logger.debug(Constant.SDFYMDHMS.format(new Date())+ ":移除登录用户池中的信息--->" + hasCookie);
 			TokenManager.instance().remove(hasCookie);
@@ -130,20 +132,53 @@ public class Login extends HttpBase {
 	 * 注销登录
 	 */
 	@RequestMapping("/loginOut")
-	public void loginOut() {
-		String hasCookie = new HttpServletRequestTool(request).hasLoginCookie();
+	public String loginOut() {
+		String hasCookie = HttpServletRequestTool.hasLoginCookie(request);
 		if (hasCookie != null) {
 			logger.info(Constant.SDFYMDHMS.format(new Date())+ ":移除登录用户池中的信息--->" + hasCookie);
 			TokenManager.instance().remove(hasCookie);
 		}
-
+		//return "forward:/index.do"
+		//response.sendRedirect(UrlFilter.instance().getPageRel().getString("loginPage"));
+		return "redirect:"+UrlFilter.instance().getPageRel().getString("loginPage");
+		
+	}
+	
+	@RequestMapping(value="/mv",method={RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView get(){
+		ModelAndView mv = new ModelAndView();
+		//mv.setViewName("forward:index.jsp");
+		//假如前缀加redirect:或则forward的话,使用自定义的controller,否则,默认使用返回值+.jsp
+		Map<String, Object> map=null;
 		try {
-			response.sendRedirect(UrlFilter.instance().getPageRel().getString("loginPage"));
+			map = db.searchToMap("SELECT f_points FROM  T_VO_PIPELOD WHERE f_id = 127834936");
+			Blob points = (Blob) map.get("f_points");
+			InputStream inputStream = points.getBinaryStream();
+			int i = -1;
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			while ((i = inputStream.read()) != -1) {
+			    baos.write(i);
+			}
+			String content = baos.toString("utf-8");
+			//String strPoints = IOUtils.toString(points.getBinaryStream(),"UTF-8");
+			//System.out.println(strPoints);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		mv.setViewName("index");
+		return mv;
+	}
+	public static void main(String[] args) {
+		//byte[] b = new byte[]{41, -66, 12, -116, -35, -106, 91, 64, 126, -125, -35, 77, 67, 47, 53, 64, 0, 0, 0, -96, 119, -7, 68, 64, 0, 0, 0, 0, 0, 0, 0, 0};
+		byte[] b = new byte[]{ -66};
+		System.out.println(b.length);
+		try {
+			System.out.println(new String(b));
+			System.out.println(IOUtils.toString(b));
 		} catch (IOException e) {
-			logger.error("case when response.sendRedirect",e);
+			e.printStackTrace();
 		}
 	}
-
 	public UserInfo getTestTranscation() {
 		return testTranscation;
 	}
