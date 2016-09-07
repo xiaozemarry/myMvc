@@ -27,7 +27,7 @@ public class DateUtils {
 	}
 	
 	/**
-	 * 获取格式化的时分秒微秒(通常用于显示耗时)
+	 * 获取格式化的时分秒微秒,如果参数大于Integer.MAX_VALUE。返回null(通常用于显示耗时)
 	 * @param ms 时间差
 	 * @return
 	 * @throws ParseException

@@ -265,6 +265,7 @@ public class DBUtils {
 			closeDBResources(rs, statement, null);
 		}
 	}
+	
 	public static void closeDBResources(ResultSet rs, Statement stmt,
 			Connection conn) {
 		if (null != rs) {
@@ -346,7 +347,7 @@ public class DBUtils {
 		}
 	}
     /**
-     * 获取数据库字段的映射
+     * 获取数据库字段的映射,自动关闭ResultSet
      * @param rs java.sql.ResultSet
      * @return Map<String, Class<?>>--->key:列名称,value:当前列对应的java类型
      * @throws SQLException 
@@ -361,7 +362,7 @@ public class DBUtils {
 			Class<?> clazz = getSqlTypes(resultSetMetaData, dataType);
 			mapping.put(columnName,clazz);
 		}
-		logger.info("loop finish,close [ResultSet]");
+		logger.info("loop finish,close [java.sql.ResultSet]");
 		DBUtils.closeResultSet(rs);
 		return mapping;
 	}

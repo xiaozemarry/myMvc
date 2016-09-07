@@ -38,10 +38,10 @@ public class CopyData extends HttpBase {
 	@RequestMapping(value = "/testDb", method = { RequestMethod.POST, RequestMethod.GET })
 	public void testDb() {
 		try {
-			ResultSet rs = DBUtils.getOnlyForTableColumnsByConn(db.getConnection(),"T_TAILOR_FIELD");
+			ResultSet rs = DBUtils.getOnlyForTableColumnsByConn(db.getConnection(),"T_TAILOR_FORM");
 			Map<String,Class<?>> map = DBUtils.getColumnMapping(rs);
 			System.out.println(JSONObject.toJSONString(map));
-			System.out.println(TemplateUtils.autoProduceJavaFile("reflect.bean", "Auto", map));
+			System.out.println(TemplateUtils.autoProduceJavaFile("reflect.bean", "T_TAILOR_FORM", map));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

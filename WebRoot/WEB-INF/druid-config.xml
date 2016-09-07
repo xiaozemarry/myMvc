@@ -27,7 +27,7 @@
 		<property name="password" value="thd2" />
 
 		<!-- 配置初始化大小、最小、最大 -->
-		<property name="initialSize" value="1" />
+		<property name="initialSize" value="2" />
 		<property name="minIdle" value="1" />
 		<property name="maxActive" value="20" />
 
@@ -35,13 +35,13 @@
 		<property name="maxWait" value="60000" />
 
 		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="timeBetweenEvictionRunsMillis" value="600000" />
 
 		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
 		<property name="minEvictableIdleTimeMillis" value="300000" />
 
 		<property name="validationQuery" value="SELECT 'x' from dual" />
-		<property name="testWhileIdle" value="true" />
+		<property name="testWhileIdle" value="false" />
 		<property name="testOnBorrow" value="false" />
 		<property name="testOnReturn" value="false" />
 
@@ -55,7 +55,7 @@
 		<!-- 关闭abanded连接时输出错误日志 -->
 		<property name="logAbandoned" value="true" /> 
 		<!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
-		<property name="filters" value="stat,wall,mergeStat,log4j" />
+		<property name="filters" value="stat,wall,mergeStat,log4j" /> 
 		<!--  合并多个DruidDataSource的监控数据  -->
 		<property name="useGlobalDataSourceStat" value="true" />
 		<!-- 配置log4j -->
@@ -76,7 +76,7 @@
 	      -->
 		<property name="mergeSql" value="true" />
 		<property name="logSlowSql" value="true" />
-		<!-- 执行时间大于2s的均为慢sql -->
+		<!-- 执行时间大于1s的均为慢sql -->
 		<property name="slowSqlMillis" value="2000" />
 	</bean>
 	

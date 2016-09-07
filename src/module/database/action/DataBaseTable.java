@@ -28,7 +28,7 @@ public class DataBaseTable extends HttpBase{
 		}
 		Map<String,Object> map = new HashMap<String, Object>(2);
 		//map.put("rows",dataBaseService.getTableColumnsInfoByTableName("PIPEINFO"));
-		map.put("rows",dataBaseService.getTableColumnsInfoByTableName("mytable"));
+		map.put("rows",dataBaseService.getTableColumnsInfoByTableName("marker"));
 		//map.put("rows", 0);
 		//map.put("total",7);//多少页
 		//map.put("page",1);//当前页
