@@ -92,12 +92,12 @@ public class DbReader implements Callable<List<Future>> {
 	 * 备份原有的数据库
 	 */
 	public void createTableBak(){
-	 	String date = Constant.SDFYMDHMSA.format(new Date());
-		final String tableBakName = "MYTABLEBAK"+this.getTable();
+	 	//String date = Constant.SDFYMDHMSA.format(new Date());
+		final String tableBakName = "MYTABLEBAK_"+this.getTable();
 		String sql = "create table "+tableBakName+" as select * from "+this.getTable();
 		try {
 			String my = "SELECT COUNT(*) FROM USER_OBJECTS WHERE UPPER(OBJECT_NAME) = UPPER(?)";
-			int count = db.queryToCount(dsTo,my,this.getTable());
+			int count = db.queryToCount(dsTo,my,tableBakName);
 			if(count>0){
 				logger.info("要复制的表在当前数据库中存在:");
 			}else{

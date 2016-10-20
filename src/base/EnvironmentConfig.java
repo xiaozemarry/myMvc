@@ -23,31 +23,19 @@ public class EnvironmentConfig {
 	public EnvironmentConfig() {
 		InputStream is = null;
 		String fileName  = "/config/dbConfig.properties";// 默认文件存放路径
-
 		try {
 			p = (Properties) register.get(fileName);
 			if (p == null) {
-
 				String catalina_base = System.getProperty("catalina.base");
 				java.io.File f = new java.io.File(catalina_base + "/classes" + fileName);
-				if (false && f.exists()) {
-					try {
-						is = new FileInputStream(catalina_base + "/classes" + fileName);
-					}
-					catch (Exception e) {
-						System.out.println("数据库配置文件加载失败！[" + catalina_base + "/classes" + fileName + "]");
-					}
+				try {
+					is = new FileInputStream(fileName);
 				}
-				else {
-					try {
-						is = new FileInputStream(fileName);
-					}
-					catch (Exception e) {
-						if (fileName.startsWith("/"))
-							is = EnvironmentConfig.class.getResourceAsStream(fileName);
-						else
-							is = EnvironmentConfig.class.getResourceAsStream("/" + fileName);
-					}
+				catch (Exception e) {
+					if (fileName.startsWith("/"))
+						is = EnvironmentConfig.class.getResourceAsStream(fileName);
+					else
+						is = EnvironmentConfig.class.getResourceAsStream("/" + fileName);
 				}
 
 				p = new Properties();

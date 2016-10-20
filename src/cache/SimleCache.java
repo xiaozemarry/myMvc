@@ -29,7 +29,6 @@ public class SimleCache {
       map.put("aa4", "aa");
       jedis.hmset("aaaa",map);
       
-      
       System.out.println(jedis.set("name1","张三"));
       System.out.println(jedis.set("name2","张三"));
       System.out.println(jedis.set("name3","张三1"));

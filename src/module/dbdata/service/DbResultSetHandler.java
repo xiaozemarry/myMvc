@@ -13,6 +13,8 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.log4j.Logger;
 
+import com.alibaba.druid.proxy.jdbc.ClobProxyImpl;
+
 import base.DruidDBConnection;
 import utils.DBUtils;
 
@@ -34,11 +36,12 @@ public class DbResultSetHandler<V> implements Callable<V> {
 			ResultSet rs = DBUtils.query(dsFrom.getConnection(), searchSql, 5000);
 			Object[][] dbParams = (Object[][]) MethodUtils.invokeMethod(innerHandle, "handle", rs);
 			db.batch(dsTo, insertSql, dbParams);
-			this.getLatch().countDown();
 			return null;
 		} catch (Exception e) {
 			logger.error("{}", e);
 			return null;
+		}finally {
+			this.getLatch().countDown();
 		}
 	}
 
@@ -51,12 +54,16 @@ public class DbResultSetHandler<V> implements Callable<V> {
 
 		@Override
 		public Object handle(ResultSet rs) throws SQLException {
-			List params = new ArrayList(10000);
+			List<Object[]> params = new ArrayList<Object[]>(10000);
 			final int size = cc.size();
 			while (rs.next()) {
 				Object[] itemParams = new Object[size];
 				for (int j = 0; j <size; j++) {
-					Object value = rs.getObject(cc.get(j).toLowerCase());
+					final String key = cc.get(j).toLowerCase();
+					Object value = rs.getObject(key);
+					if(value instanceof com.alibaba.druid.proxy.jdbc.ClobProxyImpl){
+					   value=rs.getString(key);
+					}
 					itemParams[j] = value;
 				}
 				params.add(itemParams);

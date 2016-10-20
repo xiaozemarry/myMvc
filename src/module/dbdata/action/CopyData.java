@@ -53,8 +53,8 @@ public class CopyData extends HttpBase {
 		 logger.info(tables);
 		 String sql = "SELECT COUNT(*) FROM USER_OBJECTS WHERE UPPER(OBJECT_NAME) = UPPER(?)";
 		 StringTokenizer  st = new StringTokenizer(this.tables, ",");
-		 BaseDruidConnConfig config191 = (BaseDruidConnConfig) ActionUtils.getBean(request, "测试库");
-		 BaseDruidConnConfig config205 = (BaseDruidConnConfig) ActionUtils.getBean(request, "茂名");
+		 BaseDruidConnConfig config191 = (BaseDruidConnConfig) ActionUtils.getBean(request, "测试库");//数据来源
+		 BaseDruidConnConfig config205 = (BaseDruidConnConfig) ActionUtils.getBean(request, "榆济管道");
 		 logger.info("source fond it:"+config191);
 		 logger.info("target fond it:"+config205);
 		 DataSource ds191  = db.getDataSourceFromBean(config191);

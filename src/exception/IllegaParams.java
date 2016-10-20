@@ -16,13 +16,13 @@ public class IllegaParams extends Throwable{
 	
 	public IllegaParams(String msg,Object...objects){
 		this.msg = msg;
-		this.object = object;
+		this.object = objects;
 	}
 	
 	@Override
 	public String getMessage() {
 		if(this.msg!=null){
-			return this.getMessage();
+			return this.msg;
 		}else if(this.msg!=null && this.object!=null){
 			return String.format(this.msg,this.object);
 		}

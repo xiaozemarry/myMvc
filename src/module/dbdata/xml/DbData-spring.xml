@@ -9,18 +9,23 @@
         classpath:../spring-xsd/spring-context-3.2.xsd">
 
 	<bean id="dbData" class="module.dbdata.action.CopyData" scope="request">
-		<property name="tables" value="T_TAILOR_FIELD" />
+		<property name="tables" value="T_DB_KEYFIELDS" /><!-- T_TAILOR_FIELD,T_RMENU -->
 	</bean>
-   <bean id="测试库" class = "base.bean.BaseDruidConnConfig">
-		<property name = "url" value="jdbc:oracle:thin:@10.246.145.191:3000/ipms"/>
-		<property name = "userName" value="thd"/>
-		<property name = "passWord" value="thd"/>
+	<bean id="测试库" class="base.bean.BaseDruidConnConfig">
+		<property name="url" value="jdbc:oracle:thin:@10.246.145.191:3000/ipms" />
+		<property name="userName" value="thd" />
+		<property name="passWord" value="thd" />
 	</bean>
-	
-   <bean id="茂名" class = "base.bean.BaseDruidConnConfig">
-		<property name = "url" value="jdbc:oracle:thin:@10.112.6.205:1521/ipms"/>
-		<property name = "userName" value="thd"/>
-		<property name = "passWord" value="thd"/>
+
+	<bean id="正式环境" class="base.bean.BaseDruidConnConfig">
+		<property name="url" value="jdbc:oracle:thin:@10.246.130.137/ipms" />
+		<property name="userName" value="thd" />
+		<property name="passWord" value="thd" />
 	</bean>
-	
+
+	<bean id="榆济管道" class="base.bean.BaseDruidConnConfig">
+		<property name="url" value="jdbc:oracle:thin:@10.17.76.134:1521/ipms" />
+		<property name="userName" value="thd" />
+		<property name="passWord" value="thdtrq_8875" />
+	</bean>
 </beans>

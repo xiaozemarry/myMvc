@@ -33,7 +33,7 @@ import base.DBCustorm;
 import base.HttpBase;
 
 /**
- * 
+ *
  * SHOW VARIABLES LIKE 'character_set_%';
  * @author jacky-chueng
  *
@@ -67,17 +67,17 @@ public class HelloWord extends HttpBase{
 				System.out.println("end:"+index);
 			}
 			System.out.println("listData:"+listData.size());
-			
+
 		    Set<String> sSet = sMap.keySet();
 		    Set<String> eSet = eMap.keySet();
-			
+
 		    for(String str:sSet)
 		    {
 		    	//if(!eSet.contains(str))System.out.println(sMap.get(str));
 		    }
 		    List<String> subtractList = (List<String>) CollectionUtils.subtract(sSet, eSet);
 		    System.out.println(subtractList.size());
-		    
+
 			if(1==1)return null;
 		   //System.out.println(myUser.getAge());
 		   //System.out.println(myUser.getName());
@@ -125,7 +125,7 @@ public class HelloWord extends HttpBase{
 		   int len = 0;
 		   while((len = isRef.read(b))!=-1)osRef.write(b, 0, len);
 	    }
-	   
+
 	   @RequestMapping(value="/resources/userInfo/{id}/{name}",method=RequestMethod.GET)
 	   @ResponseBody
 	   public String restFull(@PathVariable String id,@PathVariable String name){

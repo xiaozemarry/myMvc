@@ -113,10 +113,9 @@ public class UrlFilter {
 	 * @return
 	 */
 	public boolean containsUrl(final String url){
-		if(url==null)return false;
+		if(url==null || this.urlList==null)return false;
 		if(this.urlList.contains("*"))return true;
-		else if(this.urlList!=null)return this.urlList.contains(url);
-		return false;	
+		else return this.urlList.contains(url);
 	}
 	/**
 	 * 通过正则表达式判断当前路径是否被过滤
@@ -127,8 +126,7 @@ public class UrlFilter {
 		if(url==null)return false;
 		for(String urls:this.urlList)
 		{
-			Pattern pattern = Pattern.compile(urls);
-			
+			//Pattern pattern = Pattern.compile(urls);
 		}
 		return false;
 	}

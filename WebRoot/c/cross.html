@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+  <title>2D</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="crossMessage.js"></script>
+  <script>
+	 var DEBUG_2D_3D_CHANGE = true;
+	//接收三维发过来的信息
+	CrossMessage.receiveMessage(function(data) {
+		if( DEBUG_2D_3D_CHANGE ) alert( '三维发送过来的数据:'+ JSON.stringify( data ) );
+	});
+  </script>
+  </head>
+
+  <body>
+          <h1>我是2D page!</h1>
+  </body>
+  </html>
