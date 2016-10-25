@@ -32,6 +32,7 @@ public class FileUtils {
 		}
 		return path+File.separator+"src";
 	}
+	
 	public static JSONObject getJSONObject(JSONObject base,File file) throws IllegaParams{
 		String fileName = file.getName();
 		base.put("id",Sequence.nextId());

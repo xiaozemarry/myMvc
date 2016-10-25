@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
  */
 public class Constant {
    private Constant(){}
+   public static final String CHARSETFORUTF8 = "UTF-8";
    /**
     * 多数据源默认使用的名称(一般项目都只会用一个数据库连接)
     */

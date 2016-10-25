@@ -44,7 +44,7 @@ public class DBUtils {
 	 */
 	public static boolean execute(Connection conn,String sql){
 		try {
-			Statement stmt = executeStatement(conn);
+			final Statement stmt = executeStatement(conn);
 			boolean rs = stmt.execute(sql);
 			closeDBResources(stmt, conn);
 			return rs;
