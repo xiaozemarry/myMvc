@@ -29,7 +29,6 @@ public class GlobleException implements HandlerExceptionResolver {
 			log(GlobleException.class);
 			
 			String a = null;
-			a.equals("");
 		} catch (Exception e) {
 			//printStackTrace(e);
 		}

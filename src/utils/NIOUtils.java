@@ -1,9 +1,11 @@
 package utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
@@ -233,7 +235,17 @@ public class NIOUtils {
 			}
 		}
 	}
-
+	
+	public static void close(final InputStream output) {
+		if (output != null) {
+			try {
+				output.close();
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+	}
+	
 	public static void close(final OutputStream output) {
 		if (output != null) {
 			try {
@@ -243,4 +255,31 @@ public class NIOUtils {
 			}
 		}
 	}
+	
+	public static boolean copy(final File in,final File to){
+        FileChannel inputChannel = null;    
+        FileChannel outputChannel = null; 
+        
+        FileInputStream inputStream = null;
+        FileOutputStream outputStream = null;
+        try {
+            inputStream = new FileInputStream(in);
+            outputStream = new FileOutputStream(to);
+            
+            inputChannel = inputStream.getChannel();
+            outputChannel = outputStream.getChannel();
+            
+            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+		} catch (Exception e) {
+			logger.error(String.format("copy %s [to] %s",new Object[]{in.getAbsolutePath(),to.getAbsolutePath()}),e);
+			return false;
+		}finally {
+			close(inputChannel);
+			close(outputChannel);
+			close(inputStream);
+			close(outputStream);
+		}
+        return true;
+	}
+	
 }

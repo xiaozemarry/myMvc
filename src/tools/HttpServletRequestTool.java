@@ -6,18 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import base.Constant;
 
 public class HttpServletRequestTool {
-	private HttpServletRequest request;
-
-	public HttpServletRequestTool(HttpServletRequest request) {
-		this.request = request;
-	}
-
-	public HttpServletRequest getRequest() {
-		return request;
-	}
-
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
+	private HttpServletRequestTool() {
 	}
 
 	/**
@@ -37,24 +26,6 @@ public class HttpServletRequestTool {
 			return eachCookie.getValue();
 		}
 		return null;
-	}
-
-	/**
-	 * 获取base路径 http://xxx.xxx.xx.xx:x/projectName/
-	 * 
-	 * @return
-	 */
-	public String getBasePath() {
-		String path = request.getContextPath();
-		StringBuilder sb = new StringBuilder();
-		sb.append(request.getScheme());
-		sb.append("://");
-		sb.append(request.getServerName());
-		sb.append(":");
-		sb.append(request.getServerPort());
-		sb.append(path);
-		sb.append("/");
-		return sb.toString();
 	}
 
 	/**

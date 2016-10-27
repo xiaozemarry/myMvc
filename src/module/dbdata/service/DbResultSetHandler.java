@@ -142,12 +142,4 @@ public class DbResultSetHandler<V> implements Callable<V> {
 	public void setInsertSql(String insertSql) {
 		this.insertSql = insertSql;
 	}
-
-	public static void main(String[] args) {
-		List<Object[]> list = new ArrayList<Object[]>();
-		list.add(new Object[] { "中文", "english" });
-		list.add(new Object[] { "中文", "english" });
-		Object[][] array = new Object[][] { list.toArray() };
-		System.out.println(array);
-	}
 }

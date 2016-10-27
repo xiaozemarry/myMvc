@@ -12,12 +12,14 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import base.Constant;
+import utils.DateUtils;
 
 public class MyHttpServletResponseWapperFilter implements Filter{
 	private final static Logger logger = Logger.getLogger(MyHttpServletResponseWapperFilter.class);
@@ -55,7 +57,7 @@ public class MyHttpServletResponseWapperFilter implements Filter{
  		 
  		 long spend = System.currentTimeMillis()-start;
  		 if(foundHeadTag){//找到head标签
- 			logger.info(String.format("parse html and find <HEAD> tag success,spend time:%sms,now time:%s",new Object[]{spend,Constant.SDFYMDHMS.format(new Date())}));
+ 			logger.info(String.format("parse html and find <HEAD> tag success,spend time:%sms,now time:%s",new Object[]{spend,DateUtils.formatNow()}));
  			headElement.append("<!--自动添加的文件开始-->");
  	 		headElement.append("<meta name=\"desaaaaaaaaaaaription1\" content=\"404 Error Page\">");
  	 		headElement.append("<meta name=\"desaaaaaaaaaaaription2\" content=\"404 Error Page\">");

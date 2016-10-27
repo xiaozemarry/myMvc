@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.sql.DataSource;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -37,6 +38,7 @@ import tools.HttpServletRequestTool;
 import tools.StringTools;
 import utils.ActionUtils;
 import utils.DBUtils;
+import utils.DateUtils;
 import base.Constant;
 import base.HttpBase;
 import base.bean.BaseDruidConnConfig;
@@ -98,7 +100,7 @@ public class Login extends HttpBase {
 		// 登陆成功,设置token
 		String hasCookie = HttpServletRequestTool.hasLoginCookie(request);
 		if (hasCookie != null) {
-			logger.debug(Constant.SDFYMDHMS.format(new Date())+ ":移除登录用户池中的信息--->" + hasCookie);
+			logger.debug(DateUtils.formatNow()+ ":移除登录用户池中的信息--->" + hasCookie);
 			TokenManager.instance().remove(hasCookie);
 		}
 		// 多次登录,需要删除之前的
@@ -110,7 +112,7 @@ public class Login extends HttpBase {
 		cookie.setMaxAge(Constant.MAXCOOKIEAGE);
 		// cookie.setHttpOnly(true);//只有在网络的情况下可以读取,js无法读取
 
-		logger.debug(Constant.SDFYMDHMS.format(new Date()) + ":设置登录用户池中的信息--->"+ id);// +"\n"
+		logger.debug(DateUtils.formatNow() + ":设置登录用户池中的信息--->"+ id);// +"\n"
 		response.addCookie(cookie);
 		
 		try {
@@ -135,7 +137,7 @@ public class Login extends HttpBase {
 	public String loginOut() {
 		String hasCookie = HttpServletRequestTool.hasLoginCookie(request);
 		if (hasCookie != null) {
-			logger.info(Constant.SDFYMDHMS.format(new Date())+ ":移除登录用户池中的信息--->" + hasCookie);
+			logger.info(DateUtils.formatNow()+ ":移除登录用户池中的信息--->" + hasCookie);
 			TokenManager.instance().remove(hasCookie);
 		}
 		//return "forward:/index.do"
