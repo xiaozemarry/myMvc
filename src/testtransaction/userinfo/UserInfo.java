@@ -25,13 +25,6 @@ public class UserInfo extends AbsEntity<User>{
 //		connection.setAutoCommit(false);
 //		connection.commit();
 		db.update(sql1);
-		db.update(sql1);
-		db.update(sql1);
-		db.update(sql1);
-		db.update(sql1);
-		db.update(sql1);
-		db.update(sql1);
-		db.update(sql1);
 		db.update(sql2);
 		//db.searchToMap("select * from userinfo");
 //		String flag = null;

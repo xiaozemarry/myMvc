@@ -40,14 +40,11 @@ public class 递归文件夹 {
 		File file = new File(path);
 		if(!file.exists())return container;
 		Long cy = System.currentTimeMillis();
-		synchronized (cy) 
-		{
-			try 
-			 {
-			    Thread.sleep(1);
-			 } catch (InterruptedException e) {}
-		   cy = System.currentTimeMillis()+1;
-		}
+		try 
+		 {
+		    Thread.sleep(1);
+		 } catch (InterruptedException e) {}
+	   cy = System.currentTimeMillis()+1;
 		if(file.isFile())
 		{
 			//System.out.print(file.getName()+":");
@@ -58,11 +55,13 @@ public class 递归文件夹 {
 		else if(file.isDirectory())
 		container.get("directory").put(file.getAbsolutePath(),cy);
 		File[] files = file.listFiles();
-		for(File each:files)
-		{
-			String eachPath = each.getAbsolutePath();
-			//System.out.println(eachPath);
-			traverseFileFolders(eachPath,container);
+		if(files !=null ){
+			for(File each:files)
+			{
+				String eachPath = each.getAbsolutePath();
+				//System.out.println(eachPath);
+				traverseFileFolders(eachPath,container);
+			}
 		}
 		return container;
 	}

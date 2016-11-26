@@ -90,7 +90,7 @@ tree_data['pets']['additionalParameters'] = {
 	}
 }
 
-var treeDataSource = new DataSourceTree({data: tree_data});
+var treeDataSource = new DataSourceTree({data: tree_data,delay:5000});
 
 
 

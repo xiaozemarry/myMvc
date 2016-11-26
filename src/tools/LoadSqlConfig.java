@@ -16,6 +16,8 @@ import org.dom4j.Element;
 import org.dom4j.VisitorSupport;
 import org.dom4j.io.SAXReader;
 
+import com.alibaba.druid.sql.SQLUtils;
+
 import base.DBConn;
 import base.DBCustorm;
 
@@ -24,6 +26,9 @@ import base.DBCustorm;
  */
 public class LoadSqlConfig{
 	  private static final Logger logger = Logger.getLogger(LoadSqlConfig.class);
+	  public static final String ORA = "ORA";
+	  public static final String MSSQL = "MSSQL";
+	  public static final String MYSQL = "MYSQL";
 	  private static LoadSqlConfig instance = new LoadSqlConfig();
 	  private  Map<String,Map<String,String>> allNodes;
 	  private List<String> pathList;
@@ -159,7 +164,9 @@ public class LoadSqlConfig{
 					  return;
 				  }
 				  else 
-					  logger.warn("Loading:the path of[classes/"+attrVal+"] base is classes floder。");
+				  {
+					  logger.debug("Loading:the path of[classes/"+attrVal+"] base is classes floder。");
+				  }
 				  pathList.add(attrVal);
 				  LoadSqlConfig.init(url);//开始读取每一个指定位置的xml
 			  }
@@ -174,6 +181,14 @@ public class LoadSqlConfig{
 			String trimCdata = StringUtils.trimToNull(cdata.getText());
 			String id = cdata.getParent().attributeValue("id");
 		    String dbType = cdata.getParent().getParent().getParent().getName();//数据库类型节点
+		    
+		    if(dbType.equalsIgnoreCase(LoadSqlConfig.ORA)){
+		    	trimCdata =  SQLUtils.formatOracle(trimCdata);
+		    }else if(dbType.equalsIgnoreCase(LoadSqlConfig.MSSQL)){
+		    	trimCdata =  SQLUtils.formatSQLServer(trimCdata);
+		    }else if(dbType.equalsIgnoreCase(LoadSqlConfig.MYSQL)){
+		    	trimCdata =  SQLUtils.formatMySql(trimCdata);
+		    }
 		    
 		    Map<String,Map<String,String>> allNodes = LoadSqlConfig.instance.innerGetAllNodes();
 		    Map<String,String> dbTypeVal = allNodes.get(dbType);

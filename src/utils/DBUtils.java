@@ -6,8 +6,12 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
@@ -33,6 +37,45 @@ public class DBUtils {
 	public static final int TABLE_PAGE_SIZE = 10*1000;
 	
 	/**
+	 * 创建表,复制表,...(create,alter table....)
+	 * @param conn
+	 * @param sql
+	 * @return
+	 */
+	public static boolean execute(Connection conn,String sql){
+		try {
+			final Statement stmt = executeStatement(conn);
+			boolean rs = stmt.execute(sql);
+			closeDBResources(stmt, conn);
+			return rs;
+		} catch (Exception e) {
+			logger.error("{create failed}",e);
+			return false;
+		}
+	}
+	
+	public static Statement executeStatement(Connection conn) throws SQLException{
+		return conn.createStatement();
+	}
+	
+	public static Statement createStatement(Connection conn) throws SQLException{
+		return conn.createStatement();
+	}
+	/**
+	 * 查询ResultSet
+	 * @param conn 数据库连接
+	 * @param sql SQL语句
+	 * @return java.Sql.ResultSet
+	 * @throws SQLException
+	 */
+	public static ResultSet query(Connection conn, String sql)
+			throws SQLException {
+		logger.info("sql:"+sql);
+		conn.setAutoCommit(false);
+		Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+		return stmt.executeQuery(sql);
+	}
+	/**
 	 * 查询ResultSet
 	 * @param conn 数据库连接
 	 * @param sql SQL语句
@@ -42,6 +85,7 @@ public class DBUtils {
 	 */
 	public static ResultSet query(Connection conn, String sql, int fetchSize)
 			throws SQLException {
+		logger.info("sql:"+sql);
 		conn.setAutoCommit(false);
 		Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
 		stmt.setFetchSize(fetchSize);
@@ -64,6 +108,24 @@ public class DBUtils {
         stmt.setQueryTimeout(queryTimeout);
         return stmt.executeQuery(sql);
 	}
+	
+	public static ResultSet getOnlyForTableColumnsByConn(Connection conn,String tableName){
+		if(tableName.indexOf("from")<0){
+			tableName = "select * from "+tableName;
+		}
+		Statement statement = null;
+		ResultSet rs = null;
+		String queryColumnSql = null;
+		try {
+			statement = conn.createStatement();
+			queryColumnSql = String.format("select * from (%s) where 1=2",tableName);
+			rs = statement.executeQuery(queryColumnSql);
+		} catch (SQLException e) {
+			logger.error("{}",e);
+		}
+		return rs;
+	}
+	
 	/**
 	 * 获取给定sql或则表的数据库列名
 	 * @param conn 数据库连接
@@ -72,11 +134,15 @@ public class DBUtils {
 	 */
 	public static List<String> getTableColumnsByConn(Connection conn,
 			String tableName) {
+		if(tableName.indexOf("from")<0){
+			tableName = "select * from "+tableName;
+		}
 		List<String> columns = new ArrayList<String>();
-		Statement statement = null;
 		ResultSet rs = null;
+		Statement statement = null;
 		String queryColumnSql = null;
 		try {
+			rs = DBUtils.getOnlyForTableColumnsByConn(conn, tableName);
 			statement = conn.createStatement();
 			queryColumnSql = String.format("select * from (%s) where 1=2",tableName);
 			rs = statement.executeQuery(queryColumnSql);
@@ -128,8 +194,11 @@ public class DBUtils {
 	 * @param page_size 每次查询的条数
 	 * @return
 	 */
-	public static String[] splitSqlForPage(Connection conn,final String tablename,int page_size){
+	public static String[] splitSqlForPage(Connection conn,String tablename,int page_size){
 		String[] list = null;
+		if(tablename.indexOf("from")<0){
+			tablename = "select * from "+tablename;
+		}
 		String countSql = String.format(DBUtils.COUNT_SQL_TEMPLATE,tablename);
 		ResultSet rs = null;
 		try {
@@ -149,6 +218,7 @@ public class DBUtils {
 			logger.error("{}",e);
 		}finally{
 			DBUtils.closeResultSet(rs);
+			DBUtils.closeDBResources(null, conn);
 		}
 		return list;
 	}
@@ -195,13 +265,13 @@ public class DBUtils {
 			closeDBResources(rs, statement, null);
 		}
 	}
+	
 	public static void closeDBResources(ResultSet rs, Statement stmt,
 			Connection conn) {
 		if (null != rs) {
 			try {
 				rs.close();
 			} catch (SQLException e) {
-
 			}
 		}
 
@@ -209,7 +279,6 @@ public class DBUtils {
 			try {
 				stmt.close();
 			} catch (SQLException e) {
-
 			}
 		}
 
@@ -217,7 +286,6 @@ public class DBUtils {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-
 			}
 		}
 	}
@@ -225,6 +293,80 @@ public class DBUtils {
 	public static void closeDBResources(Statement stmt, Connection conn) {
 		closeDBResources(null, stmt, conn);
 	}
+	
+	public static Class<?> getSqlTypes(ResultSetMetaData metaData,int resultSetMetaDataColumnType) throws SQLException {
+		switch (resultSetMetaDataColumnType) {
+		case Types.CHAR:
+		case Types.NCHAR:
+		case Types.VARCHAR:
+		case Types.LONGVARCHAR:
+		case Types.NVARCHAR:
+		case Types.LONGNVARCHAR:
+			return String.class;
+		case Types.CLOB:
+		case Types.NCLOB:
+			return String.class;
+		case Types.SMALLINT:
+		case Types.TINYINT:
+		case Types.INTEGER:
+		case Types.BIGINT:
+			return Long.class;
+		case Types.NUMERIC:
+		case Types.DECIMAL:
+			return Double.class;
+		case Types.FLOAT:
+		case Types.REAL:
+		case Types.DOUBLE:
+			return Double.class;
+		case Types.TIME:
+			return Date.class;
+		// for mysql bug, see http://bugs.mysql.com/bug.php?id=35115
+		case Types.DATE:
+			if (metaData.getColumnTypeName(1).equalsIgnoreCase("year")) {
+				return Long.class;
+			} else {
+				return Date.class;
+			}
+		case Types.TIMESTAMP:
+			return Date.class;
+		case Types.BINARY:
+		case Types.VARBINARY:
+		case Types.BLOB:
+		case Types.LONGVARBINARY:
+			return Byte.class;
+		// warn: bit(1) -> Types.BIT
+		// warn: bit(>1) -> Types.VARBINARY
+		case Types.BOOLEAN:
+		case Types.BIT:
+			return Boolean.class;
+		case Types.NULL:
+			return String.class;
+		// TODO 添加BASIC_MESSAGE
+		default:
+			return null;
+		}
+	}
+    /**
+     * 获取数据库字段的映射,自动关闭ResultSet
+     * @param rs java.sql.ResultSet
+     * @return Map<String, Class<?>>--->key:列名称,value:当前列对应的java类型
+     * @throws SQLException 
+     */
+	public static Map<String, Class<?>> getColumnMapping(final ResultSet rs) throws SQLException {
+		final ResultSetMetaData resultSetMetaData = rs.getMetaData();
+		final int columnCount = resultSetMetaData.getColumnCount();
+		Map<String, Class<?>> mapping = new HashMap<String, Class<?>>(columnCount);
+		for (int i = 1; i < columnCount; i++) {
+			String columnName = resultSetMetaData.getColumnName(i);
+			int dataType = resultSetMetaData.getColumnType(i);
+			Class<?> clazz = getSqlTypes(resultSetMetaData, dataType);
+			mapping.put(columnName,clazz);
+		}
+		logger.info("loop finish,close [java.sql.ResultSet]");
+		DBUtils.closeResultSet(rs);
+		return mapping;
+	}
+	
 	/**
 	 * 执行存储过程
 	 * @param conn

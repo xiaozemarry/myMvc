@@ -18,7 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
-import javax.annotation.Resources;
+import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -29,22 +30,30 @@ import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.datasource.AbstractDataSource;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.alibaba.druid.pool.DruidDataSource;
+
+import base.bean.BaseDruidConnConfig;
+import utils.DBUtils;
 
 
 public class DruidDBConnection{
 	public DruidDBConnection() {
 	}
+	private static final Map<String,DataSource> myDataSource = new HashMap<String, DataSource>();
 	private static final Logger logger = Logger.getLogger(DruidDBConnection.class);
 	private static DruidDataSource  druidDataSource;
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>(){
 		protected Connection initialValue(){
-			logger.debug("get from threadlocal...");
+			final String threadName = Thread.currentThread().getName();
+			logger.info(threadName+"-->get connection from threadlocal...");
 			if(druidDataSource!=null) {
 				/**
 				 * There is one important difference: dataSource.getConnection()
@@ -64,21 +73,42 @@ public class DruidDBConnection{
 				 * commit/rollback/close it.
 				 */
 				 Connection con = DataSourceUtils.getConnection(druidDataSource);
+				 logger.info(threadName+"-->get connection from threadlocal-->result:"+con);
 				 return con;
 			}
+			logger.error(threadName+"-->plan to get connection from threadlocal,but datasouce is null");
 			return null;
 		};
 	};
 	
-
+	private JdbcTemplate jdbcTemplate;
+	
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+	
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+	
+	public  DruidDataSource getDruidDataSource() {
+		return druidDataSource;
+	}
+	
+	@Resource(name="dataSource")
+	public  void setDruidDataSource(DruidDataSource druidDataSource) {
+	    DruidDBConnection.druidDataSource = druidDataSource;
+	}
     
 	public void closeConnection(Connection connection) {
 		DataSourceUtils.releaseConnection(connection,druidDataSource);
 	    threadLocal.remove();//必须remove
-  }
+	}
 
 	public Connection getDefaultConnection(){
-		return null;
+		Connection conn = threadLocal.get();
+		Validate.notNull(conn);
+		return conn;
 	}
 	
 	/**
@@ -86,13 +116,42 @@ public class DruidDBConnection{
 	 * @param name
 	 * @return if(name==null)return 默认的连接</br>if(name!=null)返回对应的连接,maybe null;
 	 */
-	public Connection getConnectionByName(String name){
+	public Connection getConnectionByBean(HttpServletRequest request,String beanName){
+		//
 		return null;
 	}
 	
-	public Connection getConnection(){
-		return threadLocal.get();
+	public DataSource getDataSourceFromBean(BaseDruidConnConfig config) throws NullPointerException{
+		Validate.notNull(config,"参数实例config不能为空");
+		if(!config.useful()){
+			logger.error("非法对象试图获取数据源:"+config);
+			throw new NullPointerException("非法对象试图获取数据源");
+		}
+		DataSource cache = myDataSource.get(config.toString());
+		if(cache==null){
+			DruidDataSource clone = this.getDruidDataSource().cloneDruidDataSource();
+			clone.setUrl(config.getUrl());
+			clone.setUsername(config.getUserName());
+			clone.setPassword(config.getPassWord());
+			myDataSource.put(config.toString(),clone);
+			logger.info("cache datasource:"+config);
+			return clone;
+		}else{
+			logger.info("using cache datasource");
+		}
+		logger.info("对象试图获取数据源,并且找到该数据源,配置信息:"+config);
+		return cache;
 	}
+	
+	public Connection getConnectionFromBean(BaseDruidConnConfig config) throws SQLException{
+		DataSource ds = this.getDataSourceFromBean(config);
+		return ds.getConnection();
+	}
+	
+	public Connection getConnection(){
+		return getDefaultConnection();
+	}
+	
 	public Connection getConnection1() {
 		try {
 			return druidDataSource.getConnection();
@@ -474,7 +533,6 @@ public class DruidDBConnection{
 			result = (Map) run.query(userConn, sql, h);
 		} catch (Exception _e) {
 			throw _e;
-
 		} finally {
 			closeConnection(userConn);
 		}
@@ -860,13 +918,63 @@ public class DruidDBConnection{
 			return map;
 		}
 	}
-
-	public  DruidDataSource getDruidDataSource() {
-		return druidDataSource;
+	
+	public int[] batch(DataSource ds,String sql,Object[][] params) throws SQLException {
+		Connection conn = ds.getConnection();
+		int[] rows = null;
+		try {
+			QueryRunner run = new QueryRunner();
+			rows = run.batch(conn, sql, params);
+		} catch (SQLException _e) {
+			logger.error("{}",_e);
+			throw _e;
+		} finally {
+			DBUtils.closeDBResources(null, conn);
+		}
+		return rows;
 	}
 	
-	@Resource(name="dataSource")
-	public  void setDruidDataSource(DruidDataSource druidDataSource) {
-	    DruidDBConnection.druidDataSource = druidDataSource;
+	//下面是spring的jdbc操作
+	public int queryToCount(String sql){
+		return this.jdbcTemplate.queryForObject(sql, Integer.class);
 	}
+	
+	public int queryToCount(DataSource dataSource,String sql){
+		JdbcTemplate jt = new JdbcTemplate(dataSource);
+		return jt.queryForObject(sql,Integer.class);
+	}
+	
+	public int queryToCount(String sql,Object...objects){
+		return this.jdbcTemplate.queryForObject(sql,objects,Integer.class);
+	}
+	
+	public int queryToCount(DataSource dataSource,String sql,Object...objects){
+		JdbcTemplate jt = new JdbcTemplate(dataSource);
+		int i = -1;
+		i = jt.queryForObject(sql,objects,Integer.class);
+		return i;
+	}
+	
+	public Map<String,?> queryToMap(String sql){
+		return this.getJdbcTemplate().queryForMap(sql);
+	}
+	
+	public Map<String,?> queryToMap(DataSource dataSource,String sql){
+		JdbcTemplate jt = new JdbcTemplate(dataSource);
+		return jt.queryForMap(sql);
+	}
+	
+	public Object queryToBeanOfSingle(String sql,Class<?> requiredType){
+		return jdbcTemplate.queryForObject(sql, requiredType);
+	}
+	
+	public Object queryToBeanOfSingle(DataSource dataSource,String sql,Class<?> requiredType){
+		JdbcTemplate jt = new JdbcTemplate(dataSource);
+		return jt.queryForObject(sql, requiredType);
+	}
+	
+	public List<Object> queryToBeanOfList(String sql,Class<?> requiredType){
+		return null;
+	}
+
 }

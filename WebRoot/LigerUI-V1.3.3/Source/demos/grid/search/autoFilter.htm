@@ -24,10 +24,10 @@
             $("#maingrid").ligerGrid({
                 height: '100%',
                 columns: [
-                { display: '顾客', name: 'CustomerID', align: 'left', width: 100, minWidth: 60 },
-                { display: '公司名', name: 'CompanyName', minWidth: 120 },
-                { display: '联系名', name: 'ContactName', minWidth: 140 ,render:function(){return '王小利'}},
-                { display: '城市', name: 'City' }
+                { display: '列名', name: 'CustomerID', align: 'left', width: 100, minWidth: 60 },
+                { display: '数据类型', name: 'CompanyName', minWidth: 120 },
+                { display: '默认值', name: 'ContactName', minWidth: 140 ,render:function(){return '王小利'}},
+                { display: '时候为NULL', name: 'City' }
                 ], 
 				data: CustomersData, pageSize: 30, rownumbers: true,
                 toolbar: {
@@ -47,7 +47,7 @@
             $("#pageloading").hide();
         });
         function onReload(){
-		  alert(411);
+		  //alert(411);
 		  return false;
 		}
         function deleteRow()

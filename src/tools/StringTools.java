@@ -18,7 +18,6 @@ public class StringTools {
 			   {
 				   if(instance == null )
 				   {
-					   System.out.println(Thread.currentThread().getName());
 					   instance = new StringTools();
 				   }
 			   }

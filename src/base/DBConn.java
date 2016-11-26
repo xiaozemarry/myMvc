@@ -20,15 +20,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.event.ConnectionEvent;
-import javax.mail.event.ConnectionListener;
-import javax.mail.event.TransportEvent;
-import javax.mail.event.TransportListener;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -44,28 +35,29 @@ import org.apache.log4j.Logger;
 
 import tools.Sequence;
 
-
-@SuppressWarnings(value = { "unused","rawtypes","unchecked" })
+@SuppressWarnings(value = { "unused", "rawtypes", "unchecked" })
 public class DBConn {
 	private static final Logger logger = Logger.getLogger(DBConn.class);
 	private String DaseBaseType;
 	private DBCustorm custorm;
-	
+
 	private static DBConn instance = null;
-    static
-    {
-    	init();
-    }
-    private static void init(){
-    	String showNames = (String)EnvironmentConfig.getInstance().getPropertieFile().get("ShowNames");
-	    instance=new DBConn(showNames);	
-    }
-	private DBConn() {}
-	
-	public static DBConn instance(){
+	static {
+		init();
+	}
+
+	private static void init() {
+		String showNames = (String) EnvironmentConfig.getInstance().getPropertieFile().get("ShowNames");
+		instance = new DBConn(showNames);
+	}
+
+	private DBConn() {
+	}
+
+	public static DBConn instance() {
 		return instance;
 	}
-	
+
 	public DBConn(String configName) {
 		setConfigDataSource(configName);
 	}
@@ -87,7 +79,7 @@ public class DBConn {
 	}
 
 	public DBConn(HttpServletRequest request) {
-		custorm =UserInfoPool.getInstance().getCurrentUser(request);
+		custorm = UserInfoPool.getInstance().getCurrentUser(request);
 		if (custorm != null) {
 
 			DaseBaseType = custorm.getDBType();
@@ -102,18 +94,12 @@ public class DBConn {
 	 */
 	public void setConfigDataSource(String ConfigName) {
 		custorm = new DBCustorm();
-		String DBType = (String) EnvironmentConfig.getInstance()
-				.getPropertieFile().get(ConfigName+".DBType");
-		String DBPort = (String) EnvironmentConfig.getInstance()
-				.getPropertieFile().get(ConfigName+".DBPort");
-		String DBName = (String) EnvironmentConfig.getInstance()
-				.getPropertieFile().get(ConfigName+".DBName");
-		String DBUrl = (String) EnvironmentConfig.getInstance()
-				.getPropertieFile().get(ConfigName+".DBUrl");
-		String DBUser = (String) EnvironmentConfig.getInstance()
-				.getPropertieFile().get(ConfigName+".DBUser");
-		String DBPwd = (String) EnvironmentConfig.getInstance()
-				.getPropertieFile().get(ConfigName+".DBPwd");
+		String DBType = (String) EnvironmentConfig.getInstance().getPropertieFile().get(ConfigName + ".DBType");
+		String DBPort = (String) EnvironmentConfig.getInstance().getPropertieFile().get(ConfigName + ".DBPort");
+		String DBName = (String) EnvironmentConfig.getInstance().getPropertieFile().get(ConfigName + ".DBName");
+		String DBUrl = (String) EnvironmentConfig.getInstance().getPropertieFile().get(ConfigName + ".DBUrl");
+		String DBUser = (String) EnvironmentConfig.getInstance().getPropertieFile().get(ConfigName + ".DBUser");
+		String DBPwd = (String) EnvironmentConfig.getInstance().getPropertieFile().get(ConfigName + ".DBPwd");
 		custorm.setDBType(DBType);
 		custorm.setDBPort(DBPort);
 		custorm.setDBName(DBName);
@@ -135,8 +121,10 @@ public class DBConn {
 		conn = DBConnectionManager.getInstance().getConnection(custorm);
 		return conn;
 	}
+
 	/**
 	 * 通过传入的custom对象构建一个connecion
+	 * 
 	 * @param custom
 	 * @return
 	 * @throws SQLException
@@ -146,13 +134,14 @@ public class DBConn {
 		conn = DBConnectionManager.getInstance().getConnection(custom);
 		return conn;
 	}
-	
+
 	/**
 	 * 返回一个新实例化的dbconn对象,通常用于项目中需要用不同的连接数据库对象
+	 * 
 	 * @param custom
 	 * @return
 	 */
-	public DBConn getNewInstanceDBConnByDBCustorm(DBCustorm _custom){
+	public DBConn getNewInstanceDBConnByDBCustorm(DBCustorm _custom) {
 		DBConn _new = new DBConn(_custom);
 		return _new;
 	}
@@ -423,8 +412,7 @@ public class DBConn {
 	 *            array.
 	 * @return A List of Maps, never null.
 	 */
-	public ArrayList searchToMapList(String sql, Object... params)
-			throws Exception {
+	public ArrayList searchToMapList(String sql, Object... params) throws Exception {
 
 		Connection userConn = getConnection();
 		ArrayList result = null;
@@ -441,10 +429,10 @@ public class DBConn {
 		}
 		return result;
 	}
-	
 
 	/**
 	 * 执行SELECT查询，并把返回结果的第一行的第一列的值转化成Object
+	 * 
 	 * @param sql
 	 * @return
 	 * @throws Exception
@@ -467,7 +455,7 @@ public class DBConn {
 		}
 		return result;
 	}
-	
+
 	public Object searchToObject(String sql, Object params) throws Exception {
 
 		Connection userConn = getConnection();
@@ -486,7 +474,7 @@ public class DBConn {
 		}
 		return result;
 	}
-	
+
 	public Object searchToObject(String sql, Object... params) throws Exception {
 
 		Connection userConn = getConnection();
@@ -505,7 +493,6 @@ public class DBConn {
 		}
 		return result;
 	}
-
 
 	/**
 	 * Execute a batch of SQL INSERT, UPDATE, or DELETE queries.
@@ -596,7 +583,7 @@ public class DBConn {
 	 * @return The number of rows updated.
 	 */
 	public int update(String sql, Object... params) throws Exception {
-		
+
 		Connection userConn = getConnection();
 		int rows = 0;
 		try {
@@ -610,13 +597,13 @@ public class DBConn {
 		}
 		return rows;
 	}
-	
-	public Map searchToMapValThanOne(String sql,String keyTemp) throws Exception{
+
+	public Map searchToMapValThanOne(String sql, String keyTemp) throws Exception {
 		Connection userConn = getConnection();
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new DBConn.myResultSetHandler(keyTemp);
-			return (Map)run.query(userConn, sql, h);
+			return (Map) run.query(userConn, sql, h);
 		} catch (Exception _e) {
 			throw _e;
 
@@ -624,13 +611,13 @@ public class DBConn {
 			DBConnectionManager.getInstance().freeConnection(custorm, userConn);
 		}
 	}
-	
-	public Map searchToMapValThanOne(String sql,Object params,String keyTemp) throws Exception{
+
+	public Map searchToMapValThanOne(String sql, Object params, String keyTemp) throws Exception {
 		Connection userConn = getConnection();
 		try {
 			QueryRunner run = new QueryRunner();
 			ResultSetHandler h = new DBConn.myResultSetHandler(keyTemp);
-			return (Map)run.query(userConn, sql, params, h);
+			return (Map) run.query(userConn, sql, params, h);
 		} catch (Exception _e) {
 			throw _e;
 
@@ -638,421 +625,354 @@ public class DBConn {
 			DBConnectionManager.getInstance().freeConnection(custorm, userConn);
 		}
 	}
-	
+
 	/**
 	 * 通过Map的格式入库
+	 * 
 	 * @param map
 	 * @param conn
-	 * @param tableName 想要入库的表名
-     * @param allowMapValNULL 是否允许map的值为NULL的情况
+	 * @param tableName
+	 *            想要入库的表名
+	 * @param allowMapValNULL
+	 *            是否允许map的值为NULL的情况
 	 * @return
-	 * @throws Exception 如果参数为NULL,或则更新数据库时失败
+	 * @throws Exception
+	 *             如果参数为NULL,或则更新数据库时失败
 	 */
-	public int autoInsertDBByMap(Map map,DBConn conn,final String tableName,final boolean allowMapValNULL) throws Exception{
-		if(map==null || conn==null || tableName == null || StringUtils.trimToNull(tableName)==null)
-		  throw new Exception("Agreements No One Can Be NULL!!!--->参数一个也不能少");
-	    try 
-	    {
+	public int autoInsertDBByMap(Map map, DBConn conn, final String tableName, final boolean allowMapValNULL)
+			throws Exception {
+		if (map == null || conn == null || tableName == null || StringUtils.trimToNull(tableName) == null)
+			throw new Exception("Agreements No One Can Be NULL!!!--->参数一个也不能少");
+		try {
 			StringBuilder sb = new StringBuilder("insert into ");
 			sb.append(tableName);
 			sb.append(" (");
-			
+
 			StringBuilder vals = new StringBuilder();
 			Set keySet = map.keySet();
 			final int size = keySet.size();
-			if(size==0)return -10;
+			if (size == 0)
+				return -10;
 			List params = new ArrayList(size);
-			Iterator it =  keySet.iterator();
-			while(it.hasNext())
-			{
+			Iterator it = keySet.iterator();
+			while (it.hasNext()) {
 				Object next = it.next();
 				Object value = map.get(next);
-				if(allowMapValNULL && value==null)return -10;
-				
+				if (allowMapValNULL && value == null)
+					return -10;
+
 				sb.append(next);
 				sb.append(",");
-				
+
 				vals.append("?,");
 				params.add(value);
 			}
-			
-			String sb1 = sb.substring(0,sb.length()-1)+")";
-			String vals1 = vals.substring(0,vals.length()-1);
+
+			String sb1 = sb.substring(0, sb.length() - 1) + ")";
+			String vals1 = vals.substring(0, vals.length() - 1);
 			final StringBuilder sql = new StringBuilder(sb1);
 			sql.append(" values (");
 			sql.append(vals1);
 			sql.append(")");
-			
-			logger.info("sql:"+sql+Path.LS+"params:"+params);
+
+			logger.info("sql:" + sql + Path.LS + "params:" + params);
 			return conn.update(sql.toString(), params.toArray());
-		} catch (Exception e)
-	    {
+		} catch (Exception e) {
 			logger.error("{ 问题比较严重  }", e);
 		}
-	    return -1;
+		return -1;
 	}
-    
+
 	/**
 	 * 根据参数自动插入到数据库(主键使用默认的生产策略)
-	 * @param request 请求对象
-	 * @param primaryKeyName 主键名称
-	 * @param _db 数据库对象
-	 * @param exceptArr 参数中某些值并不是都能和数据库字段匹配(当前这些在数据库的字段中根本不存在)
+	 * 
+	 * @param request
+	 *            请求对象
+	 * @param primaryKeyName
+	 *            主键名称
+	 * @param _db
+	 *            数据库对象
+	 * @param exceptArr
+	 *            参数中某些值并不是都能和数据库字段匹配(当前这些在数据库的字段中根本不存在)
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public int autoInsertByHttpParams(HttpServletRequest request,DBConn _db,final String tableName,final String primaryKeyName,String...exceptArr) throws Exception{
-		try
-		{
-			if(tableName==null||primaryKeyName==null)throw new Exception("Agreements [conditionName,tableName] Can Not Be NULL!Thank You!!!");
-			if(exceptArr==null)exceptArr = new String[0]; 
+	public int autoInsertByHttpParams(HttpServletRequest request, DBConn _db, final String tableName,
+			final String primaryKeyName, String... exceptArr) throws Exception {
+		try {
+			if (tableName == null || primaryKeyName == null)
+				throw new Exception("Agreements [conditionName,tableName] Can Not Be NULL!Thank You!!!");
+			if (exceptArr == null)
+				exceptArr = new String[0];
 			List except = Arrays.asList(exceptArr);
 			Map pMap = request.getParameterMap();
 			List params = new ArrayList(8);
-			StringBuilder insert = new StringBuilder("insert into "+tableName);
+			StringBuilder insert = new StringBuilder("insert into " + tableName);
 			insert.append("(");
 			StringBuilder parameters = new StringBuilder("(");
 			Set<String> keySets = pMap.keySet();
 			Iterator<String> it = keySets.iterator();
-			while(it.hasNext())
-			{
+			while (it.hasNext()) {
 				String key = StringUtils.trim(it.next());
-				if(except.contains(key))continue;
-				String[] val = (String[])pMap.get(key);
-			    String indexVal = val[0];
-			    String value = StringUtils.trimToNull(indexVal);
-			    if(value==null)continue;
-			    Object paramsVal = value;
-			    boolean isNum = NumberUtils.isNumber(value);
-			    if(isNum)
-			    {
-			    	if(value.indexOf(".")!=-1)paramsVal = NumberUtils.toDouble(value);
-			    	else if(NumberUtils.toLong(value)>Integer.MAX_VALUE)paramsVal = NumberUtils.toLong(value);
-			    	else paramsVal = NumberUtils.toInt(value);
-			    }
-			    insert.append(key+",");
-			    parameters.append("?,");
-			    params.add(paramsVal);
+				if (except.contains(key))
+					continue;
+				String[] val = (String[]) pMap.get(key);
+				String indexVal = val[0];
+				String value = StringUtils.trimToNull(indexVal);
+				if (value == null)
+					continue;
+				Object paramsVal = value;
+				boolean isNum = NumberUtils.isNumber(value);
+				if (isNum) {
+					if (value.indexOf(".") != -1)
+						paramsVal = NumberUtils.toDouble(value);
+					else if (NumberUtils.toLong(value) > Integer.MAX_VALUE)
+						paramsVal = NumberUtils.toLong(value);
+					else
+						paramsVal = NumberUtils.toInt(value);
+				}
+				insert.append(key + ",");
+				parameters.append("?,");
+				params.add(paramsVal);
 			}
-			insert.append(primaryKeyName+")");
+			insert.append(primaryKeyName + ")");
 			parameters.append("?)");
-			insert.append(" values "+parameters);
+			insert.append(" values " + parameters);
 			params.add(Sequence.nextId());
-			logger.info("sql:"+insert+Path.LS+"params:"+params);
-			return _db.update(insert.toString(),params.toArray());
-		}catch (Exception e) {
-		   throw e;
-		}finally{
-			DBConnectionManager.getInstance().freeConnection(_db.getCustorm(),_db.getConnection());
+			logger.info("sql:" + insert + Path.LS + "params:" + params);
+			return _db.update(insert.toString(), params.toArray());
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DBConnectionManager.getInstance().freeConnection(_db.getCustorm(), _db.getConnection());
 		}
 	}
-	
+
 	/**
 	 * 简单的自动更新数据库操作
-	 * @param request 请求对象
-	 * @param _db 数据库对象
-	 * @param conditionName 条件 where f_id = ?
-	 * @param exceptArr 参数中某些值并不是都能和数据库字段匹配(换句话说:就是这些参数是不用插入数据库)
-	 * @param tableName 更新的表名
+	 * 
+	 * @param request
+	 *            请求对象
+	 * @param _db
+	 *            数据库对象
+	 * @param conditionName
+	 *            条件 where f_id = ?
+	 * @param exceptArr
+	 *            参数中某些值并不是都能和数据库字段匹配(换句话说:就是这些参数是不用插入数据库)
+	 * @param tableName
+	 *            更新的表名
 	 * @return
-	 * @throws Exception 如果conditionName为null,或则更新失败,或则条件值为null
+	 * @throws Exception
+	 *             如果conditionName为null,或则更新失败,或则条件值为null
 	 */
-	public int autoUpdateByHttpParams(HttpServletRequest request,DBConn _db,String tableName,String conditionName,String...exceptArr) throws Exception{
-	    try{ 
-	    	if(conditionName==null || tableName==null)throw new Exception("Agreements [conditionName,tableName] Can Not Be NULL!Thank You!!!");
-			if(exceptArr==null)exceptArr = new String[0]; 
+	public int autoUpdateByHttpParams(HttpServletRequest request, DBConn _db, String tableName, String conditionName,
+			String... exceptArr) throws Exception {
+		try {
+			if (conditionName == null || tableName == null)
+				throw new Exception("Agreements [conditionName,tableName] Can Not Be NULL!Thank You!!!");
+			if (exceptArr == null)
+				exceptArr = new String[0];
 			List except = Arrays.asList(exceptArr);
-			
+
 			Object conditionVal = null;
 			Map pMap = request.getParameterMap();
 			List params = new ArrayList(8);
-			
+
 			StringBuilder update = new StringBuilder("update ");
-			update.append(tableName+" set ");
+			update.append(tableName + " set ");
 			Set<String> keySets = pMap.keySet();
-			if(!keySets.contains(conditionName))if(conditionVal==null)throw new Exception("conditionVal Can Not Be NULL,But Given Key Is NULL!!!---->conditionName="+conditionName);
+			if (!keySets.contains(conditionName))
+				if (conditionVal == null)
+					throw new Exception(
+							"conditionVal Can Not Be NULL,But Given Key Is NULL!!!---->conditionName=" + conditionName);
 			Iterator<String> it = keySets.iterator();
-			while(it.hasNext())
-			{
+			while (it.hasNext()) {
 				String key = StringUtils.trim(it.next());
-				if(except.contains(key))continue;
-				String[] val = (String[])pMap.get(key);
-			    String indexVal = val[0];
-			    String value = StringUtils.trimToNull(indexVal);
-			    if(key.equals(conditionName))
-			    {
-			    	conditionVal = value;
-			    	if(conditionVal==null)throw new Exception("conditionVal Can Not Be NULL,But Given Value Is NULL!!!conditionName="+conditionName);
-			    	continue;
-			    }
-			    if(value==null)continue;
-			    Object paramsVal = value;
-			    boolean isNum = NumberUtils.isNumber(value);
-			    if(isNum)
-			    {
-			    	if(value.indexOf(".")!=-1)paramsVal = NumberUtils.toDouble(value);
-			    	else if(NumberUtils.toLong(value)>Integer.MAX_VALUE)paramsVal = NumberUtils.toLong(value);
-			    	else paramsVal = NumberUtils.toInt(value);
-			    }
-			    update.append(key+"=?,");
-			    params.add(paramsVal);
+				if (except.contains(key))
+					continue;
+				String[] val = (String[]) pMap.get(key);
+				String indexVal = val[0];
+				String value = StringUtils.trimToNull(indexVal);
+				if (key.equals(conditionName)) {
+					conditionVal = value;
+					if (conditionVal == null)
+						throw new Exception("conditionVal Can Not Be NULL,But Given Value Is NULL!!!conditionName="
+								+ conditionName);
+					continue;
+				}
+				if (value == null)
+					continue;
+				Object paramsVal = value;
+				boolean isNum = NumberUtils.isNumber(value);
+				if (isNum) {
+					if (value.indexOf(".") != -1)
+						paramsVal = NumberUtils.toDouble(value);
+					else if (NumberUtils.toLong(value) > Integer.MAX_VALUE)
+						paramsVal = NumberUtils.toLong(value);
+					else
+						paramsVal = NumberUtils.toInt(value);
+				}
+				update.append(key + "=?,");
+				params.add(paramsVal);
 			}
-			if(params.size()==0)throw new Exception("No Fields Can Be Updated!!!");
-	//		update.append(tableName+"."+conditionName);
-	//		update.append("=");
-	//		update.append(tableName+"."+conditionName);
-			String subStr = update.substring(0,update.length()-1);
-			subStr+=(" where "+conditionName+"=?");
+			if (params.size() == 0)
+				throw new Exception("No Fields Can Be Updated!!!");
+			// update.append(tableName+"."+conditionName);
+			// update.append("=");
+			// update.append(tableName+"."+conditionName);
+			String subStr = update.substring(0, update.length() - 1);
+			subStr += (" where " + conditionName + "=?");
 			params.add(conditionVal);
-			
-			Connection conn =_db.getConnection();
-			return _db.update(subStr,params.toArray());
-	    }catch (Exception e) {
-				throw e;
-		}finally{
-			DBConnectionManager.getInstance().freeConnection(_db.getCustorm(),_db.getConnection());
+
+			Connection conn = _db.getConnection();
+			return _db.update(subStr, params.toArray());
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			DBConnectionManager.getInstance().freeConnection(_db.getCustorm(), _db.getConnection());
 		}
 	}
+
 	public DBCustorm getCustorm() {
 		return custorm;
 	}
-	
+
 	public DBCustorm getCus() {
 		return custorm;
 	}
-	
-    private class myResultSetHandler implements ResultSetHandler{
-    	private String keyTemp;
-    	/**
-    	 * 每个row默认的key的名称
-    	 * @param keyTemp
-    	 */
-    	public myResultSetHandler(String keyTemp) {
-    		   this.keyTemp = keyTemp;
+
+	private class myResultSetHandler implements ResultSetHandler {
+		private String keyTemp;
+
+		/**
+		 * 每个row默认的key的名称
+		 * 
+		 * @param keyTemp
+		 */
+		public myResultSetHandler(String keyTemp) {
+			this.keyTemp = keyTemp;
 		}
-    	/**
-    	 * 如果keyTemp==null,默认使用第一列作为Map的key
-    	 */
-    	public myResultSetHandler(){}
+
+		/**
+		 * 如果keyTemp==null,默认使用第一列作为Map的key
+		 */
+		public myResultSetHandler() {
+		}
+
 		@Override
 		public Object handle(ResultSet rs) throws SQLException {
-			Map map =  new HashMap();
+			Map map = new HashMap();
 			ResultSetMetaData rsm = rs.getMetaData();
 			int allCloumn = rsm.getColumnCount();
-			while(rs.next())
-			{
-				 Object key = null;
-				 if(keyTemp==null) key = rs.getObject(1);
-				 else key = rs.getObject(keyTemp);
-				 List val = new ArrayList(allCloumn);
-				 for (int i =1; i <= allCloumn; i++)
-				 val.add(rs.getObject(i));
-			     map.put(key,val);
+			while (rs.next()) {
+				Object key = null;
+				if (keyTemp == null)
+					key = rs.getObject(1);
+				else
+					key = rs.getObject(keyTemp);
+				List val = new ArrayList(allCloumn);
+				for (int i = 1; i <= allCloumn; i++)
+					val.add(rs.getObject(i));
+				map.put(key, val);
 			}
-			 return map;
+			return map;
 		}
-    }
+	}
+
 	/**
-	 * 自定义结果集封装(判断是否只查询2个字段,如果onlyTwo=true的时候,结果集只封装为map,否则map的key为主键,value为map类型的所有字段)
+	 * 自定义结果集封装(判断是否只查询2个字段,如果onlyTwo=true的时候,结果集只封装为map,否则map的key为主键,
+	 * value为map类型的所有字段)
+	 * 
 	 * @author mojf
 	 */
-	public class MyDBRowProcesser implements ResultSetHandler{
+	public class MyDBRowProcesser implements ResultSetHandler {
 		private DBConn dbconn;
 		private String primaryKey;
 		private boolean onlyTwo = false;
 		private String nextKey;
-		
-		private MyDBRowProcesser(){}
-		
-		public MyDBRowProcesser(DBConn dbconn,String primaryKey){
+
+		private MyDBRowProcesser() {
+		}
+
+		public MyDBRowProcesser(DBConn dbconn, String primaryKey) {
 			this.dbconn = dbconn;
 			this.primaryKey = primaryKey;
 		}
-		
-		public MyDBRowProcesser(DBConn dbconn,String primaryKey,boolean onlyTwo,String nextKey){
+
+		public MyDBRowProcesser(DBConn dbconn, String primaryKey, boolean onlyTwo, String nextKey) {
 			this.dbconn = dbconn;
 			this.nextKey = nextKey;
 			this.onlyTwo = onlyTwo;
 			this.primaryKey = primaryKey;
 		}
-		
+
 		@Override
 		public Object handle(ResultSet resultset) throws SQLException {
-			final int defaultMapSize = 100000;//默认开辟的空间大小
+			final int defaultMapSize = 100000;// 默认开辟的空间大小
 			Map myMap = new HashMap(defaultMapSize);
 			final ResultSetMetaData rsmd = resultset.getMetaData();
 			final int rowNumber = rsmd.getColumnCount();
-			while(resultset.next())
-			{
+			while (resultset.next()) {
 				String pk = resultset.getString(this.primaryKey);
-				if(onlyTwo)
-				{
+				if (onlyTwo) {
 					Object nextVal = resultset.getObject(this.nextKey);
 					myMap.put(pk, nextVal);
-				}
-				else//循环所有
+				} else// 循环所有
 				{
 					Map rowMap = new HashMap(rowNumber);
-					for (int i = 1; i < rowNumber; i++) 
-					{
+					for (int i = 1; i < rowNumber; i++) {
 						String columnName = rsmd.getColumnName(i);
 						Object value = resultset.getObject(columnName);
-						rowMap.put(columnName,value);
+						rowMap.put(columnName, value);
 					}
-					myMap.put(pk,rowMap);
+					myMap.put(pk, rowMap);
 				}
 			}
 			return myMap;
 		}
-	
-	/**
-	 * 查询map
-	 * @param sql
-	 * @param param
-	 * @return
-	 * @throws Exception
-	 */
-	public Map searchToMapForMore(String sql) throws Exception{
-		Map result = null;
-		Connection userConn = this.dbconn.getConnection();
-		try 
-		{
-			QueryRunner run = new QueryRunner();
-			result = ( Map ) run.query( userConn, sql, this );
-		}
-		catch ( Exception _e ) 
-		{
-			throw _e;
-		}
-		finally 
-		{
-			DBConnectionManager.getInstance().freeConnection( dbconn.getCustorm(), userConn );
-		}
-		return result;
-	}
-	/**
-	 * 查询map
-	 * @param sql
-	 * @param param
-	 * @return
-	 * @throws Exception
-	 */
-	public Map searchToMapForMore(String sql,Object pramas[]) throws Exception{
-		Map result = null;
-		Connection userConn = this.dbconn.getConnection();
-		try 
-		{
-			QueryRunner run = new QueryRunner();
-			result = ( Map ) run.query( userConn, sql,pramas,this );
-		}
-		catch ( Exception _e ) 
-		{
-			throw _e;
-		}
-		finally 
-		{
-			DBConnectionManager.getInstance().freeConnection( dbconn.getCustorm(), userConn );
-		}
-		return result;
-	 }
-  }
-    /**
-     * @Method: createSimpleMail
-     * @Description: 创建一封只包含文本的邮件
-     * @param session
-     * @return
-     * @throws Exception
-     */ 
-     public static MimeMessage createSimpleMail(Session session)throws Exception {
-         //创建邮件对象
-        MimeMessage message = new MimeMessage(session);
-        //指明邮件的发件人
-         message.setFrom(new InternetAddress("562113226@qq.com"));
-         //指明邮件的收件人，现在发件人和收件人是一样的，那就是自己给自己发
-         message.setRecipient(Message.RecipientType.TO, new InternetAddress("991973171@qq.com"));
-         //邮件的标题
-         message.setSubject("只包含文本的简单邮件");
-         //邮件的文本内容
-         message.setContent("你好啊！", "text/html;charset=UTF-8");
-        //返回创建好的邮件对象
-        return message;
-     }
-     
-	public static void main(String[] args) {
-		  try
-		  {
-			  Properties prop = new Properties();
-			   prop.setProperty("mail.transport.protocol", "smtp");
-			   prop.put("mail.smtp.port","587");
-			   //prop.setProperty("mail.smtp.auth", "true");
-			   //使用JavaMail发送邮件的5个步骤
-			   //1、创建session
-			   Session session = Session.getInstance(prop);
-			   //开启Session的debug模式，这样就可以查看到程序发送Email的运行状态
-			   //session.setDebug(true);
-			   //2、通过session得到transport对象
-			   Transport ts = session.getTransport();
-			   
-			   ts.addConnectionListener(new DBConn().new QqConnectionListener());
-			   ts.addTransportListener(new DBConn().new QqTransportListener());
-			   //3、使用邮箱的用户名和密码连上邮件服务器，发送邮件时，发件人需要提交邮箱的用户名和密码给smtp服务器，用户名和密码都通过验证之后才能够正常发送邮件给收件人。
-			   ts.connect("smtp.qq.com", "562113226@qq.com", "password");
-			   //4、创建邮件
-			   Message message = createSimpleMail(session);
-			   //5、发送邮件
-			   ts.sendMessage(message, message.getAllRecipients());
-			   
-	           ts.close();	
-	           System.out.println("finish!!!");
-		  } catch (Exception e)
-		  {
-			e.printStackTrace();
-		  }
-	}
-	private class QqTransportListener implements TransportListener{
 
-		@Override
 		/**
-		 * 全部发送
+		 * 查询map
+		 * 
+		 * @param sql
+		 * @param param
+		 * @return
+		 * @throws Exception
 		 */
-		public void messageDelivered(TransportEvent arg0) {
-			System.out.println("messageDelivered");
+		public Map searchToMapForMore(String sql) throws Exception {
+			Map result = null;
+			Connection userConn = this.dbconn.getConnection();
+			try {
+				QueryRunner run = new QueryRunner();
+				result = (Map) run.query(userConn, sql, this);
+			} catch (Exception _e) {
+				throw _e;
+			} finally {
+				DBConnectionManager.getInstance().freeConnection(dbconn.getCustorm(), userConn);
+			}
+			return result;
 		}
 
-		@Override
 		/**
-		 * 未发送
+		 * 查询map
+		 * 
+		 * @param sql
+		 * @param param
+		 * @return
+		 * @throws Exception
 		 */
-		public void messageNotDelivered(TransportEvent arg0) {
-			System.out.println("messageNotDelivered");
+		public Map searchToMapForMore(String sql, Object pramas[]) throws Exception {
+			Map result = null;
+			Connection userConn = this.dbconn.getConnection();
+			try {
+				QueryRunner run = new QueryRunner();
+				result = (Map) run.query(userConn, sql, pramas, this);
+			} catch (Exception _e) {
+				throw _e;
+			} finally {
+				DBConnectionManager.getInstance().freeConnection(dbconn.getCustorm(), userConn);
+			}
+			return result;
 		}
-		
-		@Override
-		/**
-		 * 部分发送
-		 */
-		public void messagePartiallyDelivered(TransportEvent arg0) {
-			System.out.println("messagePartiallyDelivered");
-		}
-		
 	}
-	private class QqConnectionListener implements ConnectionListener{
-
-		@Override
-		public void closed(ConnectionEvent arg0) {
-			 System.out.println("closed");
-		}
-
-		@Override
-		public void disconnected(ConnectionEvent arg0) {
-			 System.out.println("disconnected");
-			
-		}
-
-		@Override
-		public void opened(ConnectionEvent arg0) {
-			 System.out.println("opened");
-		}
-		
-	} 
 }

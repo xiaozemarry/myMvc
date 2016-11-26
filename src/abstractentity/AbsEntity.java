@@ -25,7 +25,7 @@ public abstract class AbsEntity<T>{
     protected DruidDBConnection db;
     
     /**
-     * 查询所有
+     * 查询所有(并未实现,需要自己实现该方法)
      * @return
      */
     public List<T> findAllEntity(){return null;};
@@ -254,11 +254,11 @@ public abstract class AbsEntity<T>{
 				   }
     			}
 		} catch (IllegalAccessException e) {
-			logger.error("",e);
+			logger.error("{}",e);
 		} catch (InvocationTargetException e) {
-			logger.error("",e);
+			logger.error("{}",e);
 		} catch (NoSuchMethodException e) {
-			logger.error("",e);
+			logger.error("{}",e);
 		}
     	return res;
     }

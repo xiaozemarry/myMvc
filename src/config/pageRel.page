@@ -1,4 +1,5 @@
 {
-"homePage":"template1/welcome.jsp",
+"homePage":"module/database/page/tables.html",
+"homePage1":"template1/welcome.jsp",
 "loginPage":"login/blueBack/page/index.jsp"
 }

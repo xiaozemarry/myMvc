@@ -32,7 +32,7 @@ public class LoginFilter implements Filter,HandlerInterceptor{
 		HttpServletResponse response=(HttpServletResponse)rep;
 		 
 		 TokenManager<?> token = TokenManager.instance();
-		 String hasCookie = new HttpServletRequestTool((HttpServletRequest)req).hasLoginCookie();
+		 String hasCookie = HttpServletRequestTool.hasLoginCookie(request);
 		 boolean hasUser = token.hasUser(hasCookie);
 		 boolean userDead = !token.userDead(hasCookie);
 		 if(hasCookie!=null && hasUser && userDead)//存在cookie并且合法,继续操作
@@ -42,7 +42,7 @@ public class LoginFilter implements Filter,HandlerInterceptor{
 		 }
 		 
 		 //if(UrlFilter.instance().containsUrl(request.getServletPath()))//不需要判断cookie的请求路径
-		 final String basePath = new HttpServletRequestTool(request).getBasePath();
+		 final String basePath = HttpServletRequestTool.getBasePath(request);
 		 final String currentFullPath = request.getRequestURL().toString();
 		 final String currentReqeustPath = currentFullPath.substring(basePath.length()-1,currentFullPath.length());
 		 if(UrlFilter.instance().containsUrl(currentReqeustPath))//不需要判断cookie的请求路径
@@ -87,14 +87,14 @@ public class LoginFilter implements Filter,HandlerInterceptor{
 		 HttpServletResponse response=(HttpServletResponse)rep;
 		 
 		 TokenManager<?> token = TokenManager.instance();
-		 String hasCookie = new HttpServletRequestTool((HttpServletRequest)req).hasLoginCookie();
+		 String hasCookie = HttpServletRequestTool.hasLoginCookie(request);
 		 boolean hasUser = token.hasUser(hasCookie);
 		 boolean userDead = !token.userDead(hasCookie);
 		//存在cookie并且合法,继续操作
 		 if(hasCookie!=null && hasUser && userDead)return true;
 		 
 		 //if(UrlFilter.instance().containsUrl(request.getServletPath()))//不需要判断cookie的请求路径
-		 final String basePath = new HttpServletRequestTool(request).getBasePath();
+		 final String basePath = HttpServletRequestTool.getBasePath(request);
 		 final String currentFullPath = request.getRequestURL().toString();
 		 final String currentReqeustPath = currentFullPath.substring(basePath.length()-1,currentFullPath.length());
 		//不需要判断cookie的请求路径

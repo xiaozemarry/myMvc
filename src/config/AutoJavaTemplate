@@ -1,0 +1,64 @@
+##package
+package ${objectEntity.getPackageName()};
+
+##需要引入的package
+#foreach( $import in ${objectEntity.getImportName()})
+import  $import;
+#end
+##类名
+
+public class ${objectEntity.getClassName()}{
+##属性
+#foreach( $fields in ${objectEntity.getFields().entrySet()})
+#set($cValue=$fields.value.toString())
+##set($cIndex=$cValue.lastIndexOf("."))
+#set($cName=$cValue.substring(6,$cValue.length()))
+	private $cName $fields.key;
+#end
+
+##constructor
+	/**
+	Auto-generated constructor stub with no args
+	*/
+	public ${objectEntity.getClassName()}(){
+
+	}
+    /**
+	Auto-generated constructor stub with full fields
+	*/
+	public ${objectEntity.getClassName()}(#set($index=0)
+#set($mapSize=${objectEntity.getFields().size()})
+#foreach($fields in ${objectEntity.getFields().entrySet()})
+#set($index = $index + 1)
+#set($cValue=$fields.value.toString())
+##set($cIndex=$cValue.lastIndexOf("."))
+#set($cName=$cValue.substring(6,$cValue.length()))$cName $fields.key#if($mapSize>$index),#else#end#end){
+	  #foreach( $fields in ${objectEntity.getFields().entrySet()})
+			this.$fields.key = $fields.key;
+	  #end 
+	}
+	
+##getter setter
+#foreach( $fields in ${objectEntity.getFields().entrySet()})
+#set($cKey=$fields.key)
+#set($newKey = $cKey.substring(0,1).toUpperCase()+$cKey.substring(1,$cKey.length()))
+##获取类型
+#set($cValue=$fields.value.toString())
+##set($cIndex=$cValue.lastIndexOf("."))
+#set($cName=$cValue.substring(6,$cValue.length()))
+
+	 public void set$newKey($cName $cKey){
+	        this.$cKey=$cKey;
+	 }
+	 
+	 public $cName get$newKey(){
+	       return this.$cKey;
+	 }
+#end
+
+	@Override
+	public String toString() {
+		return JSONObject.toJSONString(this);
+	}
+
+}

@@ -29,7 +29,7 @@ public class ContextStart implements ServletContextListener{
 		UrlFilter.instance().start();
 		
 		logger.info("开始装载用户登录信息的缓存文件......");
-	    TokenManager token = TokenManager.instance();
+	    TokenManager<?> token = TokenManager.instance();
 	    token.loadingFile();
 	    logger.info("开始刷新缓存文件(即刷新无效的登陆信息)....");
 		token.refresh();
