@@ -62,6 +62,8 @@ public class ContextFilter extends HandlerInterceptorAdapter implements Filter{
 			ModelAndView modelAndView) throws Exception {
 		//do-nothing,just loging request for finding request path easier
 		logger.info("request controller method:"+handler);
+		//StackTraceElement ste = Thread.currentThread().getStackTrace()[1];
+		//logger.info("at ("+ste.getFileName() + ":" + ste.getLineNumber()+")");
 		super.postHandle(request, response, handler, modelAndView);
 	}
 	

@@ -40,4 +40,13 @@ public class Constant {
 	 * 数据库默认受影响的条数(无法正常更新返回的结果)
 	 */
 	public static final int DBEFFECTROWNUMBER = -10;
+	
+	//常用的一些setContentType需要的值
+	
+	public static final String XML  = "text/xml";
+	public static final String HTML = "text/html";
+	public static final String TEXT  = "text/plain";
+	public static final String PDF  = "application/pdf";
+	public static final String JSON  = "application/json";
+	
 }

@@ -145,7 +145,11 @@ public class HttpBase{
 		  {
 			  logger.error("{Attention--Should Not Like This}", e);
 		  }
-	   }
+	}
+	  
+	protected void setContentType(final String type) {
+		this.response.setContentType(type+";charset="+Constant.CHARSETFORUTF8);
+	}
 
 	public HttpServletRequest getRequest() {
 		return request;

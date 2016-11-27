@@ -108,6 +108,7 @@
     <import resource="mySpringServlet-transaction.xml" />
     <import resource="classes/module/dbdata/xml/DbData-spring.xml" />
     <import resource="classes/module/database/xml/DataBase-spring.xml" />
+    <import resource="classes/module/system/xml/JSystem-spring.xml" />
     
 	<!-- 
 		<bean id="userDao" class="module.user.dao.UserDao"></bean>

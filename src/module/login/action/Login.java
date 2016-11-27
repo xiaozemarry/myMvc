@@ -3,6 +3,7 @@ package module.login.action;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.management.ManagementFactory;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -53,6 +54,8 @@ public class Login extends HttpBase {
 	@RequestMapping(value = "/loginUser", method = {RequestMethod.POST,RequestMethod.GET})
 	public void loginIn() {
 		try {
+			String name = ManagementFactory.getRuntimeMXBean().getName();    
+			logger.error("pid:"+name);
 //			BaseDruidConnConfig config = (BaseDruidConnConfig) ActionUtils.getBean(request, "my205db");
 //			BaseDruidConnConfig dd = new BaseDruidConnConfig("jdbc:oracle:thin:@10.112.6.205:1521/ipms","thd","thd");
 //			Connection con = db.getConnectionFromBean(dd);
